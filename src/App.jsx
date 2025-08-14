@@ -1,15 +1,15 @@
 
+import { ToastContainer } from 'react-toastify'
 import './App.css'
-import { Login } from './components/user/login'
-import { Register } from './components/user/register'
+import { User } from './components/user/user'
 
 function App() {
  
 
   return (
     <>
-      <Register/>
-      {/* <Login/> */}
+       <ToastContainer position='top-right' autoClose={3000} />
+      <User />
     </>
   )
 }

@@ -5,7 +5,14 @@ export const userApi = createApi({
 
     reducerPath: 'userApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://localhost:2000/eco/auth'
+        baseUrl: 'https://e-commerce.politewave-a8066950.eastus.azurecontainerapps.io/eco/auth',
+        prepareHeaders: (headers) =>{
+            const token = localStorage.getItem('token');
+            if(token){
+                headers.set('authorization', `Bearer ${token}`)
+            }
+            return headers;
+        }
     }),
 
     endpoints: (builder) => ({
@@ -21,7 +28,7 @@ export const userApi = createApi({
             query: (user) => ({
                 url: '/login',
                 method: 'POST',
-                body: user
+                body: user,
             })
         }),
 
