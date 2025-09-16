@@ -1,7 +1,7 @@
 
 import { ToastContainer } from 'react-toastify'
 import './App.css'
-import { User } from './components/user/user'
+import { Nav } from './components/nav'
 
 function App() {
  
@@ -9,7 +9,7 @@ function App() {
   return (
     <>
        <ToastContainer position='top-right' autoClose={3000} />
-      <User />
+      <Nav />
     </>
   )
 }
