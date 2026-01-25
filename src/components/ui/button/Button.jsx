@@ -1,4 +1,4 @@
-const Button = ({ children, size = "md", variant = "primary", startIcon, endIcon, onClick, className = "", disabled = false, }) => {
+const Button = ({ text, children, size = "md", variant = "primary", startIcon, endIcon, onClick, className = "", disabled = false, }) => {
     // Size Classes
     const sizeClasses = {
         sm: "px-4 py-3 text-sm",
@@ -11,6 +11,7 @@ const Button = ({ children, size = "md", variant = "primary", startIcon, endIcon
     };
     return (<button className={`inline-flex items-center justify-center gap-2 rounded-lg transition ${className} ${sizeClasses[size]} ${variantClasses[variant]} ${disabled ? "cursor-not-allowed opacity-50" : ""}`} onClick={onClick} disabled={disabled}>
       {startIcon && <span className="flex items-center">{startIcon}</span>}
+      {text}
       {children}
       {endIcon && <span className="flex items-center">{endIcon}</span>}
     </button>);

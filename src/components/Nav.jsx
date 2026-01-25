@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router'
 import { useState } from 'react'
-import { Button } from './Button'
+import Button from './ui/button/Button'
+
 
 export const Nav = () => {
     const [search, setSearch] = useState('')
@@ -19,6 +20,7 @@ export const Nav = () => {
             <div className='flex justify-center gap-4 text-cyan-800 text-xl font-semibold'>
                 <NavLink to='/'>Home</NavLink>
                 <NavLink to='/Product'>Products</NavLink>
+                <NavLink to='user'>Register</NavLink>
 
             </div>
             <form onSubmit={handleSearch} className='flex items-center gap-2'>
@@ -36,6 +38,7 @@ export const Nav = () => {
 
                 />
             </form>
+            
         </nav>
     )
 }

@@ -10,4 +10,7 @@ export default defineConfig({
     tailwindcss(),
     vitePluginSvgr(),
   ],
+  server: {
+    host: '0.0.0.0',
+  }
 })

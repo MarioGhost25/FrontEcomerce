@@ -1,42 +1,63 @@
+import { useSelector } from 'react-redux';
+import { selectCurrentUserId } from "../../store/slices/authSlice";
 import { useModal } from "../../hooks/useModal";
 import { Modal } from "../ui/modal";
 import Button from "../ui/button/Button";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
+import { useGetUserQuery } from "../../store/apis/userApi";
+import UserInfoCard from './UserInfoCard';
 export default function UserMetaCard() {
-    const { isOpen, openModal, closeModal } = useModal();
-    const handleSave = () => {
-        // Handle save logic here
-        console.log("Saving changes...");
-        closeModal();
-    };
-    return (<>
-      <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
-        <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
-          <div className="flex flex-col items-center w-full gap-6 xl:flex-row">
-            <div className="w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800">
-              <img src="/images/user/owner.jpg" alt="user"/>
+  // Usar el selector del authSlice
+  const userId = useSelector(selectCurrentUserId);
+  
+  // Usar RTK Query con el userId
+  const { data: userData, isLoading } = useGetUserQuery(userId, {
+    skip: !userId
+  });
+
+  const { isOpen, openModal, closeModal } = useModal();
+
+  const handleSave = (e) => {
+    e?.preventDefault?.();
+    console.log("User ID:", userId);
+    // Handle save logic here
+    console.log("Saving changes...");
+    closeModal();
+  };
+
+  // Mostrar loading mientras se obtiene la data
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  return (<>
+    <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
+      <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
+        <div className="flex flex-col items-center w-full gap-6 xl:flex-row">
+          <div className="w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800">
+            {/* <img src="/images/user/owner.jpg" alt="user"/> */}
+          </div>
+          <div className="order-3 xl:order-2">
+            <h4 className="mb-2 text-lg font-semibold text-center text-gray-800 dark:text-white/90 xl:text-left">
+              {userData?.name || 'User'}
+            </h4>
+            <div className="flex flex-col items-center gap-1 text-center xl:flex-row xl:gap-3 xl:text-left">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {userData?.role || 'User'}
+              </p>
+              <div className="hidden h-3.5 w-px bg-gray-300 dark:bg-gray-700 xl:block"></div>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Arizona, United States
+              </p>
             </div>
-            <div className="order-3 xl:order-2">
-              <h4 className="mb-2 text-lg font-semibold text-center text-gray-800 dark:text-white/90 xl:text-left">
-                Musharof Chowdhury
-              </h4>
-              <div className="flex flex-col items-center gap-1 text-center xl:flex-row xl:gap-3 xl:text-left">
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Team Manager
-                </p>
-                <div className="hidden h-3.5 w-px bg-gray-300 dark:bg-gray-700 xl:block"></div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Arizona, United States
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center order-2 gap-2 grow xl:order-3 xl:justify-end">
-              <a href="https://www.facebook.com/PimjoHQ" target="_blank" rel="noopener" className="flex h-11 w-11 items-center justify-center gap-2 rounded-full border border-gray-300 bg-white text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
-                <svg className="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M11.6666 11.2503H13.7499L14.5833 7.91699H11.6666V6.25033C11.6666 5.39251 11.6666 4.58366 13.3333 4.58366H14.5833V1.78374C14.3118 1.7477 13.2858 1.66699 12.2023 1.66699C9.94025 1.66699 8.33325 3.04771 8.33325 5.58342V7.91699H5.83325V11.2503H8.33325V18.3337H11.6666V11.2503Z" fill=""/>
-                </svg>
-              </a>
+          </div>
+          <div className="flex items-center order-2 gap-2 grow xl:order-3 xl:justify-end">
+            <a href="https://www.facebook.com/PimjoHQ" target="_blank" rel="noopener" className="flex h-11 w-11 items-center justify-center gap-2 rounded-full border border-gray-300 bg-white text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
+              <svg className="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.6666 11.2503H13.7499L14.5833 7.91699H11.6666V6.25033C11.6666 5.39251 11.6666 4.58366 13.3333 4.58366H14.5833V1.78374C14.3118 1.7477 13.2858 1.66699 12.2023 1.66699C9.94025 1.66699 8.33325 3.04771 8.33325 5.58342V7.91699H5.83325V11.2503H8.33325V18.3337H11.6666V11.2503Z" fill=""/>
+              </svg>
+            </a>
 
               <a href="https://x.com/PimjoHQ" target="_blank" rel="noopener" className="flex h-11 w-11 items-center justify-center gap-2 rounded-full border border-gray-300 bg-white text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
                 <svg className="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -104,38 +125,7 @@ export default function UserMetaCard() {
                   </div>
                 </div>
               </div>
-              <div className="mt-7">
-                <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
-                  Personal Information
-                </h5>
-
-                <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>First Name</Label>
-                    <Input type="text" value="Musharof"/>
-                  </div>
-
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>Last Name</Label>
-                    <Input type="text" value="Chowdhury"/>
-                  </div>
-
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>Email Address</Label>
-                    <Input type="text" value="randomuser@pimjo.com"/>
-                  </div>
-
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>Phone</Label>
-                    <Input type="text" value="+09 363 398 46"/>
-                  </div>
-
-                  <div className="col-span-2">
-                    <Label>Bio</Label>
-                    <Input type="text" value="Team Manager"/>
-                  </div>
-                </div>
-              </div>
+              <UserInfoCard userData={{ userData }} />
             </div>
             <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
               <Button size="sm" variant="outline" onClick={closeModal}>

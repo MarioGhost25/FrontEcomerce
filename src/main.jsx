@@ -8,18 +8,18 @@ import { store } from './store/store.js'
 import { RouterProvider } from 'react-router'
 import { appRouter } from './router/appRouter.jsx'
 import { ThemeProvider } from './context/ThemeProvider.jsx'
-import { AppWrapper } from './components/common/PageMeta.jsx'
+import { Toaster } from 'sonner';
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider>
-      <AppWrapper>
-        <Provider store={store}>
-          <RouterProvider router={appRouter}>
-            <App />
-          </RouterProvider>
-        </Provider>
-      </AppWrapper>
+      <Provider store={store}>
+        <RouterProvider router={appRouter}>
+          <Toaster />
+          <App />
+        </RouterProvider>
+      </Provider>
     </ThemeProvider>
   </StrictMode>,
 )
