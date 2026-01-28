@@ -1,8 +1,8 @@
 import { useState } from "react";
-import ProductForm from "../components/forms/ProductForm";
-import OrderForm from "../components/forms/OrderForm";
-import CustomerForm from "../components/forms/CustomerForm";
-import InventoryForm from "../components/forms/InventoryForm";
+import ProductForm from "../features/admin/forms/ProductForm";
+import OrderForm from "../features/admin/forms/OrderForm";
+import CustomerForm from "../features/admin/forms/CustomerForm";
+import InventoryForm from "../features/admin/forms/InventoryForm";
 import Button from "../components/ui/button/Button";
 
 export const FormDemo = () => {

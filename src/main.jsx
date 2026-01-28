@@ -4,7 +4,7 @@ import './index.css'
 import "flatpickr/dist/flatpickr.css";
 import App from './App.jsx'
 import { Provider } from 'react-redux'
-import { store } from './store/store.js'
+import { store } from './app/store.js'
 import { RouterProvider } from 'react-router'
 import { appRouter } from './router/appRouter.jsx'
 import { ThemeProvider } from './context/ThemeProvider.jsx'

@@ -1,10 +1,9 @@
 
-import { Register } from './auth/register';
-import { Login } from './auth/login';
+
 import { useState } from 'react'
-import { Section } from './section';
 import { StoreIcon } from '../icons';
 import { Link } from 'react-router';
+import { Login, Register } from '../features/auth';
 
 
 

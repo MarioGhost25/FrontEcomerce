@@ -1,9 +1,9 @@
 import './App.css'
-import { Nav } from './components/nav'
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setCredentials } from './store/slices/authSlice';
-import Home from './pages/Home';
+
+import HomePage from './features/shop/pages/HomePage';
+import { setCredentials } from './features/auth';
 
 function App() {
     const dispatch = useDispatch();
@@ -23,7 +23,7 @@ function App() {
 
     return (
         <>
-            <Home />
+            <HomePage />
         </>
     )
 }

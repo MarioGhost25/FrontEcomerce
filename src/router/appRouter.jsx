@@ -1,37 +1,41 @@
 import { createBrowserRouter, Navigate } from 'react-router';
 import { PrivateRoute } from '../components/PrivateRoute';
 
-// Layouts
-import AppLayout from '../layout/AppLayout'; // Asegúrate de que la ruta sea correcta
-
-// Componentes y Páginas Principales
+// App principal
 import App from '../App';
 import { User } from '../components/user';
 
-// Páginas del Dashboard
-import Home from '../pages/Admin/Dashboard/Home'; // Asegúrate de que las rutas sean correctas
-import UserProfiles from '../pages/Admin/UserProfiles';
+// Feature: Auth
+import { ChangePassword } from '../features/auth';
+import SignIn from '../pages/auth/SignInPage';
+import SignUp from '../pages/auth/SignUpPage';
 
-import BasicTables from '../pages/Admin/Tables/BasicTables';
-import FormElements from '../pages/Admin/Forms/FormElements';
-import NotFound from '../pages/Admin/OtherPage/NotFound';
-// ... importa todas las demás páginas del dashboard (FormElements, BasicTables, etc.)
+// Feature: Shop (Tienda pública)
+import HomePage from '../features/shop/pages/HomePage';
+import ProductsPage from '../features/shop/pages/ProductsPage';
+import ProductDetailPage from '../features/shop/pages/ProductDetailPage';
+import CartPage from '../features/shop/pages/CartPage';
 
-// Páginas de Autenticación
-import SignIn from '../pages/Admin/AuthPages/SignIn';
-import SignUp from '../pages/Admin/AuthPages/SignUp';
-import CustomerManagement from '../pages/Admin/CustomerManagement';
-import ProductManagement from '../pages/Admin/ProductManagement';
-import InventoryManagement from '../pages/Admin/InventoryManagement';
+// Feature: Admin - Layout
+import AdminLayout from '../features/admin/components/layout/AdminLayout';
+
+// Feature: Admin - Pages
+import DashboardPage from '../features/admin/pages/DashboardPage';
+import UserProfilesPage from '../features/admin/pages/UserProfilesPage';
+import CustomerManagementPage from '../features/admin/pages/CustomerManagementPage';
+import ProductManagementPage from '../features/admin/pages/ProductManagementPage';
+import InventoryManagementPage from '../features/admin/pages/InventoryManagementPage';
+import FormElementsPage from '../features/admin/pages/FormElementsPage';
+import BasicTablesPage from '../features/admin/pages/BasicTablesPage';
+import NotFoundPage from '../features/admin/pages/NotFoundPage';
+
+// Feature: Admin - Forms
+import CustomerForm from '../features/admin/forms/CustomerForm';
+import ProductForm from '../features/admin/forms/ProductForm';
+import InventoryForm from '../features/admin/forms/InventoryForm';
+
+// Páginas temporales/demo
 import FormDemo from '../pages/FormDemo';
-
-import CustomerForm from '../components/forms/CustomerForm';
-import ProductForm from '../components/forms/ProductForm';
-import InventoryForm from '../components/forms/InventoryForm';
-import { Changepass } from '../components/auth/Changepass';
-import Products from '../pages/Products';
-import ProductDetail from '../pages/ProductDetail';
-import Cart from '../pages/Cart';
 
 
 
@@ -47,45 +51,45 @@ export const appRouter = createBrowserRouter([
   },
   {
     path: 'change-password',
-    element: <Changepass />
+    element: <ChangePassword />
   },
   {
     path: 'products',
-    element: <Products />
+    element: <ProductsPage />
   },
   {
     path: 'product-detail',
-    element: <ProductDetail />
+    element: <ProductDetailPage />
   },
   {
     path: 'cart',
-    element: <Cart />
+    element: <CartPage />
   },
   
 
-  // --- Sección del Dashboard ---
+  // --- Sección del Dashboard (Admin) ---
   {
     path: 'dashboard',
-    element: <AppLayout />,
+    element: <AdminLayout />,
     children: [
       {
         element: <PrivateRoute requireRole='admin' />,
         children: [
           {
-            index: true, // Esto reemplaza a path="/" dentro del grupo
-            element: <Home />
+            index: true,
+            element: <DashboardPage />
           },
           {
-            path: 'profile', // Nota: ya no se usa el '/' al inicio
-            element: <UserProfiles />
+            path: 'profile',
+            element: <UserProfilesPage />
           },
           {
             path: 'basic-tables',
-            element: <BasicTables />
+            element: <BasicTablesPage />
           },
           {
             path: 'form-elements',
-            element: <FormElements />
+            element: <FormElementsPage />
           },
           {
             path: 'customer-form',
@@ -93,7 +97,7 @@ export const appRouter = createBrowserRouter([
           },
           {
             path: 'customer-management',
-            element: <CustomerManagement />
+            element: <CustomerManagementPage />
           },
           {
             path: 'product-form',
@@ -101,11 +105,11 @@ export const appRouter = createBrowserRouter([
           },
           {
             path: 'product-management',
-            element: <ProductManagement />
+            element: <ProductManagementPage />
           },
           {
             path: 'inven-management',
-            element: <InventoryManagement />
+            element: <InventoryManagementPage />
           },
           {
             path: 'inven-form',
@@ -113,20 +117,18 @@ export const appRouter = createBrowserRouter([
           },
           {
             path: 'error-404',
-            element: <NotFound />
+            element: <NotFoundPage />
           },
           {
             path: 'form-demo',
             element: <FormDemo />
-
           },
-          
         ]
       }
     ]
   },
 
-  // --- Rutas de Autenticación (fuera del layout del dashboard) ---
+  // --- Rutas de Autenticación ---
   {
     path: '/signin',
     element: <SignIn />

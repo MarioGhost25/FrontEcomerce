@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from 'react-router';
 import { useSelector } from 'react-redux';
-import { selectIsAuthenticated, selectCurrentUserId } from '../store/slices/authSlice';
-import { useGetUserQuery } from '../store/apis/userApi';
+import { useGetUserQuery } from '../api/endpoints/userApi';
+import { selectCurrentUserId, selectIsAuthenticated } from '../features/auth';
 
 export const PrivateRoute = ({ requireRole, children }) => {
     const isAuthenticated = useSelector(selectIsAuthenticated);
