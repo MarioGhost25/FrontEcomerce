@@ -15,10 +15,8 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider>
       <Provider store={store}>
-        <RouterProvider router={appRouter}>
-          <Toaster />
-          <App />
-        </RouterProvider>
+        <RouterProvider router={appRouter} />
+        <Toaster position="top-right" richColors closeButton />
       </Provider>
     </ThemeProvider>
   </StrictMode>,

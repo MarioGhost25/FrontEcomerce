@@ -8,7 +8,7 @@ export const PrivateRoute = ({ requireRole, children }) => {
     const userId = useSelector(selectCurrentUserId);
     
     // Si tenemos token pero no userId, esperar a que se recupere el estado
-    if (!isAuthenticated && localStorage.getItem('token')) {
+    if (!isAuthenticated && localStorage.getItem('accessToken')) {
         return <div>Loading...</div>;
     }
 

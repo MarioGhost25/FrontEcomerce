@@ -1,11 +1,13 @@
 import { Link } from 'react-router';
 import Navbar from '../../../components/layout/Navbar';
 import Footer from '../../../components/layout/Footer';
-import { FavoriteIcon, AddShoppingCartIcon, ChevronLeftIcon, CheckIcon, ChevronRightIcon, KeyArrowDownIcon } from '../../../icons';
+import { FavoriteIcon, AddShoppingCartIcon, ChevronLeftIcon, CheckIcon, ChevronRightIcon, KeyArrowDownIcon, LocalShippingIcon } from '../../../icons';
+import { useGetProductQuery } from '../../../api/endpoints/productApi';
 
 const Products = () => {
   // Datos estáticos de productos
-  const products = [
+  const { data: products = [], isLoading, isError } = useGetProductQuery();
+  const product = [
     {
       id: 1,
       name: 'Auriculares Premium Wireless Noise-Cancelling',
@@ -71,7 +73,7 @@ const Products = () => {
   return (
     <div className="bg-white text-gray-900 font-display min-h-screen flex flex-col">
       <Navbar />
-      
+
       <main className="flex-grow w-full max-w-[1440px] mx-auto px-4 lg:px-10 py-6">
         {/* Breadcrumbs */}
         <nav aria-label="Breadcrumb" className="flex mb-6 text-sm">
@@ -83,7 +85,7 @@ const Products = () => {
             </li>
             <li>
               <div className="flex items-center">
-                <span className="material-symbols-outlined text-gray-600 text-sm mx-1">chevron_right</span>
+                <span className="material-symbols-outlined text-gray-600 text-sm mx-1"><ChevronRightIcon/></span>
                 <Link className="text-gray-600 hover:text-teal-700 font-medium" to="/products">
                   Catálogo
                 </Link>
@@ -91,7 +93,7 @@ const Products = () => {
             </li>
             <li>
               <div className="flex items-center">
-                <span className="material-symbols-outlined text-gray-600 text-sm mx-1">chevron_right</span>
+                <span className="material-symbols-outlined text-gray-600 text-sm mx-1"><ChevronRightIcon/></span>
                 <span className="text-gray-900 font-semibold">Tecnología</span>
               </div>
             </li>
@@ -128,7 +130,7 @@ const Products = () => {
                 <div className="space-y-2">
                   <label className="flex items-center gap-3 cursor-pointer group">
                     <div className="relative flex items-center">
-                      <input className="peer size-4 appearance-none rounded border border-gray-300 checked:bg-teal-700 checked:border-teal-700 focus:ring-1 focus:ring-teal-700 focus:ring-offset-1 transition-colors" type="checkbox"/>
+                      <input className="peer size-4 appearance-none rounded border border-gray-300 checked:bg-teal-700 checked:border-teal-700 focus:ring-1 focus:ring-teal-700 focus:ring-offset-1 transition-colors" type="checkbox" />
                       <span className="material-symbols-outlined flex justify-center items-center absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none text-xs inset-0 m-auto"><CheckIcon /></span>
                     </div>
                     <span className="text-sm text-gray-600 group-hover:text-teal-700 transition-colors">Smartphones</span>
@@ -136,7 +138,7 @@ const Products = () => {
                   </label>
                   <label className="flex items-center gap-3 cursor-pointer group">
                     <div className="relative flex items-center">
-                      <input defaultChecked className="peer size-4 appearance-none rounded border border-gray-300 checked:bg-teal-700 checked:border-teal-700 focus:ring-1 focus:ring-teal-700 focus:ring-offset-1 transition-colors" type="checkbox"/>
+                      <input defaultChecked className="peer size-4 appearance-none rounded border border-gray-300 checked:bg-teal-700 checked:border-teal-700 focus:ring-1 focus:ring-teal-700 focus:ring-offset-1 transition-colors" type="checkbox" />
                       <span className="material-symbols-outlined flex justify-center items-center absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none text-xs inset-0 m-auto"><CheckIcon /></span>
                     </div>
                     <span className="text-sm text-gray-900 font-medium group-hover:text-teal-700 transition-colors">Laptops</span>
@@ -144,7 +146,7 @@ const Products = () => {
                   </label>
                   <label className="flex items-center gap-3 cursor-pointer group">
                     <div className="relative flex items-center">
-                      <input className="peer size-4 appearance-none rounded border border-gray-300 checked:bg-teal-700 checked:border-teal-700 focus:ring-1 focus:ring-teal-700 focus:ring-offset-1 transition-colors" type="checkbox"/>
+                      <input className="peer size-4 appearance-none rounded border border-gray-300 checked:bg-teal-700 checked:border-teal-700 focus:ring-1 focus:ring-teal-700 focus:ring-offset-1 transition-colors" type="checkbox" />
                       <span className="material-symbols-outlined flex justify-center items-center absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none text-xs inset-0 m-auto"><CheckIcon /></span>
                     </div>
                     <span className="text-sm text-gray-600 group-hover:text-teal-700 transition-colors">Accesorios</span>
@@ -152,7 +154,7 @@ const Products = () => {
                   </label>
                   <label className="flex items-center gap-3 cursor-pointer group">
                     <div className="relative flex items-center">
-                      <input className="peer size-4 appearance-none rounded border border-gray-300 checked:bg-teal-700 checked:border-teal-700 focus:ring-1 focus:ring-teal-700 focus:ring-offset-1 transition-colors" type="checkbox"/>
+                      <input className="peer size-4 appearance-none rounded border border-gray-300 checked:bg-teal-700 checked:border-teal-700 focus:ring-1 focus:ring-teal-700 focus:ring-offset-1 transition-colors" type="checkbox" />
                       <span className="material-symbols-outlined flex justify-center items-center absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none text-xs inset-0 m-auto"><CheckIcon /></span>
                     </div>
                     <span className="text-sm text-gray-600 group-hover:text-teal-700 transition-colors">Audio</span>
@@ -167,15 +169,15 @@ const Products = () => {
                 <div className="flex items-center gap-2 mb-4">
                   <div className="relative w-full">
                     <span className="absolute left-2 top-2 text-gray-400 text-xs">$</span>
-                    <input className="w-full pl-5 pr-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-teal-700 focus:border-teal-700 bg-gray-50" type="number" defaultValue="100"/>
+                    <input className="w-full pl-5 pr-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-teal-700 focus:border-teal-700 bg-gray-50" type="number" defaultValue="100" />
                   </div>
                   <span className="text-gray-400">-</span>
                   <div className="relative w-full">
                     <span className="absolute left-2 top-2 text-gray-400 text-xs">$</span>
-                    <input className="w-full pl-5 pr-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-teal-700 focus:border-teal-700 bg-gray-50" type="number" defaultValue="5000"/>
+                    <input className="w-full pl-5 pr-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-teal-700 focus:border-teal-700 bg-gray-50" type="number" defaultValue="5000" />
                   </div>
                 </div>
-                <input className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-teal-700" type="range"/>
+                <input className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-teal-700" type="range" />
               </div>
 
               {/* Popularity/Rating Filter */}
@@ -183,21 +185,21 @@ const Products = () => {
                 <h4 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wider">Popularidad</h4>
                 <div className="space-y-2">
                   <label className="flex items-center gap-3 cursor-pointer group">
-                    <input className="size-4 text-teal-700 focus:ring-teal-700 border-gray-300" name="rating" type="radio"/>
+                    <input className="size-4 text-teal-700 focus:ring-teal-700 border-gray-300" name="rating" type="radio" />
                     <div className="flex text-amber-400">
                       {[...Array(5)].map((_, i) => (
-                        <span key={i} className="material-symbols-outlined icon-filled text-[18px]">star</span>
+                        <span key={i} className="material-symbols-outlined icon-filled text-[18px]">★</span>
                       ))}
                     </div>
                     <span className="text-xs text-gray-500">& más</span>
                   </label>
                   <label className="flex items-center gap-3 cursor-pointer group">
-                    <input className="size-4 text-teal-700 focus:ring-teal-700 border-gray-300" name="rating" type="radio"/>
+                    <input className="size-4 text-teal-700 focus:ring-teal-700 border-gray-300" name="rating" type="radio" />
                     <div className="flex text-amber-400">
                       {[...Array(4)].map((_, i) => (
-                        <span key={i} className="material-symbols-outlined icon-filled text-[18px]">star</span>
+                        <span key={i} className="material-symbols-outlined icon-filled text-[18px]">★</span>
                       ))}
-                      <span className="material-symbols-outlined text-gray-300 text-[18px]">star</span>
+                      <span className="material-symbols-outlined text-gray-300 text-[18px]">★</span>
                     </div>
                     <span className="text-xs text-gray-500">& más</span>
                   </label>
@@ -208,7 +210,7 @@ const Products = () => {
             {/* Promo Card Sidebar */}
             <div className="hidden lg:block bg-amber-100 rounded-xl p-6 text-center">
               <div className="bg-white size-12 rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm text-amber-600">
-                <span className="material-symbols-outlined">local_shipping</span>
+                <span className="material-symbols-outlined"><LocalShippingIcon/></span>
               </div>
               <h5 className="font-bold text-gray-900 mb-1">Envío Gratis</h5>
               <p className="text-xs text-gray-600 mb-3">En pedidos superiores a $999</p>
@@ -251,22 +253,22 @@ const Products = () => {
                     )}
                     <div className="absolute top-3 right-3 z-10">
                       <button className="size-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors shadow-sm">
-                        <FavoriteIcon className="w-[18px] h-[18px]" />
+                        <span className="material-symbols-outlined text-[20px]"><FavoriteIcon /></span>
                       </button>
                     </div>
                     <Link to={`/products/${product.id}`}>
-                      <img 
-                        alt={product.name} 
-                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" 
-                        src={product.image}
+                      <img
+                        alt={product.name}
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                        src={product.images}
                       />
                     </Link>
                   </div>
                   <div className="p-4 flex flex-col flex-grow">
                     <div className="flex items-center gap-1 mb-1">
-                      <span className="material-symbols-outlined icon-filled text-amber-400 text-[14px]">star</span>
+                      <span className="material-symbols-outlined icon-filled text-amber-400 text-[14px]">★</span>
                       <span className="text-xs font-bold text-gray-900">{product.rating}</span>
-                      <span className="text-xs text-gray-400">({product.reviews})</span>
+                      {/* <span className="text-xs text-gray-400">({product.reviews})</span> */}
                     </div>
                     <Link to={`/products/${product.id}`}>
                       <h3 className="font-bold text-gray-900 leading-tight mb-1 group-hover:text-teal-700 transition-colors">
@@ -302,7 +304,7 @@ const Products = () => {
                 <span className="flex size-9 items-center justify-center rounded-full text-gray-400 font-medium text-sm">...</span>
                 <a className="flex size-9 items-center justify-center rounded-full text-gray-900 hover:bg-amber-100 hover:text-teal-700 font-medium text-sm transition-colors" href="#">12</a>
                 <a className="flex size-9 items-center justify-center rounded-full text-gray-900 hover:bg-gray-100 transition-colors" href="#">
-                  <ChevronRightIcon className='w-5 h-5  '/>
+                  <ChevronRightIcon className='w-5 h-5  ' />
                 </a>
               </nav>
             </div>

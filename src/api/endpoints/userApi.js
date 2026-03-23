@@ -22,16 +22,28 @@ export const userApi = apiSlice.injectEndpoints({
                 try {
                     const { data } = await queryFulfilled;
                     console.log('Login response data:', data);
-                    // Asumiendo que el backend devuelve { userId, token, ...rest }
-                    dispatch(setCredentials({ 
-                        userId: data.id, 
-                        token: data.token 
-                    }));
+                    const userId = data?.id ?? data?.userId ?? data?.user?.id ?? data?.user?._id;
+                    const accessToken = data?.accessToken ?? data?.token;
+
+                    if (userId && accessToken) {
+                        dispatch(setCredentials({ userId, accessToken }));
+                    } else {
+                        console.warn('No se pudieron extraer credenciales del login:', data);
+                    }
                 } catch (err) {
                     console.log('Login failed:', err);
                 }
             }
         }),
+
+        refreshToken: builder.mutation({
+            query: () => ({
+                url: 'auth/refresh',
+                method: 'POST',
+            })
+        }),
+
+
 
         getUser: builder.query({
             query: (userId) => ({

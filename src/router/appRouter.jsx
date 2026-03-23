@@ -116,6 +116,14 @@ export const appRouter = createBrowserRouter([
             element: <InventoryForm />
           },
           {
+            path: 'home-view',
+            element: <HomePage/>
+          },
+          {
+            path: 'product-view',
+            element: <ProductsPage/>
+          },
+          {
             path: 'error-404',
             element: <NotFoundPage />
           },

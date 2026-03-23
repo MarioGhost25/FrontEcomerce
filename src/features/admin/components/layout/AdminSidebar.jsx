@@ -44,8 +44,10 @@ const navItems = [
         name: "Pages",
         icon: <PageIcon />,
         subItems: [
-            { name: "404 Error", path: "error-404", pro: false },
             { name: "Form Demo", path: "form-demo", pro: false },
+            { name: 'Home-view', path: 'home-view', pro: false},
+            { name: 'Products-view', path: 'product-view', pro: false},
+            { name: "404 Error", path: "error-404", pro: false },
         ],
     },
 ];

@@ -10,13 +10,26 @@ function App() {
 
     useEffect(() => {
         // Recuperar datos de autenticación al iniciar la app
-        const token = localStorage.getItem('token');
+        const storedAccessToken = localStorage.getItem('accessToken');
         const userId = localStorage.getItem('userId');
-        
-        if (token && userId) {
+
+        let accessToken = null;
+
+        if (storedAccessToken) {
+            try {
+                const parsedToken = JSON.parse(storedAccessToken);
+                accessToken = typeof parsedToken === 'string'
+                    ? parsedToken
+                    : parsedToken?.accessToken;
+            } catch {
+                accessToken = storedAccessToken;
+            }
+        }
+
+        if (accessToken && userId) {
             dispatch(setCredentials({
-                token: JSON.parse(token).token,
-                userId
+                accessToken,
+                userId 
             }));
         }
     }, [dispatch]);

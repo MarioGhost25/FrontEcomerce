@@ -5,6 +5,14 @@ import { apiSlice } from "../apiSlice";
 export const productApi = apiSlice.injectEndpoints({
 
     endpoints: (builder) => ({
+        uploadProductImage: builder.mutation({
+            query: (formdata) => ({
+                url: '/image/upload',
+                method: 'POST',
+                body: formdata
+            })
+        }),
+
         createProduct: builder.mutation({
             query: (productData) => ({
                 url: '/products',
@@ -29,4 +37,9 @@ export const productApi = apiSlice.injectEndpoints({
 
 })
 
-export const { useCreateProductMutation, useGetProductQuery, useDeleteProductMutation} = productApi;
+export const {
+    useUploadProductImageMutation,
+    useCreateProductMutation,
+    useGetProductQuery,
+    useDeleteProductMutation
+} = productApi;

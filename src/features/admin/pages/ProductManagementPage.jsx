@@ -5,12 +5,12 @@ import { useDeleteProductMutation, useGetProductQuery } from "../../../api/endpo
 import { useNavigate } from "react-router";
 
 export const ProductManagement = () => {
-  
+
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
-  
-  const { data = [], isLoading, isError, error, refetch } = useGetProductQuery();
-  const [ deleteProduct, { isLoading: isDeleting } ] = useDeleteProductMutation();
+
+  const { data: products = [], isLoading, isError, error, refetch } = useGetProductQuery();
+  const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
   let navigate = useNavigate();
 
   const handleFormSubmit = (data) => {
@@ -125,7 +125,7 @@ export const ProductManagement = () => {
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Products</p>
-                <p className="text-2xl font-semibold text-gray-900 dark:text-white">{data.length}</p>
+                <p className="text-2xl font-semibold text-gray-900 dark:text-white">{products.length}</p>
               </div>
             </div>
           </div>
@@ -141,7 +141,7 @@ export const ProductManagement = () => {
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-500 dark:text-gray-400">In Stock</p>
-                <p className="text-2xl font-semibold text-gray-900 dark:text-white">{data.filter(product => product.stockStatus === 'In Stock').length}</p>
+                <p className="text-2xl font-semibold text-gray-900 dark:text-white">{products.filter(product => product.stockStatus === 'In Stock').length}</p>
               </div>
             </div>
           </div>
@@ -157,7 +157,7 @@ export const ProductManagement = () => {
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Low Stock</p>
-                <p className="text-2xl font-semibold text-gray-900 dark:text-white">{data.filter(product => product.stockStatus === 'Low Stock').length}</p>
+                <p className="text-2xl font-semibold text-gray-900 dark:text-white">{products.filter(product => product.stockStatus === 'Low Stock').length}</p>
               </div>
             </div>
           </div>
@@ -173,7 +173,7 @@ export const ProductManagement = () => {
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Out of Stock</p>
-                <p className="text-2xl font-semibold text-gray-900 dark:text-white">{data.filter(product => product.stockStatus === 'Out of Stock').length}</p>
+                <p className="text-2xl font-semibold text-gray-900 dark:text-white">{products.filter(product => product.stockStatus === 'Out of Stock').length}</p>
               </div>
             </div>
           </div>
@@ -206,20 +206,21 @@ export const ProductManagement = () => {
                     Status
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Rating
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                {data.map((product) => (
+                {products.map((product) => (
                   <tr key={product.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-10 w-10">
                           <div className="h-10 w-10 rounded-lg bg-gray-200 dark:bg-gray-600 flex items-center justify-center">
-                            <svg className="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
+                            <img src={product.images[0]} alt={product.name} className="h-full w-full object-cover" />
                           </div>
                         </div>
                         <div className="ml-4">
@@ -239,14 +240,16 @@ export const ProductManagement = () => {
                       {product.stock}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        product.stockStatus === 'In Stock' ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' :
-                        product.stockStatus === 'Low Stock' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400' :
-                        'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
-                      }`}>
+                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${product.stockStatus === 'In Stock' ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' :
+                          product.stockStatus === 'Low Stock' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400' :
+                            'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
+                        }`}>
                         {product.stockStatus === 'In Stock' ? 'In Stock' :
-                         product.stockStatus === 'Low Stock' ? 'Low Stock' : 'Out of Stock'}
+                          product.stockStatus === 'Low Stock' ? 'Low Stock' : 'Out of Stock'}
                       </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                      {product.rating} <span className="text-yellow-500">★</span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex space-x-2">
@@ -257,11 +260,10 @@ export const ProductManagement = () => {
                           Edit
                         </button>
                         <button
-                        onClick={() => handleDeleteProduct(product.id) } 
-                        disabled={isDeleting}
-                        className={`text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 ${
-                          isDeleting ? 'opacity-50 cursor-not-allowed' : ''
-                        }`}
+                          onClick={() => handleDeleteProduct(product.id)}
+                          disabled={isDeleting}
+                          className={`text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 ${isDeleting ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
                         >
                           {isDeleting ? 'Eliminando...' : 'Delete'}
                         </button>

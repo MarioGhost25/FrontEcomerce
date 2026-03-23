@@ -1,13 +1,22 @@
-import { useRegisterMutation } from '../../../api/endpoints/userApi';
-import { useForm } from '../../../hooks/useForm';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
+import { useRegisterMutation } from '../../../api/endpoints/userApi';
+import { useForm } from '../../../hooks/useForm';
 import { toast } from 'sonner';
+import * as z from 'zod';
 import { MailIcon, LockIcon, EyeIcon, EyeCloseIcon, ArrowRightIcon, UserIcon } from '../../../icons';
+
+const registerSchema = z.object({
+  name: z.string().trim().min(1, 'El nombre es requerido'),
+  email: z.string().trim().email('Correo electronico invalido'),
+  password: z.string().trim().min(8, 'La contraseña debe tener al menos 8 caracteres'),
+  contactPhone: z.string().trim().min(1, 'El telefono es requerido').min(8, 'El telefono debe tener al menos 8 digitos'),
+});
 
 export const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
   const [createRegister, { isLoading, error }] = useRegisterMutation();
   const navigate = useNavigate();
 
@@ -18,8 +27,31 @@ export const Register = () => {
     contactPhone: '',
   });
 
+  const handleFieldChange = (e) => {
+    onInputChange(e);
+
+
+    if (fieldErrors[e.target.name]) {
+      setFieldErrors((prev) => ({ ...prev, [e.target.name]: undefined }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const userData = { name, email, password, contactPhone };
+    const validation = registerSchema.safeParse(userData);
+
+    if (!validation.success) {
+      const { fieldErrors: zodFieldErrors } = validation.error.flatten();
+      setFieldErrors(zodFieldErrors);
+
+      const firstError = Object.values(zodFieldErrors).flat().find(Boolean);
+      toast.error(firstError || 'Revisa los campos del formulario');
+      return;
+    }
+
+    setFieldErrors({});
 
     if (!acceptedTerms) {
       toast.error('Debes aceptar los términos y condiciones');
@@ -27,10 +59,10 @@ export const Register = () => {
     }
 
     try {
-      const res = await createRegister({ name, email, password, contactPhone }).unwrap();
+      const res = await createRegister(validation.data).unwrap();
 
-      if (res.token) {
-        localStorage.setItem('token', JSON.stringify(res.token));
+      if (res.accessToken) {
+        localStorage.setItem('accessToken', JSON.stringify(res.accessToken));
         navigate('/');
       }
 
@@ -59,7 +91,7 @@ export const Register = () => {
             <p className="text-slate-500">Únete para ofertas exclusivas y seguimiento de pedidos.</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+          <form noValidate onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             {/* Name Field */}
             <div className="space-y-2">
               <label className="block text-sm font-semibold text-slate-700" htmlFor="name">
@@ -76,10 +108,13 @@ export const Register = () => {
                   placeholder="Juan Pérez"
                   type="text"
                   value={name}
-                  onChange={onInputChange}
+                  onChange={handleFieldChange}
                   required
                 />
               </div>
+              {fieldErrors.name?.[0] && (
+                <p className="text-xs text-red-600">{fieldErrors.name[0]}</p>
+              )}
             </div>
 
             {/* Email Field */}
@@ -98,10 +133,13 @@ export const Register = () => {
                   placeholder="ejemplo@correo.com"
                   type="email"
                   value={email}
-                  onChange={onInputChange}
+                  onChange={handleFieldChange}
                   required
                 />
               </div>
+              {fieldErrors.email?.[0] && (
+                <p className="text-xs text-red-600">{fieldErrors.email[0]}</p>
+              )}
             </div>
 
             {/* Password Field */}
@@ -120,7 +158,7 @@ export const Register = () => {
                   placeholder="Mínimo 8 caracteres"
                   type={showPassword ? "text" : "password"}
                   value={password}
-                  onChange={onInputChange}
+                  onChange={handleFieldChange}
                   required
                   minLength={8}
                 />
@@ -146,6 +184,9 @@ export const Register = () => {
               <p className="text-xs text-slate-500 mt-1">
                 Nivel de seguridad: {password.length < 4 ? 'Bajo' : password.length < 8 ? 'Medio' : 'Alto'}
               </p>
+              {fieldErrors.password?.[0] && (
+                <p className="text-xs text-red-600">{fieldErrors.password[0]}</p>
+              )}
             </div>
 
             {/* Contact Phone Field */}
@@ -160,9 +201,12 @@ export const Register = () => {
                 placeholder="+1234567890"
                 type="tel"
                 value={contactPhone}
-                onChange={onInputChange}
+                onChange={handleFieldChange}
                 required
               />
+              {fieldErrors.contactPhone?.[0] && (
+                <p className="text-xs text-red-600">{fieldErrors.contactPhone[0]}</p>
+              )}
             </div>
 
             {/* Terms Checkbox */}

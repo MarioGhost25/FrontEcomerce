@@ -1,13 +1,19 @@
+import { useState } from "react";
 import { useForm } from "../../../hooks/useForm";
 import { useLoginMutation } from "../../../api/endpoints/userApi";
-import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 import { MailIcon, LockIcon, EyeIcon, EyeCloseIcon, StoreIcon } from "../../../icons";
-import { Register } from "./RegisterForm";
+import * as z from 'zod';
+
+
+const loginSchema = z.object({
+    email: z.string().trim().email({ message: 'Correo electronico invalido' }),
+    password: z.string().trim().min(8, { message: 'La contraseña debe tener al menos 8 caracteres' }),
+});
 
 export const Login = () => {
-    const [isChecked, setIsChecked] = useState(false);
+    const [fieldErrors, setFieldErrors] = useState({})
     const [showPassword, setShowPassword] = useState(false);
     const [loginUser, { isLoading }] = useLoginMutation();
     const navigate = useNavigate();
@@ -17,18 +23,42 @@ export const Login = () => {
         password: '',
     });
 
+    const handleFieldChange = (e) => {
+        onInputChange(e);
+
+
+        if (fieldErrors[e.target.name]) {
+            setFieldErrors((prev) => ({ ...prev, [e.target.name]: undefined }));
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const userData = { email, password };
+        const validation = loginSchema.safeParse(userData);
+
+        if (!validation.success) {
+            const { fieldErrors: zodFieldErrors } = validation.error.flatten();
+            setFieldErrors(zodFieldErrors);
+
+            const firstError = Object.values(zodFieldErrors).flat().find(Boolean);
+            toast.error(firstError || 'Revisa los campos del formulario');
+            return;
+        }
+
+        setFieldErrors({});
+
         try {
-            const res = await loginUser({ email, password }).unwrap();
 
-            // Persistir credenciales
-            const { token, role } = res;
+            const res = await loginUser(validation.data).unwrap();
+            console.log(res.user)
+            const accessToken = res?.accessToken ?? res?.token;
+            const user = res?.user;
 
-            if (token) localStorage.setItem('token', JSON.stringify(token));
-            role === 'admin' ? navigate('/dashboard') : navigate('/');
+            user?.role === 'admin' ? navigate('/dashboard') : navigate('/');
 
-            console.log('Token guardado:', res.token);
+            console.log('Token recibido:', accessToken);
 
         } catch (error) {
             toast.error(error?.data?.message || 'Error al iniciar sesión❌');
@@ -51,7 +81,7 @@ export const Login = () => {
 
                 {/* Form Container */}
                 <div className="p-4 sm:p-8">
-                    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
+                    <form noValidate onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
                         {/* Email Field */}
                         <div className="space-y-2 group">
                             <label className="block text-sm font-semibold text-gray-900" htmlFor="email">
@@ -69,9 +99,12 @@ export const Login = () => {
                                     required
                                     type="email"
                                     value={email}
-                                    onChange={onInputChange}
+                                    onChange={handleFieldChange}
                                 />
                             </div>
+                            {fieldErrors.email?.[0] && (
+                                <p className="text-xs text-red-600">{fieldErrors.email[0]}</p>
+                            )}
                         </div>
 
                         {/* Password Field */}
@@ -93,7 +126,7 @@ export const Login = () => {
                                     required
                                     type={showPassword ? "text" : "password"}
                                     value={password}
-                                    onChange={onInputChange}
+                                    onChange={handleFieldChange}
                                 />
                                 <button
                                     className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-teal-700 transition-colors focus:outline-none"
@@ -107,6 +140,9 @@ export const Login = () => {
                                     )}
                                 </button>
                             </div>
+                            {fieldErrors.password?.[0] && (
+                                <p className="text-xs text-red-600">{fieldErrors.password[0]}</p>
+                            )}
                             <div className="flex justify-end pt-1">
                                 <Link to="/change-password" className="text-xs font-medium text-teal-700 hover:text-teal-800 hover:underline transition-colors">
                                     ¿Olvidaste tu contraseña?

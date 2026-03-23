@@ -9,14 +9,16 @@ import CurrencyInput from "../../../components/form/CurrencyInput";
 import ImageUpload from "../../../components/form/ImageUpload";
 import InventoryInput from "../../../components/form/InventoryInput";
 import Button from "../../../components/ui/button/Button";
-import { useCreateProductMutation } from "../../../api/endpoints/productApi";
+import { useCreateProductMutation, useUploadProductImageMutation } from "../../../api/endpoints/productApi";
 import { useForm } from "../../../hooks/useForm";
 import { useNavigate } from "react-router";
 import { toast } from 'sonner'
+import { fileToDataURL } from "../../../services/imageTransformService";
 
 const ProductForm = ({ product = null, onCancel }) => {
 
   const [createProduct, { isLoading }] = useCreateProductMutation();
+  const [uploadProductImage] = useUploadProductImageMutation();
   const [errors, setErrors] = useState({});
   let navigate = useNavigate();
 
@@ -44,24 +46,6 @@ const ProductForm = ({ product = null, onCancel }) => {
     //allowBackorder: product?.allowBackorder ?? false,
     images: product?.images || []
   });
-
-  // Derive status from stock to avoid stale form state issues
-  const computeStockStatus = (n) => {
-    const num = Number(n ?? 0);
-    if (num === 0) return 'Out of Stock';
-    if (num <= 10) return 'Low Stock';
-    return 'In Stock';
-  };
-
-  // Función específica para manejar el Switch
-  const handleSwitchChange = (fieldName) => (checked) => {
-    onInputChange({
-      target: {
-        name: fieldName,
-        value: checked
-      }
-    });
-  };
 
   const categories = [
     { value: "electronics", label: "Electronics" },
@@ -92,43 +76,84 @@ const ProductForm = ({ product = null, onCancel }) => {
   const validateForm = () => {
     const newErrors = {};
 
-    // if (!name.trim()) newErrors.name = "Product name is required";
-    // if (!description.trim()) newErrors.description = "Description is required";
-    // if (price <= 0) newErrors.price = "Price must be greater than 0";
-    // if (!category) newErrors.category = "Category is required";
+    if (!name?.trim()) newErrors.name = "Product name is required";
+    if (!description?.trim()) newErrors.description = "Description is required";
+    if (!price || Number(price) <= 0) newErrors.price = "Price must be greater than 0";
+    if (!category) newErrors.category = "Category is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const props = {
-    name, description, price, category, stock, stockStatus, isActive, images
+  const handleImagesChange = (updatedImages) => {
+    onInputChange({ target: { name: 'images', value: updatedImages } });
+  };
+
+  const handleIsActiveChange = (value) => {
+    onInputChange({ target: { name: 'isActive', value } });
+  };
+
+  
+
+  const uploadImageAndGetUrl = async (img) => {
+  // Si ya es URL (ej: edición)
+  if (typeof img === 'string') {
+    return img;
   }
+
+  const file = img?.file ?? img;
+  console.log(file)
+
+  if (!(file instanceof File)) {
+    return null;
+  }
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const uploadResponse = await uploadProductImage(formData).unwrap();
+  console.log(uploadResponse)
+  const imageUrl = uploadResponse?.url;
+  console.log(imageUrl)
+
+  if (!imageUrl) {
+    throw new Error('No se obtuvo URL de la imagen');
+  }
+
+  return imageUrl;
+};
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload = {
-      name,
-      description,
-      price,
-      category,
-      stock: Number(stock),
-      isActive,
-      images,
-      stockStatus: computeStockStatus(stock), // ensure backend gets correct value
-    };
 
-    // Debug
-    console.log('Estado actual del formulario:', payload);
+    if (!validateForm()) return;
 
     try {
+      const uploadedImageUrls = (
+        await Promise.all((images || []).map((img) => uploadImageAndGetUrl(img)))
+      ).filter(Boolean);
+
+      console.log("URLs de imágenes subidas:", uploadedImageUrls);
+
+      const payload = {
+        name,
+        description,
+        price: Number(price),
+        category,
+        stock: Number(stock),
+        isActive,
+        images: uploadedImageUrls,
+        stockStatus: stockStatus,
+      };
+
       const res = await createProduct(payload).unwrap();
-      console.log('Respuesta del servidor:', res)
-      navigate('/product-management')
+      console.log("Respuesta del servidor:", res);
+      navigate("/dashboard/product-management");
       onResetForm();
     } catch (error) {
-      console.error('Error al crear producto:', error);
-      toast.error(error?.data?.message || 'Error creating product')
+      console.error("Error al crear producto:", error);
+      toast.error(error?.data?.message || error?.message || "Error creating product");
     }
   }
 
@@ -243,7 +268,7 @@ const ProductForm = ({ product = null, onCancel }) => {
                 value={stock}
                 onChange={onInputChange}
                 label="Stock Quantity"
-                hint={`Status: ${computeStockStatus(stock)}`} // derive from stock
+                hint={`Status: ${stock}`} // derive from stock
                 statusName="stockStatus"
               />
             </div>
@@ -352,7 +377,7 @@ const ProductForm = ({ product = null, onCancel }) => {
           </h3>
 
           <ImageUpload
-            onImagesChange={onInputChange}
+            onImagesChange={handleImagesChange}
             maxImages={8}
           />
         </div>
@@ -367,7 +392,7 @@ const ProductForm = ({ product = null, onCancel }) => {
             <Switch
               label="Product is active"
               defaultChecked={isActive}
-              onChange={handleSwitchChange('isActive')}
+              onChange={handleIsActiveChange}
             />
 
             {/* <Switch

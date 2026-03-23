@@ -7,7 +7,7 @@ const ProductCard = ({
   price, 
   originalPrice, 
   description, 
-  image, 
+  images, 
   rating = 0, 
   reviews = 0,
   badge,
@@ -20,7 +20,7 @@ const ProductCard = ({
         <Link to={`/products/${id}`}>
           <div 
             className="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 group-hover:scale-105" 
-            style={{ backgroundImage: `url(${image})` }}
+            style={{ backgroundImage: `url(${images})` }}
             alt={name}
           />
         </Link>
