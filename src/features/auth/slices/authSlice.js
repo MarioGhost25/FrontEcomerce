@@ -20,7 +20,7 @@ const loadInitialState = () => {
             return {
                 accessToken: parsedAccessToken,
                 userId: userId,
-                isAuthenticated: true
+                isAuthenticated: true,
             };
         }
     } catch (err) {
@@ -29,7 +29,7 @@ const loadInitialState = () => {
     return {
         userId: null,
         accessToken: null,
-        isAuthenticated: false
+        isAuthenticated: false,
     };
 };
 

@@ -3,7 +3,7 @@ import { PrivateRoute } from '../components/PrivateRoute';
 
 // App principal
 import App from '../App';
-import { User } from '../components/user';
+import { User } from '../features/auth/pages/UserPage';
 
 // Feature: Auth
 import { ChangePassword } from '../features/auth';
@@ -12,8 +12,8 @@ import SignUp from '../pages/auth/SignUpPage';
 
 // Feature: Shop (Tienda pública)
 import HomePage from '../features/shop/pages/HomePage';
-import ProductsPage from '../features/shop/pages/ProductsPage';
-import ProductDetailPage from '../features/shop/pages/ProductDetailPage';
+import ProductsPage from '../features/product/pages/ProductsPage';
+import ProductDetailPage from '../features/product/pages/ProductDetailPage';
 import CartPage from '../features/shop/pages/CartPage';
 
 // Feature: Admin - Layout

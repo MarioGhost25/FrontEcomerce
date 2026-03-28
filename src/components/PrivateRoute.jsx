@@ -6,23 +6,26 @@ import { selectCurrentUserId, selectIsAuthenticated } from '../features/auth';
 export const PrivateRoute = ({ requireRole, children }) => {
     const isAuthenticated = useSelector(selectIsAuthenticated);
     const userId = useSelector(selectCurrentUserId);
-    
-    // Si tenemos token pero no userId, esperar a que se recupere el estado
-    if (!isAuthenticated && localStorage.getItem('accessToken')) {
-        return <div>Loading...</div>;
-    }
+
+    const shouldFetchUser = Boolean(isAuthenticated && userId);
 
     if (!isAuthenticated) {
         return <Navigate to="/user" replace />;
     }
 
-    const { data: userData, isLoading } = useGetUserQuery(userId);
+    const { data: userData, isLoading, isError } = useGetUserQuery(userId, {
+        skip: !shouldFetchUser,
+    });
+
+    if (requireRole && !shouldFetchUser) {
+        return <Navigate to="/user" replace />;
+    }
 
     if (isLoading) {
         return <div>Loading...</div>;
     }
 
-    if (requireRole && (!userData || userData.role !== requireRole)) {
+    if (requireRole && (isError || !userData || userData.role !== requireRole)) {
         return <Navigate to="/" replace />;
     }
 

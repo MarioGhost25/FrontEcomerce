@@ -16,10 +16,24 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
+const getHttpStatus = (error) => {
+  if (!error) return null;
+
+  if (typeof error.status === 'number') {
+    return error.status;
+  }
+
+  if (typeof error.originalStatus === 'number') {
+    return error.originalStatus;
+  }
+
+  return null;
+};
+
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  if (result?.error?.status === 401) {
+  if (getHttpStatus(result?.error) === 401) {
     const refreshResult = await baseQuery(
       { url: 'auth/refresh', method: 'POST' },
       api,
@@ -39,7 +53,12 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
       api.dispatch(setCredentials({ userId: refreshedUserId, accessToken: refreshedAccessToken }));
       result = await baseQuery(args, api, extraOptions);
     } else {
-      api.dispatch(logout());
+      const refreshStatus = getHttpStatus(refreshResult?.error);
+
+      // Only log out when refresh is explicitly unauthorized/forbidden.
+      if (refreshStatus === 401 || refreshStatus === 403) {
+        api.dispatch(logout());
+      }
     }
   }
 

@@ -13,7 +13,6 @@ import { useCreateProductMutation, useUploadProductImageMutation } from "../../.
 import { useForm } from "../../../hooks/useForm";
 import { useNavigate } from "react-router";
 import { toast } from 'sonner'
-import { fileToDataURL } from "../../../services/imageTransformService";
 
 const ProductForm = ({ product = null, onCancel }) => {
 

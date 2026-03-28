@@ -1,74 +1,80 @@
 import { Link } from 'react-router';
+import { useRef } from 'react';
 import Navbar from '../../../components/layout/Navbar';
 import Footer from '../../../components/layout/Footer';
 import { FavoriteIcon, AddShoppingCartIcon, ChevronLeftIcon, CheckIcon, ChevronRightIcon, KeyArrowDownIcon, LocalShippingIcon } from '../../../icons';
 import { useGetProductQuery } from '../../../api/endpoints/productApi';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '../../shop/slices/cartSlice';
+import { useCreateShopingCartMutation } from '../../../api/endpoints/shoping-cart.api';
+import { selectCurrentUserId } from '../../auth/slices/authSlice';
+
+const CART_ID_STORAGE_KEY = 'shoppingCartId';
 
 const Products = () => {
   // Datos estáticos de productos
   const { data: products = [], isLoading, isError } = useGetProductQuery();
-  const product = [
-    {
-      id: 1,
-      name: 'Auriculares Premium Wireless Noise-Cancelling',
-      price: '299.00',
-      originalPrice: '349.99',
-      description: 'Sonido de alta fidelidad con 30h de batería.',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBqtLVf4NdoF5q0OSM_VHLN2mZ9w5GtIz9pkN7eFqctXZwCxeRieWtaHJtSQ74bPL42_b4UfdOWgKn-EczEeq1ZvwM6v-l3NsV3eZW3vldO5xNgeYEtt1TLJ8zxzynD_say68uxU6H8PkNbumts3mWBwtcv22K73ZadHHXZDAoxmwo-N0B6a6ZX23XnyuPsilYvISzDELpQpdf_Sa4WvTK-0Fvylaoqot2IlmEZ5-05_Ee1rA1OGQ2VncEuV6uhtrWOe7fWpQ-pTvN8',
-      rating: 4.8,
-      reviews: 120,
-      badge: 'Nuevo',
-    },
-    {
-      id: 2,
-      name: 'Cámara Instantánea Retro Edition',
-      price: '120.00',
-      description: 'Captura momentos al instante con estilo vintage.',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD8PyvD9y-Hk4tQdApJ6X1j_Y-o5KxG0WPdJykCuxlDZxXzkg5Mlg7rESIRJccaQ_UhVIHhJHiBg7Fg6BycgCoJHVjdb7EQ7fo1Xlmgoivl49Lt1GC_taolU2PQgzdBCjyOFTLzMogHfxxaDaLAkgM_eFMiG4-0366u-VKGyiTOCg-0L45uBM7BiN4UOwsxHT-JdFBIulVyGZaY6IZW0S2_8o1rXIdRuKB4dpgwFp1dbh9JRxNE352QrNw8POfJo35rO2e5oUg241H3',
-      rating: 4.9,
-      reviews: 85,
-      badge: '-15%',
-      badgeColor: 'red-50',
-      badgeTextColor: 'red-600',
-    },
-    {
-      id: 3,
-      name: 'Smartwatch Series 5 Sport',
-      price: '199.50',
-      description: 'Monitor de salud, GPS y resistente al agua.',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDX7Zk_tfXVOc_9X8e9i70Y2VKzafhgm3gKkEHObMQLMXppjpY3UdA6AWCTa7yIFjDt-w1zkY7K_437J90jHM8CPbUkgT-4crvFZrfVVoY6aWqJkds6CX-Fx2R-eJhSV3xBdYNK0AbByZxh3zXLQZSDddHQS_oUttIVVH6abSOC4c_kUXAkJbks1Z2abnpE8mdiK5j58rb25HOJ7P-8YfiKqMVwFaO3pUVgzGbJ-w7HKqbM72sIyzPD4_7FZUnlKsr4BsD0gWw6WMGE',
-      rating: 4.5,
-      reviews: 42,
-    },
-    {
-      id: 4,
-      name: 'Laptop Ultrabook Pro 14"',
-      price: '1,299.00',
-      description: 'Potencia en un diseño ultra delgado y ligero.',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAVu_g0t8PboPs0AyOY86rmBS1iEEi75MXXTXqFbRmtcCQJG5X3xna0Yi1T1nAMhdpUUZ4pDLSkMDvPTCd_ktvDf0AyRXvM5x0b6T0q8Erjyk-XMkOul7mEdql-xBxwsjtoEyCpR1enkbW58P9CmHHDe4QfyTGrXmS6oGiJibZ0ijSFTScRnvWg5pmg6LMOPxIgethn8tkgZOaKN9bZXR_l-NCuRJX_fKseCG1qyZgJKDAyIvt6UAzjRn2U2GrtR8zGSCFmtsqfcaPA',
-      rating: 5.0,
-      reviews: 10,
-    },
-    {
-      id: 5,
-      name: 'Asistente de Voz Inteligente Home',
-      price: '89.99',
-      description: 'Controla tu hogar inteligente con tu voz.',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAtygguOpPFysG69opjX9lOgV_HprJZK_YpDV2u23_kIjAqJ2Wgd8XsqihFLpVxJUoAwqDTOYwQ8YOk5NfqaajXRTFYr72GtVdv-EVs2W1ij4bxrB9TY34krI-T6YIeV2oKTpqwzsrCvUwWRTgnKrxT_2SqE9zn8qH9TGAd0BlNbqPkafVP87o1RlDcOjTsp9waE_6ui_hi-6dVCCYe4iZyxIiNt3wxryMB8V1sdrQlcgqJbPHWP7Mg62l6nMl_Tbh_tiOT0rR9wxdL',
-      rating: 4.6,
-      reviews: 210,
-      badge: 'Popular',
-    },
-    {
-      id: 6,
-      name: 'Gafas de Realidad Virtual VR-X',
-      price: '399.00',
-      description: 'Sumérgete en nuevos mundos con 4K.',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDoy9_h2HMdNJh9uAp_llCoev13nZcsopqoHCMKmNl8YJGySM_qCKFfmU0KV_2ctxXnaoI6C7jaJ2vEoX999suU8WWdmpopfn3wfc8O3-bshnexhW-FJbDcHIUjk8QOA0k7qNJdJaVEHY39yVpmdCervuRhed5xH6nYpLene-8Hg8BPA_ZG4WF0DBNNv1CNAxBqSyFhNEdwG19VF9NhE6Tr8HTW1s_7O7FKqjEsl_97Yn7ms-FOLgVS3X30XlYE_RZrPTxFV-TMCGp4',
-      rating: 4.7,
-      reviews: 67,
-    },
-  ];
+
+  const [CreateShopingCart] = useCreateShopingCartMutation();
+  const dispatch = useDispatch();
+  const userId = useSelector(selectCurrentUserId);
+  const creatingCartPromiseRef = useRef(null);
+
+  const createCartOnce = async (product) => {
+    const existingCartId = localStorage.getItem(CART_ID_STORAGE_KEY);
+    if (existingCartId) return existingCartId;
+
+    if (!creatingCartPromiseRef.current) {
+      const productId = product?._id ?? product?.id;
+      const normalizedPrice = Number(String(product?.price ?? 0).replace(/,/g, '')) || 0;
+
+      if (!userId || !productId) {
+        throw new Error('Missing required fields to create cart: user or product ID');
+      }
+
+      const payload = {
+        user: userId,
+        products: [
+          {
+            product: productId,
+            quantity: 1,
+            price: normalizedPrice,
+          },
+        ],
+      };
+
+
+      creatingCartPromiseRef.current = CreateShopingCart(payload)
+        .unwrap()
+        .then((response) => {
+          const cartId =
+            response?.id ??
+            response?._id ??
+            response?.cartId ??
+            response?.cart?.id ??
+            response?.cart?._id;
+
+          if (cartId) {
+            localStorage.setItem(CART_ID_STORAGE_KEY, String(cartId));
+          }
+
+          return cartId ?? true;
+        })
+        .finally(() => {
+          creatingCartPromiseRef.current = null;
+        });
+    }
+    return creatingCartPromiseRef.current;
+  };
+
+  const handledCreateShoppingCart = async (product) => {
+    try {
+      dispatch(addToCart({ item: product, quantity: 1, price: product.price, CART_ID_STORAGE_KEY }));
+      await createCartOnce(product);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="bg-white text-gray-900 font-display min-h-screen flex flex-col">
@@ -85,7 +91,7 @@ const Products = () => {
             </li>
             <li>
               <div className="flex items-center">
-                <span className="material-symbols-outlined text-gray-600 text-sm mx-1"><ChevronRightIcon/></span>
+                <span className="material-symbols-outlined text-gray-600 text-sm mx-1"><ChevronRightIcon /></span>
                 <Link className="text-gray-600 hover:text-teal-700 font-medium" to="/products">
                   Catálogo
                 </Link>
@@ -93,7 +99,7 @@ const Products = () => {
             </li>
             <li>
               <div className="flex items-center">
-                <span className="material-symbols-outlined text-gray-600 text-sm mx-1"><ChevronRightIcon/></span>
+                <span className="material-symbols-outlined text-gray-600 text-sm mx-1"><ChevronRightIcon /></span>
                 <span className="text-gray-900 font-semibold">Tecnología</span>
               </div>
             </li>
@@ -210,7 +216,7 @@ const Products = () => {
             {/* Promo Card Sidebar */}
             <div className="hidden lg:block bg-amber-100 rounded-xl p-6 text-center">
               <div className="bg-white size-12 rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm text-amber-600">
-                <span className="material-symbols-outlined"><LocalShippingIcon/></span>
+                <span className="material-symbols-outlined"><LocalShippingIcon /></span>
               </div>
               <h5 className="font-bold text-gray-900 mb-1">Envío Gratis</h5>
               <p className="text-xs text-gray-600 mb-3">En pedidos superiores a $999</p>
@@ -250,7 +256,8 @@ const Products = () => {
                       <div className={`absolute top-3 left-3 z-10 ${product.badgeColor === 'red-50' ? 'bg-red-50 text-red-600' : 'bg-amber-100 text-amber-800'} text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide`}>
                         {product.badge}
                       </div>
-                    )}
+                    )
+                    }
                     <div className="absolute top-3 right-3 z-10">
                       <button className="size-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors shadow-sm">
                         <span className="material-symbols-outlined text-[20px]"><FavoriteIcon /></span>
@@ -283,7 +290,10 @@ const Products = () => {
                         )}
                         <span className="block text-lg font-black text-teal-700">${product.price}</span>
                       </div>
-                      <button className="bg-teal-700 hover:bg-teal-800 text-white rounded-lg p-2 transition-colors flex items-center justify-center gap-2 shadow-sm">
+                      <button
+                        className="bg-teal-700 hover:bg-teal-800 text-white rounded-lg p-2 transition-colors flex items-center justify-center gap-2 shadow-sm"
+                        onClick={() => handledCreateShoppingCart(product)}
+                      >
                         <AddShoppingCartIcon className="w-5 h-5" />
                       </button>
                     </div>
@@ -315,7 +325,7 @@ const Products = () => {
       <Footer />
     </div>
   );
+
 };
 
 export default Products;
-

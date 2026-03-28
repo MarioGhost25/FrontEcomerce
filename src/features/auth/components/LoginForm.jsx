@@ -51,7 +51,7 @@ export const Login = () => {
 
         try {
 
-            const res = await loginUser(validation.data).unwrap();
+            const res = await loginUser(validation.data).unwrap()
             console.log(res.user)
             const accessToken = res?.accessToken ?? res?.token;
             const user = res?.user;

@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 import Navbar from '../../../components/layout/Navbar';
 import Footer from '../../../components/layout/Footer';
 import Button from '../../../components/ui/Button';
-import ProductGrid from '../components/ProductGrid';
+import ProductGrid from '../../product/components/ProductGrid';
 import { ArrowRightIcon, CheckCircleIcon, LocalShippingIcon, SupportAgentIcon, VerifiedIcon } from '../../../icons';
 import { useGetProductQuery } from '../../../api/endpoints/productApi';
 

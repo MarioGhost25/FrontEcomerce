@@ -1,7 +1,11 @@
 import { Link } from 'react-router';
 import { SearchIcon, ShoppingCartIcon, StoreIcon, UserIcon } from '../../icons';
+import { useSelector } from 'react-redux';
+import { selectCartItems } from '../../features/shop/slices/cartSlice';
 
 const Navbar = () => {
+
+  const cartSelect = useSelector(selectCartItems)
   return (
     <header className="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 bg-white/90 backdrop-blur-md px-4 sm:px-6 lg:px-10 py-4 shadow-sm">
       <div className="flex items-center gap-4 sm:gap-6 lg:gap-8">
@@ -47,7 +51,7 @@ const Navbar = () => {
             className="flex items-center justify-center rounded-full size-10 bg-slate-50 hover:bg-slate-100 text-text-main transition-colors relative"
           >
             <span className="material-symbols-outlined"><ShoppingCartIcon /></span>
-            <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">2</span>
+            <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">{cartSelect.length}</span>
           </Link>
           <Link 
             to="/user"

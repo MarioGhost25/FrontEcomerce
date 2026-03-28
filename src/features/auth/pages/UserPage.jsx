@@ -1,9 +1,14 @@
 
 
 import { useState } from 'react'
-import { StoreIcon } from '../icons';
+import { StoreIcon } from '../../../icons';
 import { Link } from 'react-router';
-import { Login, Register } from '../features/auth';
+import { Login } from '../components/LoginForm';
+import { Register } from '../components/RegisterForm';
+
+
+
+
 
 
 
