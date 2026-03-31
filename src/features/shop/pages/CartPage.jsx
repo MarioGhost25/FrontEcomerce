@@ -1,19 +1,18 @@
 import { Link } from 'react-router';
-import { useSelector } from 'react-redux';
 import { useGetCartbyIdQuery } from '../../../api/endpoints/shoping-cart.api';
 import { ShoppingCartIcon } from '../../../icons';
-//import { selectCartId } from '../slices/cartSlice';
 import Navbar from '../../../components/layout/Navbar';
 import Footer from '../../../components/layout/Footer';
 import Button from '../../../components/ui/Button';
 
 const Cart = () => {
 
-  // const selectCardStorage = useSelector(selectCartId)
-  // const { data: cartItems } = useGetCartbyIdQuery(selectCardStorage)
-  // console.log('Cart Items:', cartItems);
+
+  const { data, isLoading } = useGetCartbyIdQuery()
+  const { products: cartItems = [] } = data || {}
+  
   // Datos estáticos del carrito
-  const cartItems = [
+  //const cartItems = [
   // {
   //   id: 1,
   //   name: 'Auriculares Premium Wireless',
@@ -28,20 +27,23 @@ const Cart = () => {
   //   quantity: 1,
   //   image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBPoyLcefsM5NW-xLzuQrVxmhiizEwQX94lXXYxXx3q9usr-HHL-1IwYgD-OWao2iikQ0OeC1fOrDJRGuc6awwvZRunIl87khFClad_502OwwO5r6hWdfZVI4gUDpt-bTKtiXUn_CaRCsGWgtOR74IrF1ef0DxF9AAM5Qvo47J5YIXL2V-mTqgQKwsLrwf3TLvl89AHAYAAz0Oy2g9IrQg1opRd6MaqqGwml8WlnqDHYhcPW4YqKSIqkmWfNQ4TzstMWzEYL8xnT1kO',
   // },
-  ];
+  //];
 
- const subtotal = cartItems.reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0);
+
+  const subtotal = cartItems.reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0);
   const shipping = subtotal > 50 ? 0 : 10;
   const total = subtotal + shipping;
 
   return (
     <div className="bg-white min-h-screen flex flex-col">
       <Navbar />
-
+    
       <main className="flex-1 max-w-7xl mx-auto px-4 lg:px-10 py-8">
         <h1 className="text-3xl font-black text-text-main mb-8">Carrito de Compras</h1>
 
-        {cartItems.length === 0 ? (
+        {isLoading ? (
+          <p>Cargando...</p>
+        ) : cartItems.length === 0 ? (
           <div className="text-center py-16">
             <span className="material-symbols-outlined text-6xl text-gray-300 mb-4"><ShoppingCartIcon /></span>
             <p className="text-xl text-gray-500 mb-4">Tu carrito está vacío</p>
@@ -54,13 +56,13 @@ const Cart = () => {
             {/* Cart Items */}
             <div className="lg:col-span-2 space-y-4">
               {cartItems.map((item) => (
-                <div key={item.id} className="bg-white rounded-xl border border-gray-200 p-6 flex gap-6">
+                <div key={item.product._id} className="bg-white rounded-xl border border-gray-200 p-6 flex gap-6">
                   <div className="w-24 h-24 rounded-lg overflow-hidden bg-gray-100 shrink-0">
-                    <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                    <img src={item.product.images} alt={item.product.name} className="w-full h-full object-cover" />
                   </div>
                   <div className="flex-1 flex flex-col justify-between">
                     <div>
-                      <h3 className="font-bold text-lg text-[#111618] mb-2">{item.name}</h3>
+                      <h3 className="font-bold text-lg text-[#111618] mb-2">{item.product.name}</h3>
                       <p className="text-primary font-bold text-xl">${item.price}</p>
                     </div>
                     <div className="flex items-center gap-4 mt-4">

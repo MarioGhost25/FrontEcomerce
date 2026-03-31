@@ -3,6 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { logout, setCredentials } from '../features/auth/slices/authSlice';
 
 const baseUrl = 'https://ecommerce-node-2a381861ec33.herokuapp.com/eco';
+//const baseUrl = 'http://localhost:2000/eco';
 
 const baseQuery = fetchBaseQuery({
   baseUrl,

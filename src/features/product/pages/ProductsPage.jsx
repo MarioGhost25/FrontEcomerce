@@ -6,30 +6,32 @@ import { FavoriteIcon, AddShoppingCartIcon, ChevronLeftIcon, CheckIcon, ChevronR
 import { useGetProductQuery } from '../../../api/endpoints/productApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../shop/slices/cartSlice';
-import { useCreateShopingCartMutation } from '../../../api/endpoints/shoping-cart.api';
+import { useAddProductsMutation, useCreateShopingCartMutation } from '../../../api/endpoints/shoping-cart.api';
 import { selectCurrentUserId } from '../../auth/slices/authSlice';
 
 const CART_ID_STORAGE_KEY = 'shoppingCartId';
+const INVALID_CART_IDS = new Set(['', 'undefined', 'null']);
 
 const Products = () => {
   // Datos estáticos de productos
   const { data: products = [], isLoading, isError } = useGetProductQuery();
 
   const [CreateShopingCart] = useCreateShopingCartMutation();
+  const [AddProducts] = useAddProductsMutation();
   const dispatch = useDispatch();
   const userId = useSelector(selectCurrentUserId);
   const creatingCartPromiseRef = useRef(null);
 
   const createCartOnce = async (product) => {
-    const existingCartId = localStorage.getItem(CART_ID_STORAGE_KEY);
-    if (existingCartId) return existingCartId;
+    const existingCartId = String(localStorage.getItem(CART_ID_STORAGE_KEY) ?? '').trim();
+    if (!INVALID_CART_IDS.has(existingCartId)) return existingCartId;
 
     if (!creatingCartPromiseRef.current) {
       const productId = product?._id ?? product?.id;
       const normalizedPrice = Number(String(product?.price ?? 0).replace(/,/g, '')) || 0;
 
       if (!userId || !productId) {
-        throw new Error('Missing required fields to create cart: user or product ID');
+        return null;
       }
 
       const payload = {
@@ -42,7 +44,6 @@ const Products = () => {
           },
         ],
       };
-
 
       creatingCartPromiseRef.current = CreateShopingCart(payload)
         .unwrap()
@@ -67,12 +68,36 @@ const Products = () => {
     return creatingCartPromiseRef.current;
   };
 
-  const handledCreateShoppingCart = async (product) => {
+  const addProductsToCart = (product) => {
+    const { id } = product;
+
+    const payload = {
+        user: userId,
+        products: [
+          {
+            product: id,
+            quantity: 1,
+          },
+        ],
+      };
+
+    return creatingCartPromiseRef.current = AddProducts(payload).unwrap();
+
+  }
+
+  const handleShoppingCart = async (product) => {
     try {
-      dispatch(addToCart({ item: product, quantity: 1, price: product.price, CART_ID_STORAGE_KEY }));
-      await createCartOnce(product);
-    } catch (error) {
-      console.error(error);
+      const cartId = localStorage.getItem(CART_ID_STORAGE_KEY);
+      if(!cartId) {
+        await createCartOnce(product);
+        dispatch(addToCart({ item: product, quantity: 1, price: product.price,}));
+        return;
+      }
+      addProductsToCart(product);
+      dispatch(addToCart({ item: product, quantity: 1}));
+    } catch(error) {
+      // Keep local cart UX responsive even if backend cart sync fails
+      console.log(error);
     }
   };
 
@@ -292,7 +317,7 @@ const Products = () => {
                       </div>
                       <button
                         className="bg-teal-700 hover:bg-teal-800 text-white rounded-lg p-2 transition-colors flex items-center justify-center gap-2 shadow-sm"
-                        onClick={() => handledCreateShoppingCart(product)}
+                        onClick={() => handleShoppingCart(product)}
                       >
                         <AddShoppingCartIcon className="w-5 h-5" />
                       </button>

@@ -13,26 +13,22 @@ export const shopingCartApi = apiSlice.injectEndpoints({
             })
         }),
 
+        addProducts: builder.mutation({
+            query: (addProductsData) => ({
+                url: 'shopping/add-products',
+                method: 'POST',
+                body: addProductsData
+            })
+        }),
+
         getCartbyId: builder.query({
-            queryFn: async (id, _api, _extraOptions, baseQuery) => {
-                const normalizedId = String(id ?? '').trim();
-
-                if (!normalizedId || normalizedId === 'undefined' || normalizedId === 'null') {
-                    return {
-                        error: {
-                            status: 'CUSTOM_ERROR',
-                            error: 'Missing shopping cart id',
-                        },
-                    };
-                }
-
-                return baseQuery({
-                    url: `/shopping/${normalizedId}`,
-                    method: 'GET',
-                });
-            }
+            query: () => ({
+                url: 'shopping/get-cart-by-user-id',
+                method: 'GET',
+            })
         })
-    })
+    }),
+
 })
 
-export const { useCreateShopingCartMutation, useGetCartbyIdQuery } = shopingCartApi;
+export const { useCreateShopingCartMutation, useAddProductsMutation, useGetCartbyIdQuery } = shopingCartApi;
