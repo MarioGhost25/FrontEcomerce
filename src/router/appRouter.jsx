@@ -7,8 +7,6 @@ import { User } from '../features/auth/pages/UserPage';
 
 // Feature: Auth
 import { ChangePassword } from '../features/auth';
-import SignIn from '../pages/auth/SignInPage';
-import SignUp from '../pages/auth/SignUpPage';
 
 // Feature: Shop (Tienda pública)
 import HomePage from '../features/shop/pages/HomePage';
@@ -24,6 +22,7 @@ import DashboardPage from '../features/admin/pages/DashboardPage';
 import UserProfilesPage from '../features/admin/pages/UserProfilesPage';
 import CustomerManagementPage from '../features/admin/pages/CustomerManagementPage';
 import ProductManagementPage from '../features/admin/pages/ProductManagementPage';
+import CategoryManagementPage from '../features/admin/pages/CategoryManagementPage';
 import InventoryManagementPage from '../features/admin/pages/InventoryManagementPage';
 import FormElementsPage from '../features/admin/pages/FormElementsPage';
 import BasicTablesPage from '../features/admin/pages/BasicTablesPage';
@@ -36,6 +35,7 @@ import InventoryForm from '../features/admin/forms/InventoryForm';
 
 // Páginas temporales/demo
 import FormDemo from '../pages/FormDemo';
+import CategoryForm from '../features/admin/forms/CategoryForm';
 
 
 
@@ -104,6 +104,14 @@ export const appRouter = createBrowserRouter([
             element: <ProductForm />
           },
           {
+            path: 'category-form',
+            element: <CategoryForm />
+          },
+          {
+            path: 'category-management',
+            element: <CategoryManagementPage />
+          },
+          {
             path: 'product-management',
             element: <ProductManagementPage />
           },
@@ -135,17 +143,6 @@ export const appRouter = createBrowserRouter([
       }
     ]
   },
-
-  // --- Rutas de Autenticación ---
-  {
-    path: '/signin',
-    element: <SignIn />
-  },
-  {
-    path: '/signup',
-    element: <SignUp />
-  },
-
   // --- Ruta para cualquier otra URL no encontrada ---
   {
     path: '*',

@@ -15,7 +15,7 @@ export const shopingCartApi = apiSlice.injectEndpoints({
 
         addProducts: builder.mutation({
             query: (addProductsData) => ({
-                url: 'shopping/add-products',
+                url: '/shopping/add-products',
                 method: 'POST',
                 body: addProductsData
             })

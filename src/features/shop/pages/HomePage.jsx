@@ -5,41 +5,12 @@ import Button from '../../../components/ui/Button';
 import ProductGrid from '../../product/components/ProductGrid';
 import { ArrowRightIcon, CheckCircleIcon, LocalShippingIcon, SupportAgentIcon, VerifiedIcon } from '../../../icons';
 import { useGetProductQuery } from '../../../api/endpoints/productApi';
+import { useGetAllCategoriesQuery } from '../../../api/endpoints/categoryApi';
 
 const Home = () => {
   // Datos estáticos para productos destacados
-  const { data:products = [], isLoading, isError } = useGetProductQuery();
-
-  const featuredProducts = [
-    {
-      id: 1,
-      name: 'Auriculares Pro',
-      price: '120.00',
-      description: 'Audio de alta fidelidad',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDlXShRZaOdpZVyFQVpvh4yee8-ElST19cVOQbU85l8QAAgov5zRO4fyjLacxZqyt4krgcXQVt-KdgVjJQLf_IRCxdMsFGKBQqVxiQQdJMQtHss_21r89cUMiLe3EJl5FDk9Tii-V04bzAmEgYjJvKib0D9QO7TV0mgBDpuj1CKWyXT95Y3kn_Q2ChfCXCmLW7tngJZkMT5pZXy2OpnSpyKpBSlr1zjUJqbnYl5fPFB10aTH7hCFt2fBj7LqWYBopy5D6tyFh6dIeLu',
-    },
-    {
-      id: 2,
-      name: 'Smart Watch V2',
-      price: '250.00',
-      description: 'Monitor de salud avanzado',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBPoyLcefsM5NW-xLzuQrVxmhiizEwQX94lXXYxXx3q9usr-HHL-1IwYgD-OWao2iikQ0OeC1fOrDJRGuc6awwvZRunIl87khFClad_502OwwO5r6hWdfZVI4gUDpt-bTKtiXUn_CaRCsGWgtOR74IrF1ef0DxF9AAM5Qvo47J5YIXL2V-mTqgQKwsLrwf3TLvl89AHAYAAz0Oy2g9IrQg1opRd6MaqqGwml8WlnqDHYhcPW4YqKSIqkmWfNQ4TzstMWzEYL8xnT1kO',
-    },
-    {
-      id: 3,
-      name: 'Mochila Urbana',
-      price: '85.00',
-      description: 'Resistente al agua',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA9rI39zLbZle6dXcZvlboUMsaf7TwKPtBP6jWR9Ckm3ZT0LoRWkxCD5wmF7xOU1r86wl0HaSlyftcnEblWYjwucxIkL-mb7zDp-r4TTx7LKtgWfAwO5DZfAFSdlaucnopupjoj6oEWrXWyW3gBH54EHYNQBRJ3PcG-0hcu9xy0vv2BalaFllq5HXg2V-7_4XbKDju9S2wNiIOsdE7WW7NdL6TggUJWQOa8h5HvAId-UdshRxeTeM3wrLctzbKHD61a-7FqXomRCn7c',
-    },
-    {
-      id: 4,
-      name: 'Zapatillas Runner',
-      price: '95.00',
-      description: 'Comodidad superior',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBLZi09JO8Zo1CwjwQIJdyMwM9NS7SfBfzMQ8FPZlyo_eSv8AA1JK_GaL3Ke4hhYii9UspFnQwh3dhfpQ_5fEGGZCtACieAGTsLrhGIvbhN07XlrP8qv-AKipENhY58WoHXbgNMj4vHap7snB6sLraLTwg2ReiQwF3aXVUXJPQUN6CuK8mq31QjvEtT7Zm5RzGdoWpDuGxJIZ5QMJ1iCTBnbn3xVNQY-RHmF_qwfVRIcKO62x5-ZM2JVc1X0xmuOeszGK6ipQx5QU5H',
-    },
-  ];
+  const { data: products = [], isLoading, isError } = useGetProductQuery();
+  const { data: categories = [] } = useGetAllCategoriesQuery();
 
   return (
     <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden">
@@ -137,62 +108,25 @@ const Home = () => {
               </Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {/* Category 1 */}
-              <Link className="group relative overflow-hidden rounded-xl aspect-[4/5] shadow-md" to="/products">
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110"
-                  style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuB0Vn1eD4mbshSTWnW4TKCzvCcAclE8T2EqH2zbHI3p8znVxXVlCG49EFwWAzU4GcYReq4TvoAbnDY8BhzGsWFfi68bXnZO1ABYrPd8ocldraomeqzuTO2O_VXjNGTIAyATXyKNmMaKI_IqP_bcxbv6oOqb69GI-BcLgwrNuFID6HQjw8SaALdV-2YU9nQYPRq2lFLAPHLxqYA-dqirOVzB2oJxmBfIpCXn8NvAwIoNu4JiOShfrPF6YmrFNc6RI3nzg-Ojp2lkOIcw")' }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 p-6 w-full">
-                  <h3 className="text-white text-xl font-bold mb-1">Tecnología</h3>
-                  <div className="flex items-center text-white/80 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
-                    Explorar <span className="material-symbols-outlined text-sm ml-1"><ArrowRightIcon /></span>
+              {categories.map((category) => (
+                <Link
+                  key={category.id ?? category._id ?? category.name}
+                  className="group relative overflow-hidden rounded-xl aspect-[4/5] shadow-md"
+                  to="/products"
+                >
+                  <div
+                    className="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110"
+                    style={{ backgroundImage: `url(${category.image})` }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 p-6 w-full">
+                    <h3 className="text-white text-xl font-bold mb-1">{category.name}</h3>
+                    <div className="flex items-center text-white/80 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
+                      Explorar <span className="material-symbols-outlined text-sm ml-1"><ArrowRightIcon /></span>
+                    </div>
                   </div>
-                </div>
-              </Link>
-              {/* Category 2 */}
-              <Link className="group relative overflow-hidden rounded-xl aspect-[4/5] shadow-md" to="/products">
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110"
-                  style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuAtrUzTTqgOTTxtLOJ-2wdOS3RWzvb-iyArLXX9WjW3DLKzWt-FaGs4MhcMFa3klUoVJxWWDWiTbpESyOPjlMaR2G5NgcaMIqM0aKBcUI35YkbAduVjlBnzHHKs4cWZh1x_6PKcZXMzNJfmU1RtxTxQlI60hYytqiDMxz-dB6mcFWYf8POYtBawwBUVWcEcqaPnKERtugRew04fXfd0fEv9DqNA1hJFi0DLEqd9fUkHXz-pIpkePDGjCso3FOikbEN6LMfyx7KoO1nE")' }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 p-6 w-full">
-                  <h3 className="text-white text-xl font-bold mb-1">Moda</h3>
-                  <div className="flex items-center text-white/80 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
-                    Explorar <span className="material-symbols-outlined text-sm ml-1"><ArrowRightIcon /></span>
-                  </div>
-                </div>
-              </Link>
-              {/* Category 3 */}
-              <Link className="group relative overflow-hidden rounded-xl aspect-[4/5] shadow-md" to="/products">
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110"
-                  style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuClJmvI2idr4WFFWdoCAZINc1wjxr7Z1DOCWCN-3FO0Q-FPAP1kOTaEHmI_JpJ0mT5bemVKfIvqMx-G5NeZGGjtOiQ1ecCVdV5oCWXMAjgnJqtMF-7cER9E_BJTewWBsI27oNneP_He-PCZPk8NhszOVM4Xt0gltnVibUoJMzKkPp5wrh0j84_19FiFk7LCa4_eZ_n2JcCosHOfpQjHfDqHYVIflJzTIOq335VcT7EXvQN9RMaUF3asRU59D_RSnMcjZuxyh13T0RsT")' }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 p-6 w-full">
-                  <h3 className="text-white text-xl font-bold mb-1">Hogar</h3>
-                  <div className="flex items-center text-white/80 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
-                    Explorar <span className="material-symbols-outlined text-sm ml-1"><ArrowRightIcon /></span>
-                  </div>
-                </div>
-              </Link>
-              {/* Category 4 */}
-              <Link className="group relative overflow-hidden rounded-xl aspect-[4/5] shadow-md" to="/products">
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110"
-                  style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBXjrHVQMdzbw8US9OsZ24U8mDGM6XtljXiRIhMLZeJjmOGm8ltPgakNlk1enzsxIq4a1bnX_IPaXGfAQCnplq7q0T1eSYa_lBLlvH8EizsRdokVXNAqT4XEuI1t6GWtuAMEWDbVx-OimuaCpLlGCuMgyRz6_8a55kE8lp3NrwKbjj0FRWe-CoQCkA3TzhLWzroeyTCy6MHbWMPDm_-1vFnQO8JJCz7ELaNbWJDBJZABlwuXPbRNNGi_kh3lbyFrDujo5VBK5CZ_0mp")' }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 p-6 w-full">
-                  <h3 className="text-white text-xl font-bold mb-1">Deportes</h3>
-                  <div className="flex items-center text-white/80 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
-                    Explorar <span className="material-symbols-outlined text-sm ml-1"><ArrowRightIcon /></span>
-                  </div>
-                </div>
-              </Link>
+                </Link>
+              ))}
             </div>
           </div>
         </section>
@@ -204,7 +138,7 @@ const Home = () => {
             <ProductGrid products={products} />
             <div className="mt-12 flex justify-center">
               <Link to="/products">
-                <Button variant="outline" className="px-6 py-3">
+                <Button className="px-6 py-3">
                   Ver todos los productos
                   <span className="material-symbols-outlined ml-2"><ArrowRightIcon /></span>
                 </Button>
@@ -215,7 +149,7 @@ const Home = () => {
       </main>
 
       <Footer />
-    </div>
+    </div >
   );
 };
 

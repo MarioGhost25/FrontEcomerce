@@ -18,7 +18,6 @@ const InventoryInput = ({
 }) => {
 
   const [stock, setStock] = useState(String(value ?? 0));
-  // const [lowStockThreshold] = useState(10);
 
   useEffect(() => {
     setStock(String(value ?? 0));

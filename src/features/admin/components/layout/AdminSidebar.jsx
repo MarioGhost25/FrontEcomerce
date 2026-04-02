@@ -27,6 +27,7 @@ const navItems = [
             { name: "Customer Form", path: "customer-form", pro: false },
             { name: "Product Form", path: "product-form", pro: false },
             { name: "Inventory Form", path: "inven-form", pro: false },
+            { name: "Category Form", path: "category-form", pro: false }
            
         ],
     },
@@ -36,6 +37,7 @@ const navItems = [
         subItems: [
             { name: "Basic Tables", path: "basic-tables", pro: false },
             { name: "Customer Table", path: "customer-management", pro: false },
+            { name: "Category Table", path: "category-management", pro: false },
             { name: "Product Table", path: "product-management", pro: false },
             { name: "Inventory Table", path: "inven-management", pro: false },
         ],
@@ -55,10 +57,7 @@ const othersItems = [
     {
         icon: <PlugInIcon />,
         name: "Authentication",
-        subItems: [
-            { name: "Sign In", path: "/signin", pro: false },
-            { name: "Sign Up", path: "/signup", pro: false },
-        ],
+        
     },
 ];
 const AppSidebar = () => {

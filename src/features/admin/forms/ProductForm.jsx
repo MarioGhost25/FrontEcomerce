@@ -13,15 +13,32 @@ import { useCreateProductMutation, useUploadProductImageMutation } from "../../.
 import { useForm } from "../../../hooks/useForm";
 import { useNavigate } from "react-router";
 import { toast } from 'sonner'
+import { useGetAllCategoriesQuery } from "../../../api/endpoints/categoryApi";
+import { z } from "zod";
+
+const productSchema = z.object({
+  name: z.string().trim().min(1, "Product name is required"),
+  description: z.string().trim().min(1, "Description is required"),
+  price: z.coerce.number().positive("Price must be greater than 0"),
+  category: z.string().trim().min(1, "Category is required"),
+  stock: z.coerce.number().int().min(0, "Stock cannot be negative"),
+});
+
+const computeStockStatus = (stock, lowStockThreshold = 10) => {
+  if (stock === 0) return "Out of Stock";
+  if (stock <= lowStockThreshold) return "Low Stock";
+  return "In Stock";
+};
 
 const ProductForm = ({ product = null, onCancel }) => {
 
+  const [errors, setErrors] = useState({});
   const [createProduct, { isLoading }] = useCreateProductMutation();
   const [uploadProductImage] = useUploadProductImageMutation();
-  const [errors, setErrors] = useState({});
+  const { data } = useGetAllCategoriesQuery();
   let navigate = useNavigate();
 
-  const { name, description, price, category, stock, isActive, images, stockStatus, onInputChange, onResetForm } = useForm({
+  const { name, description, price, category, stock, isActive, images, onInputChange, onResetForm } = useForm({
     name: product?.name || "",
     description: '',
     //shortDescription: product?.shortDescription || "",
@@ -46,16 +63,7 @@ const ProductForm = ({ product = null, onCancel }) => {
     images: product?.images || []
   });
 
-  const categories = [
-    { value: "electronics", label: "Electronics" },
-    { value: "clothing", label: "Clothing" },
-    { value: "home", label: "Home & Garden" },
-    { value: "sports", label: "Sports & Outdoors" },
-    { value: "books", label: "Books" },
-    { value: "beauty", label: "Beauty & Health" },
-    { value: "toys", label: "Toys & Games" },
-    { value: "automotive", label: "Automotive" }
-  ];
+  const categories = data?.map(cat => ({ value: cat.id, label: cat.name })) || [];
 
 
   // const tagOptions = [
@@ -70,20 +78,6 @@ const ProductForm = ({ product = null, onCancel }) => {
   // ];
 
   // El token lo añade RTK Query vía prepareHeaders; no bloquear el render si falta
-
-
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!name?.trim()) newErrors.name = "Product name is required";
-    if (!description?.trim()) newErrors.description = "Description is required";
-    if (!price || Number(price) <= 0) newErrors.price = "Price must be greater than 0";
-    if (!category) newErrors.category = "Category is required";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleImagesChange = (updatedImages) => {
     onInputChange({ target: { name: 'images', value: updatedImages } });
   };
@@ -96,6 +90,7 @@ const ProductForm = ({ product = null, onCancel }) => {
 
   const uploadImageAndGetUrl = async (img) => {
   // Si ya es URL (ej: edición)
+  console.log("Subiendo imagen:", img);
   if (typeof img === 'string') {
     return img;
   }
@@ -126,28 +121,46 @@ const ProductForm = ({ product = null, onCancel }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateForm()) return;
+    const validation = productSchema.safeParse({
+      name,
+      description,
+      price,
+      category,
+      stock,
+    });
+
+    if (!validation.success) {
+      const formErrors = validation.error.issues.reduce((acc, issue) => {
+        const field = issue.path[0];
+        if (typeof field === "string" && !acc[field]) {
+          acc[field] = issue.message;
+        }
+        return acc;
+      }, {});
+
+      setErrors(formErrors);
+      return;
+    }
+
+    setErrors({});
 
     try {
       const uploadedImageUrls = (
         await Promise.all((images || []).map((img) => uploadImageAndGetUrl(img)))
       ).filter(Boolean);
 
-      console.log("URLs de imágenes subidas:", uploadedImageUrls);
-
       const payload = {
-        name,
-        description,
-        price: Number(price),
-        category,
-        stock: Number(stock),
+        name: validation.data.name,
+        description: validation.data.description,
+        price: validation.data.price,
+        category: validation.data.category,
+        stock: validation.data.stock,
         isActive,
         images: uploadedImageUrls,
-        stockStatus: stockStatus,
+        stockStatus: computeStockStatus(validation.data.stock),
       };
 
       const res = await createProduct(payload).unwrap();
-      console.log("Respuesta del servidor:", res);
       navigate("/dashboard/product-management");
       onResetForm();
     } catch (error) {
@@ -267,7 +280,7 @@ const ProductForm = ({ product = null, onCancel }) => {
                 value={stock}
                 onChange={onInputChange}
                 label="Stock Quantity"
-                hint={`Status: ${stock}`} // derive from stock
+                hint={`Status: ${computeStockStatus(Number(stock) || 0)}`}
                 statusName="stockStatus"
               />
             </div>
@@ -380,6 +393,7 @@ const ProductForm = ({ product = null, onCancel }) => {
             maxImages={8}
           />
         </div>
+
 
         {/* Product Settings */}
         <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
