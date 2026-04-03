@@ -1,6 +1,7 @@
 
 
 import { useState } from 'react'
+import { Star } from 'lucide-react';
 import { StoreIcon } from '../../../icons';
 import { Link } from 'react-router';
 import { Login } from '../components/LoginForm';
@@ -55,7 +56,7 @@ export const User = () => {
                             <div className="bg-white/10 backdrop-blur-md p-4 lg:p-6 rounded-2xl border border-white/20 mb-6 lg:mb-8 shadow-2xl">
                                 <div className="flex items-center gap-2 text-amber-300 mb-2">
                                     {[...Array(5)].map((_, i) => (
-                                        <span key={i} className="material-symbols-outlined icon-filled text-sm">star</span>
+                                        <Star key={i} className="h-4 w-4 icon-filled text-amber-300" fill="currentColor" />
                                     ))}
                                 </div>
                                 <p className="text-base lg:text-lg font-medium leading-relaxed italic">

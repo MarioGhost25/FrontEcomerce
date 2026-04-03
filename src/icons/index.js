@@ -1,71 +1,152 @@
-import  PlusIcon from "./plus.svg?react";
-import  CheckIcon from "./check.svg?react"
-import  CommentIcon from "./comment.svg?react";
-import  PublicIcon from "./public.svg?react";
-import  VerifiedIcon from "./verified.svg?react";
-import  SupportAgentIcon from "./support-agent.svg?react";
-import  LocalShippingIcon from "./local-shipping.svg?react";
-import  SearchIcon from "./search.svg?react";
-import  FavoriteIcon from "./favorite.svg?react";
-import  ShoppingBagIcon from "./shopping-bag.svg?react";
-import  StoreIcon from "./store.svg?react";
-import  ShoppingCartIcon from "./shopping-cart.svg?react";
-import  AddShoppingCartIcon from "./add-shopping-cart.svg?react";
-import  CloseIcon from "./close.svg?react";
-import  BoxIcon from "./box.svg?react";
-import  CheckCircleIcon from "./check-circle.svg?react";
-import  AlertIcon from "./alert.svg?react";
-import  InfoIcon from "./info.svg?react";
-import  ErrorIcon from "./info-error.svg?react";
-import  BoltIcon from "./bolt.svg?react";
-import  ArrowUpIcon from "./arrow-up.svg?react";
-import  ArrowDownIcon from "./arrow-down.svg?react";
-import  FolderIcon from "./folder.svg?react";
-import  VideoIcon from "./videos.svg?react";
-import  AudioIcon from "./audio.svg?react";
-import  GridIcon from "./grid.svg?react";
-import  FileIcon from "./file.svg?react";
-import  DownloadIcon from "./download.svg?react";
-import  ArrowRightIcon from "./arrow-right.svg?react";
-import  GroupIcon from "./group.svg?react";
-import  BoxIconLine from "./box-line.svg?react";
-import  ShootingStarIcon from "./shooting-star.svg?react";
-import  DollarLineIcon from "./dollar-line.svg?react";
-import  TrashBinIcon from "./trash.svg?react";
-import  AngleUpIcon from "./angle-up.svg?react";
-import  KeyArrowDownIcon from "./keyboard-arrow-down.svg?react";
-import  AngleDownIcon from "./angle-down.svg?react";
-import  AngleLeftIcon from "./angle-left.svg?react";
-import  AngleRightIcon from "./angle-right.svg?react";
-import  PencilIcon from "./pencil.svg?react";
-import  CheckLineIcon from "./check-line.svg?react";
-import  CloseLineIcon from "./close-line.svg?react";
-import  ChevronDownIcon from "./chevron-down.svg?react";
-import  ChevronUpIcon from "./chevron-up.svg?react";
-import  ChevronRightIcon from "./chevron-right.svg?react";
-import  PaperPlaneIcon from "./paper-plane.svg?react";
-import  LockIcon from "./lock.svg?react";
-import  EnvelopeIcon from "./envelope.svg?react";
-import  UserIcon from "./user-line.svg?react";
-import  CalenderIcon from "./calender-line.svg?react";
-import  EyeIcon from "./eye.svg?react";
-import  EyeCloseIcon from "./eye-close.svg?react";
-import  TimeIcon from "./time.svg?react";
-import  CopyIcon from "./copy.svg?react";
-import  ChevronLeftIcon from "./chevron-left.svg?react";
-import  UserCircleIcon from "./user-circle.svg?react";
-import  TaskIcon from "./task-icon.svg?react";
-import  ListIcon from "./list.svg?react";
-import  TableIcon from "./table.svg?react";
-import  PageIcon from "./page.svg?react";
-import  PieChartIcon from "./pie-chart.svg?react";
-import  BoxCubeIcon from "./box-cube.svg?react";
-import  PlugInIcon from "./plug-in.svg?react";
-import  DocsIcon from "./docs.svg?react";
-import  MailIcon from "./mail-line.svg?react";
-import  HorizontaLDots from "./horizontal-dots.svg?react";
-import  ChatIcon from "./chat.svg?react";
-import  MoreDotIcon from "./moredot.svg?react";
-import AlertHexaIcon from '../icons/alert-hexa.svg?react';
-import ErrorHexaIcon from "./info-hexa.svg?react";
-export { ErrorHexaIcon, CheckIcon, KeyArrowDownIcon, PublicIcon, CommentIcon, VerifiedIcon, SupportAgentIcon, LocalShippingIcon, SearchIcon,FavoriteIcon, ShoppingBagIcon, StoreIcon, ShoppingCartIcon, AddShoppingCartIcon, AlertHexaIcon, MoreDotIcon, DownloadIcon, FileIcon, GridIcon, AudioIcon, VideoIcon, BoltIcon, PlusIcon, BoxIcon, CloseIcon, CheckCircleIcon, AlertIcon, InfoIcon, ErrorIcon, ArrowUpIcon, FolderIcon, ArrowDownIcon, ArrowRightIcon, GroupIcon, BoxIconLine, ShootingStarIcon, DollarLineIcon, TrashBinIcon, AngleUpIcon, AngleDownIcon, PencilIcon, CheckLineIcon, CloseLineIcon, ChevronDownIcon, PaperPlaneIcon, EnvelopeIcon, LockIcon, UserIcon, CalenderIcon, EyeIcon, EyeCloseIcon, TimeIcon, CopyIcon, ChevronLeftIcon, UserCircleIcon, TaskIcon, ListIcon, TableIcon, PageIcon, PieChartIcon, BoxCubeIcon, PlugInIcon, DocsIcon, MailIcon, HorizontaLDots, ChevronRightIcon, ChevronUpIcon, ChatIcon, AngleLeftIcon, AngleRightIcon, };
+import * as LucideIcons from "lucide-react";
+
+const pickIcon = (...names) => {
+	for (const name of names) {
+		if (LucideIcons[name]) return LucideIcons[name];
+	}
+	return LucideIcons.Circle;
+};
+
+const PlusIcon = pickIcon("Plus");
+const CheckIcon = pickIcon("Check");
+const CommentIcon = pickIcon("MessageSquare", "MessageCircle");
+const PublicIcon = pickIcon("Globe");
+const VerifiedIcon = pickIcon("BadgeCheck", "ShieldCheck");
+const SupportAgentIcon = pickIcon("Headset", "CircleHelp");
+const LocalShippingIcon = pickIcon("Truck");
+const SearchIcon = pickIcon("Search");
+const FavoriteIcon = pickIcon("Heart");
+const ShoppingBagIcon = pickIcon("ShoppingBag");
+const StoreIcon = pickIcon("Store", "Building2");
+const ShoppingCartIcon = pickIcon("ShoppingCart");
+const AddShoppingCartIcon = pickIcon("ShoppingCart");
+const CloseIcon = pickIcon("X");
+const BoxIcon = pickIcon("Package");
+const CheckCircleIcon = pickIcon("CircleCheck");
+const AlertIcon = pickIcon("TriangleAlert", "AlertTriangle");
+const InfoIcon = pickIcon("Info");
+const ErrorIcon = pickIcon("CircleAlert", "AlertCircle");
+const BoltIcon = pickIcon("Zap");
+const ArrowUpIcon = pickIcon("ArrowUp");
+const ArrowDownIcon = pickIcon("ArrowDown");
+const FolderIcon = pickIcon("Folder");
+const VideoIcon = pickIcon("Video");
+const AudioIcon = pickIcon("AudioLines", "Volume2");
+const GridIcon = pickIcon("Grid3X3", "Grid2X2");
+const FileIcon = pickIcon("File");
+const DownloadIcon = pickIcon("Download");
+const ArrowRightIcon = pickIcon("ArrowRight");
+const GroupIcon = pickIcon("Users");
+const BoxIconLine = pickIcon("PackageOpen", "Package");
+const ShootingStarIcon = pickIcon("Sparkles", "Star");
+const DollarLineIcon = pickIcon("DollarSign", "BadgeDollarSign");
+const TrashBinIcon = pickIcon("Trash2", "Trash");
+const AngleUpIcon = pickIcon("ChevronUp");
+const KeyArrowDownIcon = pickIcon("ChevronDown", "ArrowDown");
+const AngleDownIcon = pickIcon("ChevronDown");
+const AngleLeftIcon = pickIcon("ChevronLeft");
+const AngleRightIcon = pickIcon("ChevronRight");
+const PencilIcon = pickIcon("Pencil");
+const CheckLineIcon = pickIcon("Check");
+const CloseLineIcon = pickIcon("X");
+const ChevronDownIcon = pickIcon("ChevronDown");
+const ChevronUpIcon = pickIcon("ChevronUp");
+const ChevronRightIcon = pickIcon("ChevronRight");
+const PaperPlaneIcon = pickIcon("Send");
+const LockIcon = pickIcon("Lock");
+const EnvelopeIcon = pickIcon("Mail");
+const UserIcon = pickIcon("User");
+const CalenderIcon = pickIcon("Calendar");
+const EyeIcon = pickIcon("Eye");
+const EyeCloseIcon = pickIcon("EyeOff");
+const TimeIcon = pickIcon("Clock3", "Clock");
+const CopyIcon = pickIcon("Copy");
+const ChevronLeftIcon = pickIcon("ChevronLeft");
+const UserCircleIcon = pickIcon("CircleUserRound", "CircleUser", "UserRound", "User");
+const TaskIcon = pickIcon("ListTodo");
+const ListIcon = pickIcon("List");
+const TableIcon = pickIcon("Table");
+const PageIcon = pickIcon("FileText");
+const PieChartIcon = pickIcon("PieChart");
+const BoxCubeIcon = pickIcon("Boxes", "Package");
+const PlugInIcon = pickIcon("Plug");
+const DocsIcon = pickIcon("FileText");
+const MailIcon = pickIcon("Mail");
+const HorizontaLDots = pickIcon("Ellipsis", "MoreHorizontal");
+const ChatIcon = pickIcon("MessageCircle", "MessageSquare");
+const MoreDotIcon = pickIcon("Ellipsis", "MoreHorizontal");
+const AlertHexaIcon = pickIcon("TriangleAlert", "AlertTriangle");
+const ErrorHexaIcon = pickIcon("CircleX", "XCircle");
+
+export {
+	ErrorHexaIcon,
+	CheckIcon,
+	KeyArrowDownIcon,
+	PublicIcon,
+	CommentIcon,
+	VerifiedIcon,
+	SupportAgentIcon,
+	LocalShippingIcon,
+	SearchIcon,
+	FavoriteIcon,
+	ShoppingBagIcon,
+	StoreIcon,
+	ShoppingCartIcon,
+	AddShoppingCartIcon,
+	AlertHexaIcon,
+	MoreDotIcon,
+	DownloadIcon,
+	FileIcon,
+	GridIcon,
+	AudioIcon,
+	VideoIcon,
+	BoltIcon,
+	PlusIcon,
+	BoxIcon,
+	CloseIcon,
+	CheckCircleIcon,
+	AlertIcon,
+	InfoIcon,
+	ErrorIcon,
+	ArrowUpIcon,
+	FolderIcon,
+	ArrowDownIcon,
+	ArrowRightIcon,
+	GroupIcon,
+	BoxIconLine,
+	ShootingStarIcon,
+	DollarLineIcon,
+	TrashBinIcon,
+	AngleUpIcon,
+	AngleDownIcon,
+	PencilIcon,
+	CheckLineIcon,
+	CloseLineIcon,
+	ChevronDownIcon,
+	PaperPlaneIcon,
+	EnvelopeIcon,
+	LockIcon,
+	UserIcon,
+	CalenderIcon,
+	EyeIcon,
+	EyeCloseIcon,
+	TimeIcon,
+	CopyIcon,
+	ChevronLeftIcon,
+	UserCircleIcon,
+	TaskIcon,
+	ListIcon,
+	TableIcon,
+	PageIcon,
+	PieChartIcon,
+	BoxCubeIcon,
+	PlugInIcon,
+	DocsIcon,
+	MailIcon,
+	HorizontaLDots,
+	ChevronRightIcon,
+	ChevronUpIcon,
+	ChatIcon,
+	AngleLeftIcon,
+	AngleRightIcon,
+};

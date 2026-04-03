@@ -21,7 +21,6 @@ export const userApi = apiSlice.injectEndpoints({
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
-                    console.log('Login response data:', data);
                     const userId = data?.id ?? data?.userId ?? data?.user?.id ?? data?.user?._id;
                     const accessToken = data?.accessToken ?? data?.token;
 
@@ -51,7 +50,6 @@ export const userApi = apiSlice.injectEndpoints({
                 method: 'GET'
             }),
             transformResponse: (response) => {
-                console.log('Response from getUser:', response);
                 // Asegurarnos de que siempre devolvemos un objeto con role
                 return {
                     ...response,

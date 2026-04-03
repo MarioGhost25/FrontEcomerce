@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { CircleCheck, FileText, Heart, Package, UserRound, Zap } from "lucide-react";
 import ProductForm from "../features/admin/forms/ProductForm";
 import OrderForm from "../features/admin/forms/OrderForm";
 import CustomerForm from "../features/admin/forms/CustomerForm";
@@ -76,9 +77,7 @@ export const FormDemo = () => {
           <div className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow">
             <div className="text-center">
               <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                </svg>
+                <Package className="w-8 h-8 text-blue-600 dark:text-blue-400" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 Product Management
@@ -86,13 +85,13 @@ export const FormDemo = () => {
               <p className="text-gray-600 dark:text-gray-400 mb-6">
                 Create and manage products with pricing, inventory, images, and detailed information.
               </p>
-              <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400 mb-6">
-                <p>• Product details & descriptions</p>
-                <p>• Pricing & inventory tracking</p>
-                <p>• Image upload & management</p>
-                <p>• Categories & tags</p>
-                <p>• Dimensions & shipping info</p>
-              </div>
+              <ul className="list-disc pl-5 space-y-2 text-sm text-gray-500 dark:text-gray-400 mb-6 text-left">
+                <li>Product details & descriptions</li>
+                <li>Pricing & inventory tracking</li>
+                <li>Image upload & management</li>
+                <li>Categories & tags</li>
+                <li>Dimensions & shipping info</li>
+              </ul>
               <Button
                 text="Try Product Form"
                 className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
@@ -105,9 +104,7 @@ export const FormDemo = () => {
           <div className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow">
             <div className="text-center">
               <div className="w-16 h-16 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
+                <FileText className="w-8 h-8 text-green-600 dark:text-green-400" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 Order Management
@@ -115,13 +112,13 @@ export const FormDemo = () => {
               <p className="text-gray-600 dark:text-gray-400 mb-6">
                 Process orders with customer information, payment details, and shipping addresses.
               </p>
-              <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400 mb-6">
-                <p>• Customer information</p>
-                <p>• Order status & tracking</p>
-                <p>• Payment processing</p>
-                <p>• Shipping & billing addresses</p>
-                <p>• Order totals & calculations</p>
-              </div>
+              <ul className="list-disc pl-5 space-y-2 text-sm text-gray-500 dark:text-gray-400 mb-6 text-left">
+                <li>Customer information</li>
+                <li>Order status & tracking</li>
+                <li>Payment processing</li>
+                <li>Shipping & billing addresses</li>
+                <li>Order totals & calculations</li>
+              </ul>
               <Button
                 text="Try Order Form"
                 className="w-full px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
@@ -134,9 +131,7 @@ export const FormDemo = () => {
           <div className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow">
             <div className="text-center">
               <div className="w-16 h-16 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
-                </svg>
+                <UserRound className="w-8 h-8 text-purple-600 dark:text-purple-400" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 Customer Management
@@ -144,13 +139,13 @@ export const FormDemo = () => {
               <p className="text-gray-600 dark:text-gray-400 mb-6">
                 Manage customer profiles with contact information, preferences, and business settings.
               </p>
-              <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400 mb-6">
-                <p>• Personal & contact details</p>
-                <p>• Address management</p>
-                <p>• Communication preferences</p>
-                <p>• Customer type & status</p>
-                <p>• Business settings & limits</p>
-              </div>
+              <ul className="list-disc pl-5 space-y-2 text-sm text-gray-500 dark:text-gray-400 mb-6 text-left">
+                <li>Personal & contact details</li>
+                <li>Address management</li>
+                <li>Communication preferences</li>
+                <li>Customer type & status</li>
+                <li>Business settings & limits</li>
+              </ul>
               <Button
                 text="Try Customer Form"
                 className="w-full px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
@@ -163,9 +158,7 @@ export const FormDemo = () => {
           <div className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow">
             <div className="text-center">
               <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                </svg>
+                <Package className="w-8 h-8 text-orange-600 dark:text-orange-400" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 Inventory Management
@@ -173,13 +166,13 @@ export const FormDemo = () => {
               <p className="text-gray-600 dark:text-gray-400 mb-6">
                 Track inventory levels, set reorder points, and manage stock alerts.
               </p>
-              <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400 mb-6">
-                <p>• Stock level tracking</p>
-                <p>• Reorder points & quantities</p>
-                <p>• Location & warehouse info</p>
-                <p>• Cost & pricing management</p>
-                <p>• Stock alerts & notifications</p>
-              </div>
+              <ul className="list-disc pl-5 space-y-2 text-sm text-gray-500 dark:text-gray-400 mb-6 text-left">
+                <li>Stock level tracking</li>
+                <li>Reorder points & quantities</li>
+                <li>Location & warehouse info</li>
+                <li>Cost & pricing management</li>
+                <li>Stock alerts & notifications</li>
+              </ul>
               <Button
                 text="Try Inventory Form"
                 className="w-full px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
@@ -197,9 +190,7 @@ export const FormDemo = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
               <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+                <CircleCheck className="w-6 h-6 text-blue-600 dark:text-blue-400" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                 Validation & Error Handling
@@ -210,9 +201,7 @@ export const FormDemo = () => {
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                </svg>
+                <Heart className="w-6 h-6 text-green-600 dark:text-green-400" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                 Dark Mode Support
@@ -223,9 +212,7 @@ export const FormDemo = () => {
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
+                <Zap className="w-6 h-6 text-purple-600 dark:text-purple-400" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                 Responsive Design

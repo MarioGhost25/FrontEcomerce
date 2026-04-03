@@ -3,7 +3,7 @@ import Navbar from '../../../components/layout/Navbar';
 import Footer from '../../../components/layout/Footer';
 import Button from '../../../components/ui/Button';
 import ProductGrid from '../../product/components/ProductGrid';
-import { ArrowRightIcon, CheckCircleIcon, LocalShippingIcon, SupportAgentIcon, VerifiedIcon } from '../../../icons';
+import { ArrowRight, BadgeCheck, Headset, Truck } from 'lucide-react';
 import { useGetProductQuery } from '../../../api/endpoints/productApi';
 import { useGetAllCategoriesQuery } from '../../../api/endpoints/categoryApi';
 
@@ -44,11 +44,11 @@ const Home = () => {
                 {/* Trust badges small */}
                 <div className="flex items-center gap-6 pt-4 text-sm font-medium text-text-muted">
                   <div className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-primary text-[20px]"><VerifiedIcon /></span>
+                    <BadgeCheck className="size-5 text-primary" strokeWidth={2.2} />
                     <span>Garantía de calidad</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-primary text-[20px]"><LocalShippingIcon /></span>
+                    <Truck className="size-5 text-primary" strokeWidth={2.2} />
                     <span>Envío Gratis &gt; $50</span>
                   </div>
                 </div>
@@ -72,21 +72,21 @@ const Home = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
               <div className="flex flex-col items-center gap-4 p-6 rounded-xl hover:bg-accent-light/30 transition-colors">
                 <div className="size-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
-                  <span className="material-symbols-outlined text-4xl"><LocalShippingIcon /></span>
+                  <Truck className="size-9" strokeWidth={2.2} />
                 </div>
                 <h3 className="text-xl font-bold text-text-main">Envíos Rápidos</h3>
                 <p className="text-text-muted">Recibe tus productos en 24-48 horas en todo el territorio nacional.</p>
               </div>
               <div className="flex flex-col items-center gap-4 p-6 rounded-xl hover:bg-accent-light/30 transition-colors">
                 <div className="size-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
-                  <span className="material-symbols-outlined text-4xl"><SupportAgentIcon /></span>
+                  <Headset className="size-9" strokeWidth={2.2} />
                 </div>
                 <h3 className="text-xl font-bold text-text-main">Soporte 24/7</h3>
                 <p className="text-text-muted">Nuestro equipo está disponible para ayudarte en cualquier momento.</p>
               </div>
               <div className="flex flex-col items-center gap-4 p-6 rounded-xl hover:bg-accent-light/30 transition-colors">
                 <div className="size-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
-                  <span className="material-symbols-outlined text-4xl"><VerifiedIcon /></span>
+                  <BadgeCheck className="size-9" strokeWidth={2.2} />
                 </div>
                 <h3 className="text-xl font-bold text-text-main">Compra Segura</h3>
                 <p className="text-text-muted">Tus pagos están protegidos con la más alta seguridad bancaria.</p>
@@ -104,7 +104,7 @@ const Home = () => {
                 <p className="text-text-muted">Explora nuestras colecciones más buscadas</p>
               </div>
               <Link className="hidden sm:flex items-center gap-1 text-primary font-bold hover:underline" to="/products">
-                Ver todas <span className="material-symbols-outlined text-sm"><ArrowRightIcon /></span>
+                Ver todas <ArrowRight className="size-4" strokeWidth={2.2} />
               </Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -122,7 +122,7 @@ const Home = () => {
                   <div className="absolute bottom-0 left-0 p-6 w-full">
                     <h3 className="text-white text-xl font-bold mb-1">{category.name}</h3>
                     <div className="flex items-center text-white/80 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
-                      Explorar <span className="material-symbols-outlined text-sm ml-1"><ArrowRightIcon /></span>
+                      Explorar <ArrowRight className="ml-1 size-4" strokeWidth={2.2} />
                     </div>
                   </div>
                 </Link>
@@ -140,7 +140,7 @@ const Home = () => {
               <Link to="/products">
                 <Button className="px-6 py-3">
                   Ver todos los productos
-                  <span className="material-symbols-outlined ml-2"><ArrowRightIcon /></span>
+                  <ArrowRight className="ml-2 size-4" strokeWidth={2.2} />
                 </Button>
               </Link>
             </div>

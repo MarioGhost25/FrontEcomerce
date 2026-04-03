@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { CommentIcon, PublicIcon, ShoppingBagIcon } from '../../icons';
+import { Globe, MessageCircle, ShoppingBag } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           <div className="md:col-span-1">
             <div className="flex items-center gap-2 mb-6">
-              <span className="material-symbols-outlined text-3xl"><ShoppingBagIcon /></span>
+              <ShoppingBag className="size-8" strokeWidth={2.2} />
               <h2 className="text-2xl font-black">E-Store</h2>
             </div>
             <p className="text-white/80 text-sm leading-relaxed mb-6">
@@ -16,10 +16,10 @@ const Footer = () => {
             </p>
             <div className="flex gap-4">
               <a className="size-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors" href="#">
-                <span className="material-symbols-outlined text-sm"><PublicIcon /></span>
+                <Globe className="size-4" strokeWidth={2.2} />
               </a>
               <a className="size-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors" href="#">
-                <span className="material-symbols-outlined text-sm"><CommentIcon /></span>
+                <MessageCircle className="size-4" strokeWidth={2.2} />
               </a>
             </div>
           </div>

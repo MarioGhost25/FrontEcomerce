@@ -1,31 +1,95 @@
 import { Link } from 'react-router';
-import { useGetCartbyIdQuery } from '../../../api/endpoints/shoping-cart.api';
-import { ShoppingCartIcon } from '../../../icons';
+import { Minus, Plus, ShoppingCart, Trash2 } from 'lucide-react';
+import { useAddProductsMutation, useGetCartbyIdQuery } from '../../../api/endpoints/shoping-cart.api';
 import Navbar from '../../../components/layout/Navbar';
 import Footer from '../../../components/layout/Footer';
 import Button from '../../../components/ui/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart, selectCartItems, setCartFromServer } from '../slices/cartSlice';
+import { useEffect } from 'react';
 
 const Cart = () => {
 
-  const { data, isLoading } = useGetCartbyIdQuery()
-  const { products: cartItems = [] } = data || {}
+  const dispatch = useDispatch();
+  const [addProductsToCart, { isLoading: isAddingProduct }] = useAddProductsMutation();
+  const { data, isLoading, refetch} = useGetCartbyIdQuery() //Mi unica fuente de la verdad
+  const products = useSelector(selectCartItems);
 
-  const subtotal = cartItems.reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0);
+  useEffect(() => {
+    if (data?.products) {
+      dispatch(setCartFromServer(data));
+    }
+  }, [data, dispatch]);
+
+
+
+  const handledQuantity = async (item) => {
+    const { product } = item;
+    const productId = product?._id ?? product?.id;
+
+    if (!productId) return;
+
+    const payload = {
+      products: [
+        {
+          product: productId,
+          quantity: 1,
+        },
+      ]
+    };
+
+    // Optimistic UI: actualiza cantidad y total al instante.
+    dispatch(addToCart({ product, quantity: 1 }));
+
+    try {
+      await addProductsToCart(payload).unwrap();
+      const refreshed = await refetch();
+      const cartSnapshot = refreshed?.data;
+
+      if (Array.isArray(cartSnapshot?.products)) {
+        dispatch(setCartFromServer(cartSnapshot));
+      }
+
+    } catch (error) {
+      console.error('Error al aumentar la cantidad:', error);
+
+      // Rollback de estado optimista usando snapshot del backend.
+      const refreshed = await refetch();
+      const cartSnapshot = refreshed?.data;
+      if (Array.isArray(cartSnapshot?.products)) {
+        dispatch(setCartFromServer(cartSnapshot));
+      }
+
+    }
+
+  }
+
+
+
+
+  const subtotal = products.reduce((sum, item) => {
+    const linePrice = Number(item?.price ?? item?.product?.price ?? 0);
+    return sum + linePrice * Number(item?.quantity ?? 0);
+  }, 0);
   const shipping = subtotal > 50 ? 0 : 10;
   const total = subtotal + shipping;
 
   return (
     <div className="bg-white min-h-screen flex flex-col">
       <Navbar />
-    
+
       <main className="flex-1 max-w-7xl mx-auto px-4 lg:px-10 py-8">
         <h1 className="text-3xl font-black text-text-main mb-8">Carrito de Compras</h1>
 
         {isLoading ? (
-          <p>Cargando...</p>
-        ) : cartItems.length === 0 ? (
+          <div className="grid lg:col-span-2 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 2 }).map((_, index) => (
+              <div key={index} className="aspect-[4/5] animate-pulse rounded-xl bg-gray-200 dark:bg-gray-800" />
+            ))}
+          </div>
+        ) : products.length === 0 ? (
           <div className="text-center py-16">
-            <span className="material-symbols-outlined text-6xl text-gray-300 mb-4"><ShoppingCartIcon /></span>
+            <ShoppingCart className="w-16 h-16 text-gray-300 mb-4 mx-auto" />
             <p className="text-xl text-gray-500 mb-4">Tu carrito está vacío</p>
             <Link to="/products">
               <Button className="w-full h-12 mb-4">Continuar Comprando</Button>
@@ -35,24 +99,30 @@ const Cart = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Cart Items */}
             <div className="lg:col-span-2 space-y-4">
-              {cartItems.map((item) => (
-                <div key={item.product._id} className="bg-white rounded-xl border border-gray-200 p-6 flex gap-6">
+              {products.map((item) => (
+                <div key={item.product?._id} className="bg-white rounded-xl border border-gray-200 p-6 flex gap-6">
                   <div className="w-24 h-24 rounded-lg overflow-hidden bg-gray-100 shrink-0">
-                    <img src={item.product.images} alt={item.product.name} className="w-full h-full object-cover" />
+                    <img src={item.product?.images} alt={item.product?.name} className="w-full h-full object-cover" />
                   </div>
                   <div className="flex-1 flex flex-col justify-between">
                     <div>
-                      <h3 className="font-bold text-lg text-[#111618] mb-2">{item.product.name}</h3>
-                      <p className="text-primary font-bold text-xl">${item.price}</p>
+                      <h3 className="font-bold text-lg text-[#111618] mb-2">{item.product?.name}</h3>
+                      <p className="text-primary font-bold text-xl">${Number(item?.price ?? item?.product?.price ?? 0).toFixed(2)}</p>
                     </div>
                     <div className="flex items-center gap-4 mt-4">
                       <div className="flex items-center gap-2 border border-gray-300 rounded-lg">
-                        <button className="px-3 py-1 hover:bg-gray-100">-</button>
-                        <span className="px-4 py-1">{item.quantity}</span>
-                        <button className="px-3 py-1 hover:bg-gray-100">+</button>
+                        <button className="px-3 py-1 hover:bg-gray-100"><Minus size={20} color='#000' /></button>
+                        <span className="px-4 py-1 text-black">{item.quantity}</span>
+                        <button
+                          disabled={isAddingProduct}
+                          onClick={() => handledQuantity(item)}
+                          className="px-3 py-1 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          <Plus size={20} color='#000' />
+                        </button>
                       </div>
-                      <button className="text-red-500 hover:text-red-700 flex items-center gap-1">
-                        <span className="material-symbols-outlined text-sm"></span>
+                      <button className="text-red-500 bg-red-100 hover:text-red-700 flex items-center gap-1">
+                        <Trash2 className="h-4 w-4" />
                         Eliminar
                       </button>
                     </div>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Boxes, CircleCheck, List, X } from "lucide-react";
 import CategoryForm from "../forms/CategoryForm";
 import Button from "../../../components/ui/button/Button";
 import { useGetAllCategoriesQuery } from "../../../api/endpoints/categoryApi";
@@ -113,9 +114,7 @@ export const CategoryManagement = () => {
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
-                  <svg className="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7h18M3 12h18M3 17h18" />
-                  </svg>
+                  <List className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 </div>
               </div>
               <div className="ml-4">
@@ -129,9 +128,7 @@ export const CategoryManagement = () => {
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <div className="w-8 h-8 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
-                  <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+                  <CircleCheck className="w-5 h-5 text-green-600 dark:text-green-400" />
                 </div>
               </div>
               <div className="ml-4">
@@ -145,9 +142,7 @@ export const CategoryManagement = () => {
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <div className="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
-                  <svg className="w-5 h-5 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
+                  <X className="w-5 h-5 text-gray-600 dark:text-gray-300" />
                 </div>
               </div>
               <div className="ml-4">
@@ -161,9 +156,7 @@ export const CategoryManagement = () => {
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
-                  <svg className="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7" />
-                  </svg>
+                  <Boxes className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                 </div>
               </div>
               <div className="ml-4">

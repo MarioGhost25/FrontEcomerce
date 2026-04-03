@@ -1,14 +1,15 @@
 import { Link } from 'react-router';
-import { AddShoppingCartIcon, FavoriteIcon } from '../../../icons';
+import { ShoppingCart } from 'lucide-react';
+import { FavoriteIcon } from '../../../icons';
 
-const ProductCard = ({ 
+const ProductCard = ({
   id,
-  name, 
-  price, 
-  originalPrice, 
-  description, 
-  images, 
-  rating = 0, 
+  name,
+  price,
+  originalPrice,
+  description,
+  images,
+  rating = 0,
   reviews = 0,
   badge,
   badgeColor = 'amber-100',
@@ -18,25 +19,24 @@ const ProductCard = ({
     <div className="group flex flex-col gap-4">
       <div className="relative w-full aspect-square overflow-hidden rounded-xl bg-slate-100">
         <Link to={`/products/${id}`}>
-          <div 
-            className="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 group-hover:scale-105" 
+          <div
+            className="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 group-hover:scale-105"
             style={{ backgroundImage: `url(${images})` }}
             alt={name}
           />
         </Link>
         {badge && (
-          <div className={`absolute top-3 left-3 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide ${
-            badgeColor === 'red-50' ? 'bg-red-50 text-red-600' : 'bg-amber-100 text-amber-800'
-          }`}>
+          <div className={`absolute top-3 left-3 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide ${badgeColor === 'red-50' ? 'bg-red-50 text-red-600' : 'bg-amber-100 text-amber-800'
+            }`}>
             {badge}
           </div>
         )}
-        <button className="absolute top-3 right-3 size-8 bg-white/80 hover:bg-white rounded-full flex items-center justify-center text-slate-400 hover:text-red-500 transition-colors shadow-sm">
-          <span className="material-symbols-outlined text-[20px]"><FavoriteIcon /></span>
+          <button className="absolute top-3 right-3 size-8 !p-0 !border-0 bg-white/80 hover:bg-white rounded-full flex items-center justify-center text-slate-400 hover:text-red-500 transition-colors shadow-sm">
+          <FavoriteIcon className="size-5" strokeWidth={2.2} />
         </button>
         <div className="absolute bottom-0 left-0 w-full p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
           <button className="w-full h-10 bg-primary text-white text-sm font-bold rounded-lg shadow-lg hover:bg-primary-dark transition-colors flex items-center justify-center gap-2">
-            <span className="material-symbols-outlined text-[18px]"><AddShoppingCartIcon /></span>
+            <ShoppingCart className="size-5" strokeWidth={2.2} />
             Agregar
           </button>
         </div>

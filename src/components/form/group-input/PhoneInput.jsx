@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 const PhoneInput = ({ countries, placeholder = "+1 (555) 000-0000", onChange, selectPosition = "start", // Default position is 'start'
  }) => {
     const [selectedCountry, setSelectedCountry] = useState("US");
@@ -28,9 +29,7 @@ const PhoneInput = ({ countries, placeholder = "+1 (555) 000-0000", onChange, se
               </option>))}
           </select>
           <div className="absolute inset-y-0 flex items-center text-gray-700 pointer-events-none bg-none right-3 dark:text-gray-400">
-            <svg className="stroke-current" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4.79175 7.396L10.0001 12.6043L15.2084 7.396" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+            <ChevronDown className="stroke-current" width={20} height={20} strokeWidth={1.5} />
           </div>
         </div>)}
 
@@ -45,9 +44,7 @@ const PhoneInput = ({ countries, placeholder = "+1 (555) 000-0000", onChange, se
               </option>))}
           </select>
           <div className="absolute inset-y-0 flex items-center text-gray-700 pointer-events-none right-3 dark:text-gray-400">
-            <svg className="stroke-current" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4.79175 7.396L10.0001 12.6043L15.2084 7.396" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+            <ChevronDown className="stroke-current" width={20} height={20} strokeWidth={1.5} />
           </div>
         </div>)}
     </div>);

@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 import { useRef } from 'react';
+import { SlidersHorizontal, Star } from 'lucide-react';
 import Navbar from '../../../components/layout/Navbar';
 import Footer from '../../../components/layout/Footer';
 import { FavoriteIcon, AddShoppingCartIcon, ChevronLeftIcon, CheckIcon, ChevronRightIcon, KeyArrowDownIcon, LocalShippingIcon } from '../../../icons';
@@ -15,6 +16,7 @@ const INVALID_CART_IDS = new Set(['', 'undefined', 'null']);
 const Products = () => {
   // Datos estáticos de productos
   const { data: products = [], isLoading, isError } = useGetProductQuery();
+  console.log(products)
 
   const [CreateShopingCart] = useCreateShopingCartMutation();
   const [AddProducts] = useAddProductsMutation();
@@ -28,7 +30,6 @@ const Products = () => {
 
     if (!creatingCartPromiseRef.current) {
       const productId = product?._id ?? product?.id;
-      const normalizedPrice = Number(String(product?.price ?? 0).replace(/,/g, '')) || 0;
 
       if (!userId || !productId) {
         return null;
@@ -40,7 +41,6 @@ const Products = () => {
           {
             product: productId,
             quantity: 1,
-            price: normalizedPrice,
           },
         ],
       };
@@ -90,11 +90,12 @@ const Products = () => {
       const cartId = localStorage.getItem(CART_ID_STORAGE_KEY);
       if(!cartId) {
         await createCartOnce(product);
-        dispatch(addToCart({ item: product, quantity: 1, price: product.price,}));
+        dispatch(addToCart({ product: product, quantity: 1}));
         return;
       }
       addProductsToCart(product);
-      dispatch(addToCart({ item: product, quantity: 1}));
+      return dispatch(addToCart({ product: product, quantity: 1}));
+      
     } catch(error) {
       // Keep local cart UX responsive even if backend cart sync fails
       console.log(error);
@@ -116,7 +117,7 @@ const Products = () => {
             </li>
             <li>
               <div className="flex items-center">
-                <span className="material-symbols-outlined text-gray-600 text-sm mx-1"><ChevronRightIcon /></span>
+                <ChevronRightIcon className="text-gray-600 text-sm mx-1" />
                 <Link className="text-gray-600 hover:text-teal-700 font-medium" to="/products">
                   Catálogo
                 </Link>
@@ -124,7 +125,7 @@ const Products = () => {
             </li>
             <li>
               <div className="flex items-center">
-                <span className="material-symbols-outlined text-gray-600 text-sm mx-1"><ChevronRightIcon /></span>
+                <ChevronRightIcon className="text-gray-600 text-sm mx-1" />
                 <span className="text-gray-900 font-semibold">Tecnología</span>
               </div>
             </li>
@@ -145,7 +146,7 @@ const Products = () => {
             {/* Mobile Filter Toggle */}
             <button className="lg:hidden w-full flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg font-bold shadow-sm">
               <span>Filtrar y Ordenar</span>
-              <span className="material-symbols-outlined">tune</span>
+              <SlidersHorizontal className="h-5 w-5" />
             </button>
 
             {/* Filters Container */}
@@ -162,7 +163,7 @@ const Products = () => {
                   <label className="flex items-center gap-3 cursor-pointer group">
                     <div className="relative flex items-center">
                       <input className="peer size-4 appearance-none rounded border border-gray-300 checked:bg-teal-700 checked:border-teal-700 focus:ring-1 focus:ring-teal-700 focus:ring-offset-1 transition-colors" type="checkbox" />
-                      <span className="material-symbols-outlined flex justify-center items-center absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none text-xs inset-0 m-auto"><CheckIcon /></span>
+                      <CheckIcon className="flex justify-center items-center absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none text-xs inset-0 m-auto" />
                     </div>
                     <span className="text-sm text-gray-600 group-hover:text-teal-700 transition-colors">Smartphones</span>
                     <span className="ml-auto text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">120</span>
@@ -170,7 +171,7 @@ const Products = () => {
                   <label className="flex items-center gap-3 cursor-pointer group">
                     <div className="relative flex items-center">
                       <input defaultChecked className="peer size-4 appearance-none rounded border border-gray-300 checked:bg-teal-700 checked:border-teal-700 focus:ring-1 focus:ring-teal-700 focus:ring-offset-1 transition-colors" type="checkbox" />
-                      <span className="material-symbols-outlined flex justify-center items-center absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none text-xs inset-0 m-auto"><CheckIcon /></span>
+                      <CheckIcon className="flex justify-center items-center absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none text-xs inset-0 m-auto" />
                     </div>
                     <span className="text-sm text-gray-900 font-medium group-hover:text-teal-700 transition-colors">Laptops</span>
                     <span className="ml-auto text-xs text-teal-700 bg-amber-100 px-2 py-0.5 rounded-full font-bold">45</span>
@@ -178,7 +179,7 @@ const Products = () => {
                   <label className="flex items-center gap-3 cursor-pointer group">
                     <div className="relative flex items-center">
                       <input className="peer size-4 appearance-none rounded border border-gray-300 checked:bg-teal-700 checked:border-teal-700 focus:ring-1 focus:ring-teal-700 focus:ring-offset-1 transition-colors" type="checkbox" />
-                      <span className="material-symbols-outlined flex justify-center items-center absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none text-xs inset-0 m-auto"><CheckIcon /></span>
+                      <CheckIcon className="flex justify-center items-center absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none text-xs inset-0 m-auto" />
                     </div>
                     <span className="text-sm text-gray-600 group-hover:text-teal-700 transition-colors">Accesorios</span>
                     <span className="ml-auto text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">86</span>
@@ -186,7 +187,7 @@ const Products = () => {
                   <label className="flex items-center gap-3 cursor-pointer group">
                     <div className="relative flex items-center">
                       <input className="peer size-4 appearance-none rounded border border-gray-300 checked:bg-teal-700 checked:border-teal-700 focus:ring-1 focus:ring-teal-700 focus:ring-offset-1 transition-colors" type="checkbox" />
-                      <span className="material-symbols-outlined flex justify-center items-center absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none text-xs inset-0 m-auto"><CheckIcon /></span>
+                      <CheckIcon className="flex justify-center items-center absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none text-xs inset-0 m-auto" />
                     </div>
                     <span className="text-sm text-gray-600 group-hover:text-teal-700 transition-colors">Audio</span>
                     <span className="ml-auto text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">32</span>
@@ -219,7 +220,7 @@ const Products = () => {
                     <input className="size-4 text-teal-700 focus:ring-teal-700 border-gray-300" name="rating" type="radio" />
                     <div className="flex text-amber-400">
                       {[...Array(5)].map((_, i) => (
-                        <span key={i} className="material-symbols-outlined icon-filled text-[18px]">★</span>
+                        <Star key={i} className="h-[18px] w-[18px] icon-filled text-amber-400" fill="currentColor" />
                       ))}
                     </div>
                     <span className="text-xs text-gray-500">& más</span>
@@ -228,9 +229,9 @@ const Products = () => {
                     <input className="size-4 text-teal-700 focus:ring-teal-700 border-gray-300" name="rating" type="radio" />
                     <div className="flex text-amber-400">
                       {[...Array(4)].map((_, i) => (
-                        <span key={i} className="material-symbols-outlined icon-filled text-[18px]">★</span>
+                        <Star key={i} className="h-[18px] w-[18px] icon-filled text-amber-400" fill="currentColor" />
                       ))}
-                      <span className="material-symbols-outlined text-gray-300 text-[18px]">★</span>
+                      <Star className="h-[18px] w-[18px] text-gray-300" fill="currentColor" />
                     </div>
                     <span className="text-xs text-gray-500">& más</span>
                   </label>
@@ -241,7 +242,7 @@ const Products = () => {
             {/* Promo Card Sidebar */}
             <div className="hidden lg:block bg-amber-100 rounded-xl p-6 text-center">
               <div className="bg-white size-12 rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm text-amber-600">
-                <span className="material-symbols-outlined"><LocalShippingIcon /></span>
+                <LocalShippingIcon className="w-6 h-6" />
               </div>
               <h5 className="font-bold text-gray-900 mb-1">Envío Gratis</h5>
               <p className="text-xs text-gray-600 mb-3">En pedidos superiores a $999</p>
@@ -266,7 +267,7 @@ const Products = () => {
                     <option>Más recientes</option>
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                    <span className="material-symbols-outlined text-sm"><KeyArrowDownIcon /></span>
+                      <KeyArrowDownIcon className="text-sm" />
                   </div>
                 </div>
               </div>
@@ -285,7 +286,7 @@ const Products = () => {
                     }
                     <div className="absolute top-3 right-3 z-10">
                       <button className="size-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors shadow-sm">
-                        <span className="material-symbols-outlined text-[20px]"><FavoriteIcon /></span>
+                        <FavoriteIcon className="w-5 h-5" />
                       </button>
                     </div>
                     <Link to={`/products/${product.id}`}>
@@ -298,7 +299,7 @@ const Products = () => {
                   </div>
                   <div className="p-4 flex flex-col flex-grow">
                     <div className="flex items-center gap-1 mb-1">
-                      <span className="material-symbols-outlined icon-filled text-amber-400 text-[14px]">★</span>
+                      <Star className="h-[14px] w-[14px] icon-filled text-amber-400" fill="currentColor" />
                       <span className="text-xs font-bold text-gray-900">{product.rating}</span>
                       {/* <span className="text-xs text-gray-400">({product.reviews})</span> */}
                     </div>

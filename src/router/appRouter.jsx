@@ -36,6 +36,7 @@ import InventoryForm from '../features/admin/forms/InventoryForm';
 // Páginas temporales/demo
 import FormDemo from '../pages/FormDemo';
 import CategoryForm from '../features/admin/forms/CategoryForm';
+import { CategoryPage } from '../features/category/CategoryPage';
 
 
 
@@ -56,6 +57,11 @@ export const appRouter = createBrowserRouter([
   {
     path: 'products',
     element: <ProductsPage />
+  },
+  {
+    path: 'category',
+    element: <CategoryPage />
+
   },
   {
     path: 'product-detail',

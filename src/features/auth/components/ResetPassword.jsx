@@ -1,4 +1,5 @@
 import { Link } from 'react-router';
+import { ArrowLeft, RotateCcw } from 'lucide-react';
 import Navbar from '../../../components/layout/Navbar';
 import Footer from '../../../components/layout/Footer';
 import Button from '../../../components/ui/Button';
@@ -13,7 +14,7 @@ const ResetPassword = () => {
           <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-200">
             <div className="text-center mb-8">
               <div className="size-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                <span className="material-symbols-outlined text-primary text-3xl">lock_reset</span>
+                <RotateCcw className="text-primary" size={32} />
               </div>
               <h1 className="text-3xl font-black text-text-main mb-2">Restablecer Contraseña</h1>
               <p className="text-text-muted">
@@ -39,8 +40,9 @@ const ResetPassword = () => {
             </form>
 
             <div className="mt-6 text-center">
-              <Link to="/user" className="text-sm text-primary font-bold hover:underline">
-                ← Volver al inicio de sesión
+              <Link to="/user" className="text-sm text-primary font-bold hover:underline inline-flex items-center gap-1">
+                <ArrowLeft className="h-4 w-4" />
+                Volver al inicio de sesión
               </Link>
             </div>
           </div>

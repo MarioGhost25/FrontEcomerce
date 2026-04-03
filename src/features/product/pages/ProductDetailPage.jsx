@@ -1,4 +1,5 @@
 import { Link, useParams } from 'react-router';
+import { ChevronRight, CircleCheck, Star } from 'lucide-react';
 import Navbar from '../../../components/layout/Navbar';
 import Footer from '../../../components/layout/Footer';
 import Button from '../../../components/ui/Button';
@@ -36,7 +37,7 @@ const ProductDetail = () => {
               </Link>
             </li>
             <li>
-              <span className="material-symbols-outlined text-gray-600 text-sm mx-1">chevron_right</span>
+              <ChevronRight className="text-gray-600 text-sm mx-1" />
             </li>
             <li>
               <Link className="text-gray-600 hover:text-teal-700 font-medium" to="/products">
@@ -44,7 +45,7 @@ const ProductDetail = () => {
               </Link>
             </li>
             <li>
-              <span className="material-symbols-outlined text-[#637f88] text-sm mx-1">chevron_right</span>
+              <ChevronRight className="text-[#637f88] text-sm mx-1" />
             </li>
             <li>
               <span className="text-gray-900 font-semibold">{product.name}</span>
@@ -71,9 +72,7 @@ const ProductDetail = () => {
               <div className="flex items-center gap-2 mb-4">
                 <div className="flex text-amber-400">
                   {[...Array(5)].map((_, i) => (
-                    <span key={i} className="material-symbols-outlined icon-filled text-[20px]">
-                      {i < Math.floor(product.rating) ? 'star' : 'star'}
-                    </span>
+                    <Star key={i} className="h-5 w-5 icon-filled text-amber-400" fill="currentColor" />
                   ))}
                 </div>
                 <span className="text-sm font-bold text-gray-900">{product.rating}</span>
@@ -99,11 +98,11 @@ const ProductDetail = () => {
 
             <div className="flex gap-4 pt-4">
               <Button className="flex-1 h-14 text-lg">
-                <span className="material-symbols-outlined mr-2"><AddShoppingCartIcon /></span>
+                <AddShoppingCartIcon className="mr-2 w-5 h-5" />
                 Agregar al Carrito
               </Button>
               <button className="size-14 rounded-lg border border-gray-300 hover:bg-gray-50 flex items-center justify-center">
-                <span className="material-symbols-outlined text-gray-600"><FavoriteIcon /></span>
+                <FavoriteIcon className="text-gray-600 w-6 h-6" />
               </button>
             </div>
 
@@ -111,19 +110,19 @@ const ProductDetail = () => {
               <h3 className="font-bold text-lg mb-4">Características</h3>
               <ul className="space-y-2 text-gray-600">
                 <li className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-teal-700 text-sm">check_circle</span>
+                  <CircleCheck className="text-teal-700 text-sm" />
                   Cancelación de ruido activa
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-teal-700 text-sm">check_circle</span>
+                  <CircleCheck className="text-teal-700 text-sm" />
                   Batería de 30 horas
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-teal-700 text-sm">check_circle</span>
+                  <CircleCheck className="text-teal-700 text-sm" />
                   Carga rápida USB-C
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-teal-700 text-sm">check_circle</span>
+                  <CircleCheck className="text-teal-700 text-sm" />
                   Compatible con Bluetooth 5.0
                 </li>
               </ul>

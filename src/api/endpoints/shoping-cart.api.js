@@ -10,7 +10,8 @@ export const shopingCartApi = apiSlice.injectEndpoints({
                 url: '/shopping',
                 method: 'POST',
                 body: shopingCartData
-            })
+            }),
+            invalidatesTags: ['Cart']
         }),
 
         addProducts: builder.mutation({
@@ -18,14 +19,16 @@ export const shopingCartApi = apiSlice.injectEndpoints({
                 url: '/shopping/add-products',
                 method: 'POST',
                 body: addProductsData
-            })
+            }),
+            invalidatesTags: ['Cart']
         }),
 
         getCartbyId: builder.query({
             query: () => ({
                 url: 'shopping/get-cart-by-user-id',
                 method: 'GET',
-            })
+            }),
+            providesTags: ['Cart']
         })
     }),
 

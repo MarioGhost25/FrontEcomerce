@@ -3,6 +3,7 @@ import { useForm } from "../../../hooks/useForm";
 import { useLoginMutation } from "../../../api/endpoints/userApi";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
+import { Smartphone } from "lucide-react";
 import { MailIcon, LockIcon, EyeIcon, EyeCloseIcon, StoreIcon } from "../../../icons";
 import * as z from 'zod';
 
@@ -186,7 +187,7 @@ export const Login = () => {
                                 className="flex items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-2.5 border border-gray-200 rounded-lg bg-white text-xs sm:text-sm font-medium text-gray-900 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-200"
                                 type="button"
                             >
-                                <span className="material-symbols-outlined text-[18px] sm:text-[22px]">ios</span>
+                                <Smartphone className="w-4 h-4 sm:w-5 sm:h-5" />
                                 <span>Apple</span>
                             </button>
                         </div>
