@@ -6,6 +6,8 @@ import ProductGrid from '../../product/components/ProductGrid';
 import { ArrowRight, BadgeCheck, Headset, Truck } from 'lucide-react';
 import { useGetProductQuery } from '../../../api/endpoints/productApi';
 import { useGetAllCategoriesQuery } from '../../../api/endpoints/categoryApi';
+import { CategorySkeletonList } from '../../category/components/CategorySkeletonList';
+import { ProductSlekeletonList } from '../../product/components/ProductSlekeletonList';
 
 const Home = () => {
   // Datos estáticos para productos destacados
@@ -107,6 +109,9 @@ const Home = () => {
                 Ver todas <ArrowRight className="size-4" strokeWidth={2.2} />
               </Link>
             </div>
+            {
+              isLoading && <CategorySkeletonList numberOfSkeletons={3} />
+            }
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {categories.map((category) => (
                 <Link
@@ -135,6 +140,9 @@ const Home = () => {
         <section className="py-20 bg-white">
           <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-40">
             <h2 className="text-primary text-3xl font-black tracking-tight mb-8">Productos Destacados</h2>
+            {
+              isLoading && <ProductSlekeletonList numberOfSkeletons={3}/>
+            }
             <ProductGrid products={products} />
             <div className="mt-12 flex justify-center">
               <Link to="/products">

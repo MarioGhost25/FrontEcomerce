@@ -9,14 +9,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../shop/slices/cartSlice';
 import { useAddProductsMutation, useCreateShopingCartMutation } from '../../../api/endpoints/shoping-cart.api';
 import { selectCurrentUserId } from '../../auth/slices/authSlice';
+import { ProductSlekeletonList } from '../components/ProductSlekeletonList';
 
 const CART_ID_STORAGE_KEY = 'shoppingCartId';
 const INVALID_CART_IDS = new Set(['', 'undefined', 'null']);
 
 const Products = () => {
   // Datos estáticos de productos
-  const { data: products = [], isLoading, isError } = useGetProductQuery();
-  console.log(products)
+  const { data: products = [], isLoading, isError, error } = useGetProductQuery();
+
+  const errorMessage =
+    typeof error?.data === 'string'
+      ? error.data
+      : error?.data?.message || error?.error || 'No se pudieron cargar los productos.'
 
   const [CreateShopingCart] = useCreateShopingCartMutation();
   const [AddProducts] = useAddProductsMutation();
@@ -72,14 +77,14 @@ const Products = () => {
     const { id } = product;
 
     const payload = {
-        user: userId,
-        products: [
-          {
-            product: id,
-            quantity: 1,
-          },
-        ],
-      };
+      user: userId,
+      products: [
+        {
+          product: id,
+          quantity: 1,
+        },
+      ],
+    };
 
     return creatingCartPromiseRef.current = AddProducts(payload).unwrap();
 
@@ -88,15 +93,15 @@ const Products = () => {
   const handleShoppingCart = async (product) => {
     try {
       const cartId = localStorage.getItem(CART_ID_STORAGE_KEY);
-      if(!cartId) {
+      if (!cartId) {
         await createCartOnce(product);
-        dispatch(addToCart({ product: product, quantity: 1}));
+        dispatch(addToCart({ product: product, quantity: 1 }));
         return;
       }
       addProductsToCart(product);
-      return dispatch(addToCart({ product: product, quantity: 1}));
-      
-    } catch(error) {
+      return dispatch(addToCart({ product: product, quantity: 1 }));
+
+    } catch (error) {
       // Keep local cart UX responsive even if backend cart sync fails
       console.log(error);
     }
@@ -267,11 +272,23 @@ const Products = () => {
                     <option>Más recientes</option>
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                      <KeyArrowDownIcon className="text-sm" />
+                    <KeyArrowDownIcon className="text-sm" />
                   </div>
                 </div>
               </div>
             </div>
+
+            {
+              isLoading && <ProductSlekeletonList  />
+            }
+
+            {isError && (
+              <div className='rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-center text-sm text-red-700 dark:border-red-900/50 dark:bg-red-900/20 dark:text-red-300'>
+                {errorMessage}
+              </div>
+            )
+            }
+
 
             {/* Products Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

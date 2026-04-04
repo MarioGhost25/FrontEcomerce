@@ -2,6 +2,7 @@ import Navbar from '../../components/layout/Navbar'
 import { useGetAllCategoriesQuery } from '../../api/endpoints/categoryApi'
 import { Link } from 'react-router'
 import { ArrowRight } from 'lucide-react'
+import { CategorySkeletonList } from './components/CategorySkeletonList'
 
 export const CategoryPage = () => {
     const { data: categories = [], isLoading, isError, error } = useGetAllCategoriesQuery()
@@ -18,7 +19,7 @@ export const CategoryPage = () => {
             <main className='flex-1'>
                 <section className='py-10 bg-accent-light/30'>
                     <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-12'>
-                        <div className='mb-8 text-center'>
+                        <div className='mb-8 text-center'>{/* Podria ser un Header */}
                             <h1 className='text-3xl text-black font-black tracking-tight  sm:text-4xl'>
                                 Categorias
                             </h1>
@@ -27,13 +28,7 @@ export const CategoryPage = () => {
                             </p>
                         </div>
 
-                        {isLoading && (
-                            <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'>
-                                {Array.from({ length: 6 }).map((_, index) => (
-                                    <div key={index} className='aspect-[4/5] animate-pulse rounded-xl bg-gray-200 dark:bg-gray-800' />
-                                ))}
-                            </div>
-                        )}
+                        {isLoading && <CategorySkeletonList numberOfSkeletons={6} />}
 
                         {isError && (
                             <div className='rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-center text-sm text-red-700 dark:border-red-900/50 dark:bg-red-900/20 dark:text-red-300'>
