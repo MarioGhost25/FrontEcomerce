@@ -7,7 +7,7 @@ import { FavoriteIcon, AddShoppingCartIcon, ChevronLeftIcon, CheckIcon, ChevronR
 import { useGetProductQuery } from '../../../api/endpoints/productApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../shop/slices/cartSlice';
-import { useAddProductsMutation, useCreateShopingCartMutation } from '../../../api/endpoints/shoping-cart.api';
+import { useAddProductsMutation, useCreateShopingCartMutation } from '../../../api/endpoints/shoping-cart.Api';
 import { selectCurrentUserId } from '../../auth/slices/authSlice';
 import { ProductSlekeletonList } from '../components/ProductSlekeletonList';
 

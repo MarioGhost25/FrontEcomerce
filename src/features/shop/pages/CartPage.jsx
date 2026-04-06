@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import { Minus, Plus, ShoppingCart, Trash2 } from 'lucide-react';
-import { useAddProductsMutation, useGetCartbyIdQuery } from '../../../api/endpoints/shoping-cart.api';
+import { useAddProductsMutation, useDeleteProductsMutation, useGetCartbyIdQuery } from '../../../api/endpoints/shoping-cart.Api';
 import Navbar from '../../../components/layout/Navbar';
 import Footer from '../../../components/layout/Footer';
 import Button from '../../../components/ui/Button';
@@ -12,7 +12,8 @@ const Cart = () => {
 
   const dispatch = useDispatch();
   const [addProductsToCart, { isLoading: isAddingProduct }] = useAddProductsMutation();
-  const { data, isLoading, refetch} = useGetCartbyIdQuery() //Mi unica fuente de la verdad
+  const [deleteProducts] = useDeleteProductsMutation();
+  const { data, isLoading, refetch } = useGetCartbyIdQuery() //Mi unica fuente de la verdad
   const products = useSelector(selectCartItems);
 
   useEffect(() => {
@@ -25,7 +26,7 @@ const Cart = () => {
 
   const handledQuantity = async (item) => {
     const { product } = item;
-    const productId = product?._id ?? product?.id;
+    const productId = product?._id || product?.product?._id || product?.product?._id;
 
     if (!productId) return;
 
@@ -39,7 +40,7 @@ const Cart = () => {
     };
 
     // Optimistic UI: actualiza cantidad y total al instante.
-    dispatch(addToCart({ product, quantity: 1 }));
+    dispatch(addToCart({ product: products, quantity: 1 }));
 
     try {
       await addProductsToCart(payload).unwrap();
@@ -62,6 +63,33 @@ const Cart = () => {
 
     }
 
+  }
+
+  const handleRemoveProduct = async (item) => {
+    try {
+
+      const { product } = item;
+
+      const payload = {
+        products: [
+          {
+            _id: item?._id || product?._id,
+          },
+        ]
+      };
+
+      await deleteProducts(payload).unwrap();
+
+      const refreshed = await refetch();
+      const cartSnapshot = refreshed?.data;
+
+      if (Array.isArray(cartSnapshot?.products)) {
+        dispatch(setCartFromServer(cartSnapshot));
+      }
+
+    } catch (error) {
+      console.error('Error al eliminar producto del carrito:', error);
+    }
   }
 
 
@@ -121,7 +149,9 @@ const Cart = () => {
                           <Plus size={20} color='#000' />
                         </button>
                       </div>
-                      <button className="text-red-500 bg-red-100 hover:text-red-700 flex items-center gap-1">
+                      <button
+                        onClick={() => handleRemoveProduct(item)}
+                        className="text-red-500 bg-red-100 hover:text-red-700 flex items-center gap-1">
                         <Trash2 className="h-4 w-4" />
                         Eliminar
                       </button>

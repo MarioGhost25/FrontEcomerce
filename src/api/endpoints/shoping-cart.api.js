@@ -23,6 +23,16 @@ export const shopingCartApi = apiSlice.injectEndpoints({
             invalidatesTags: ['Cart']
         }),
 
+        deleteProducts: builder.mutation({
+            query: (deleteProductsData) => ({
+                url: '/shopping/delete-products',
+                method: 'DELETE',
+                body: deleteProductsData
+            }),
+            invalidatesTags: ['Cart']
+        }),
+
+
         getCartbyId: builder.query({
             query: () => ({
                 url: 'shopping/get-cart-by-user-id',
@@ -34,4 +44,4 @@ export const shopingCartApi = apiSlice.injectEndpoints({
 
 })
 
-export const { useCreateShopingCartMutation, useAddProductsMutation, useGetCartbyIdQuery } = shopingCartApi;
+export const { useCreateShopingCartMutation, useAddProductsMutation, useDeleteProductsMutation, useGetCartbyIdQuery } = shopingCartApi;
