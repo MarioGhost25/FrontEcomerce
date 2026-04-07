@@ -279,7 +279,7 @@ const Products = () => {
             </div>
 
             {
-              isLoading && <ProductSlekeletonList  />
+              isLoading && <ProductSlekeletonList />
             }
 
             {isError && (
@@ -335,7 +335,7 @@ const Products = () => {
                       </div>
                       <button
                         className="bg-teal-700 hover:bg-teal-800 text-white rounded-lg p-2 transition-colors flex items-center justify-center gap-2 shadow-sm"
-                        onClick={() => handleShoppingCart(product)}
+                        onClick={() => handleShoppingCart(product)} //Arreglar el bug cuando se da doubleclick
                       >
                         <AddShoppingCartIcon className="w-5 h-5" />
                       </button>

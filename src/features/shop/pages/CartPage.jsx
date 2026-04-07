@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import { Minus, Plus, ShoppingCart, Trash2 } from 'lucide-react';
-import { useAddProductsMutation, useDeleteProductsMutation, useGetCartbyIdQuery } from '../../../api/endpoints/shoping-cart.Api';
+import { useAddProductsMutation, useDecreaseQuantityMutation, useDeleteProductsMutation, useGetCartbyIdQuery } from '../../../api/endpoints/shoping-cart.Api';
 import Navbar from '../../../components/layout/Navbar';
 import Footer from '../../../components/layout/Footer';
 import Button from '../../../components/ui/Button';
@@ -13,6 +13,7 @@ const Cart = () => {
   const dispatch = useDispatch();
   const [addProductsToCart, { isLoading: isAddingProduct }] = useAddProductsMutation();
   const [deleteProducts] = useDeleteProductsMutation();
+  const [decreaseQuantity] = useDecreaseQuantityMutation();
   const { data, isLoading, refetch } = useGetCartbyIdQuery() //Mi unica fuente de la verdad
   const products = useSelector(selectCartItems);
 
@@ -64,6 +65,42 @@ const Cart = () => {
     }
 
   }
+  const handleDecreaseQuantity = async (item) => {
+    if(item.quantity === 1 ) return handleRemoveProduct(item);
+    const { product } = item;
+    const payload = {
+      products: [
+        {
+          _id: product?._id,
+          quantity: 1,
+        },
+      ]
+    };
+
+    try {
+
+      await decreaseQuantity(payload).unwrap();
+
+      const refreshed = await refetch();
+      const cartSnapshot = refreshed?.data;
+
+      if (Array.isArray(cartSnapshot?.products)) {
+        dispatch(setCartFromServer(cartSnapshot));
+      }
+    } catch (error) {
+      console.error('Error al disminuir la cantidad:', error);
+
+      // Rollback de estado optimista usando snapshot del backend.
+      const refreshed = await refetch();
+      const cartSnapshot = refreshed?.data;
+      if (Array.isArray(cartSnapshot?.products)) {
+        dispatch(setCartFromServer(cartSnapshot));
+      }
+
+    }
+
+
+  }
 
   const handleRemoveProduct = async (item) => {
     try {
@@ -92,6 +129,11 @@ const Cart = () => {
     }
   }
 
+
+
+  const getCartItemKey = (item, index) => {
+    return item?._id ?? item?.id ?? item?.product?._id ?? item?.product?.id ?? `cart-item-${index}`;
+  };
 
 
 
@@ -127,8 +169,8 @@ const Cart = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Cart Items */}
             <div className="lg:col-span-2 space-y-4">
-              {products.map((item) => (
-                <div key={item.product?._id} className="bg-white rounded-xl border border-gray-200 p-6 flex gap-6">
+              {products.map((item, index) => (
+                <div key={getCartItemKey(item, index)} className="bg-white rounded-xl border border-gray-200 p-6 flex gap-6">
                   <div className="w-24 h-24 rounded-lg overflow-hidden bg-gray-100 shrink-0">
                     <img src={item.product?.images} alt={item.product?.name} className="w-full h-full object-cover" />
                   </div>
@@ -139,7 +181,9 @@ const Cart = () => {
                     </div>
                     <div className="flex items-center gap-4 mt-4">
                       <div className="flex items-center gap-2 border border-gray-300 rounded-lg">
-                        <button className="px-3 py-1 hover:bg-gray-100"><Minus size={20} color='#000' /></button>
+                        <button
+                          onClick={() => handleDecreaseQuantity(item)}
+                          className="px-3 py-1 hover:bg-gray-100"><Minus size={20} color='#000' /></button>
                         <span className="px-4 py-1 text-black">{item.quantity}</span>
                         <button
                           disabled={isAddingProduct}
