@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import { Minus, Plus, ShoppingCart, Trash2 } from 'lucide-react';
-import { useAddProductsMutation, useDecreaseQuantityMutation, useDeleteProductsMutation, useGetCartbyIdQuery } from '../../../api/endpoints/shoping-cart.Api';
+import { useAddProductsMutation, useDecreaseQuantityMutation, useDeleteProductsMutation, useGetCartbyIdQuery } from '../../../api/endpoints/shoping-cart.api';
 import Navbar from '../../../components/layout/Navbar';
 import Footer from '../../../components/layout/Footer';
 import Button from '../../../components/ui/Button';
