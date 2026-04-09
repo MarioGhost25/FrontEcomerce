@@ -11,6 +11,7 @@ function App() {
         // Recuperar datos de autenticación al iniciar la app
         const storedAccessToken = localStorage.getItem('accessToken');
         const userId = localStorage.getItem('userId');
+        const cartId = localStorage.getItem('cartId');
 
         let accessToken = null;
 
@@ -28,7 +29,8 @@ function App() {
         if (accessToken && userId) {
             dispatch(setCredentials({
                 accessToken,
-                userId 
+                userId,
+                cartId  
             }));
         }
     }, [dispatch]);

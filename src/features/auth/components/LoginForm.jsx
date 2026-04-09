@@ -56,6 +56,7 @@ export const Login = () => {
             console.log(res.user)
             const accessToken = res?.accessToken ?? res?.token;
             const user = res?.user;
+            
 
             user?.role === 'admin' ? navigate('/dashboard') : navigate('/');
 

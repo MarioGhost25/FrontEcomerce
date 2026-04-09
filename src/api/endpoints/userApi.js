@@ -23,9 +23,10 @@ export const userApi = apiSlice.injectEndpoints({
                     const { data } = await queryFulfilled;
                     const userId = data?.id ?? data?.userId ?? data?.user?.id ?? data?.user?._id;
                     const accessToken = data?.accessToken ?? data?.token;
+                    const cartId = data?.cartId ?? data?.user?.cartId ?? data?.cart?.id ?? data?.cart?._id;
 
                     if (userId && accessToken) {
-                        dispatch(setCredentials({ userId, accessToken }));
+                        dispatch(setCredentials({ userId, accessToken, cartId }));
                     } else {
                         console.warn('No se pudieron extraer credenciales del login:', data);
                     }

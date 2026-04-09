@@ -174,12 +174,12 @@ const Cart = () => {
                   <div className="w-24 h-24 rounded-lg overflow-hidden bg-gray-100 shrink-0">
                     <img src={item.product?.images} alt={item.product?.name} className="w-full h-full object-cover" />
                   </div>
-                  <div className="flex-1 flex flex-col justify-between">
+                  <div className="flex-1 flex flex-col justify-between ">
                     <div>
                       <h3 className="font-bold text-lg text-[#111618] mb-2">{item.product?.name}</h3>
                       <p className="text-primary font-bold text-xl">${Number(item?.price ?? item?.product?.price ?? 0).toFixed(2)}</p>
                     </div>
-                    <div className="flex items-center gap-4 mt-4">
+                    <div className="flex items-center gap-4 mt-4 sm:flex-row flex-col">
                       <div className="flex items-center gap-2 border border-gray-300 rounded-lg">
                         <button
                           onClick={() => handleDecreaseQuantity(item)}

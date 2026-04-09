@@ -8,11 +8,10 @@ import { useGetProductQuery } from '../../../api/endpoints/productApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../shop/slices/cartSlice';
 import { useAddProductsMutation, useCreateShopingCartMutation } from '../../../api/endpoints/shoping-cart.Api';
-import { selectCurrentUserId } from '../../auth/slices/authSlice';
+import { selectCurrentCartId, selectCurrentUserId, setIdcart } from '../../auth/slices/authSlice';
 import { ProductSlekeletonList } from '../components/ProductSlekeletonList';
 
-const CART_ID_STORAGE_KEY = 'shoppingCartId';
-const INVALID_CART_IDS = new Set(['', 'undefined', 'null']);
+
 
 const Products = () => {
   // Datos estáticos de productos
@@ -27,12 +26,22 @@ const Products = () => {
   const [AddProducts] = useAddProductsMutation();
   const dispatch = useDispatch();
   const userId = useSelector(selectCurrentUserId);
+  const cartIdFromState = useSelector(selectCurrentCartId);
   const creatingCartPromiseRef = useRef(null);
 
-  const createCartOnce = async (product) => {
-    const existingCartId = String(localStorage.getItem(CART_ID_STORAGE_KEY) ?? '').trim();
-    if (!INVALID_CART_IDS.has(existingCartId)) return existingCartId;
+  const normalizeCartId = (value) => {
+    if (value === null || value === undefined) {
+      return null;
+    }
 
+    const normalizedValue = String(value).trim();
+    return !normalizedValue || normalizedValue === 'null' || normalizedValue === 'undefined'
+      ? null
+      : normalizedValue;
+  };
+
+  const createCartOnce = async (product) => {
+  
     if (!creatingCartPromiseRef.current) {
       const productId = product?._id ?? product?.id;
 
@@ -61,7 +70,7 @@ const Products = () => {
             response?.cart?._id;
 
           if (cartId) {
-            localStorage.setItem(CART_ID_STORAGE_KEY, String(cartId));
+           dispatch(setIdcart({ cartId }));
           }
 
           return cartId ?? true;
@@ -74,31 +83,42 @@ const Products = () => {
   };
 
   const addProductsToCart = (product) => {
-    const { id } = product;
+    const productId = product?._id ?? product?.id;
+
+    if (!userId || !productId) {
+      return null;
+    }
 
     const payload = {
       user: userId,
       products: [
         {
-          product: id,
+          product: productId,
           quantity: 1,
         },
       ],
     };
 
-    return creatingCartPromiseRef.current = AddProducts(payload).unwrap();
+    creatingCartPromiseRef.current = AddProducts(payload)
+      .unwrap()
+      .finally(() => {
+        creatingCartPromiseRef.current = null;
+      });
+
+    return creatingCartPromiseRef.current;
 
   }
 
   const handleShoppingCart = async (product) => {
     try {
-      const cartId = localStorage.getItem(CART_ID_STORAGE_KEY);
-      if (!cartId) {
+      const cartId = normalizeCartId(cartIdFromState ?? localStorage.getItem('cartId'));
+      if (!cartId || cartId === 'null') {
         await createCartOnce(product);
         dispatch(addToCart({ product: product, quantity: 1 }));
         return;
       }
-      addProductsToCart(product);
+
+      await addProductsToCart(product);
       return dispatch(addToCart({ product: product, quantity: 1 }));
 
     } catch (error) {
