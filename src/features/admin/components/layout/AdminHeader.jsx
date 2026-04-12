@@ -4,7 +4,7 @@ import { Menu, MoreHorizontal, Search, X } from "lucide-react";
 import { useSidebar } from "../../../../context/SidebarContext";
 import { ThemeToggleButton } from "../../../../components/common/ThemeToggleButton";
 import NotificationDropdown from "../header/NotificationDropdown";
-import UserDropdown from "../header/UserDropdown";
+import UserDropdown from "../../../../components/ui/dropdown/UserDropdown";
 const AdminHeader = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();

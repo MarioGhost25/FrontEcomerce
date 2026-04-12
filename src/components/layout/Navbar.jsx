@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 import { Search, ShoppingCart, Store, User } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import { selectCartItems } from '../../features/shop/slices/cartSlice';
-import UserDropdown from '../../features/admin/components/header/UserDropdown';
+import UserDropdown from '../../components/ui/dropdown/UserDropdown';
 import { selectCurrentUserId, selectIsAuthenticated } from '../../features/auth/slices/authSlice';
 
 const Navbar = () => {

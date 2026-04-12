@@ -1,26 +1,26 @@
 import { useState } from "react";
-import { DropdownItem } from "../../../../components/ui/dropdown/DropdownItem";
-import { Dropdown } from "../../../../components/ui/dropdown/Dropdown";
+import { DropdownItem } from "./DropdownItem";
+import { Dropdown } from "./Dropdown";
 import { Link } from "react-router";
 import { ChevronDown, CircleHelp, ImageIcon, ImagePlusIcon, LogOut, Settings, User } from "lucide-react";
 import { useDispatch } from "react-redux";
-import { logout } from "../../../auth";
-export default function UserDropdown({name, email, image}) {
+import { logout } from "../../../features/auth";
+export default function UserDropdown({ name, email, image }) {
 
   const dispatch = useDispatch();
 
-    const [isOpen, setIsOpen] = useState(false);
-    function toggleDropdown() {
-        setIsOpen(!isOpen);
-    }
-    function closeDropdown() {
-        setIsOpen(false);
-    }
-    return (
+  const [isOpen, setIsOpen] = useState(false);
+  function toggleDropdown() {
+    setIsOpen(!isOpen);
+  }
+  function closeDropdown() {
+    setIsOpen(false);
+  }
+  return (
     <div className="relative">
       <button onClick={toggleDropdown} className="flex  text-gray-700 dropdown-toggle dark:text-gray-400">
         <span className="mr-3 overflow-hidden place-content-center rounded-full h-8 w-8">
-        {image ? <img src={image} alt={name}/> : <ImagePlusIcon/>}
+          {image ? <img src={image} alt={name} /> : <ImagePlusIcon />}
         </span>
 
         <span className="block mr-1 font-medium text-theme-sm">{name}</span>
@@ -40,25 +40,25 @@ export default function UserDropdown({name, email, image}) {
         <ul className="flex flex-col gap-1 pt-4 pb-3 border-b border-gray-200 dark:border-gray-800">
           <li>
             <DropdownItem onItemClick={closeDropdown} tag="a" to="/profile" className="flex items-center gap-3 px-3 py-2 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-              <User className="fill-gray-500 group-hover:fill-gray-700 dark:fill-gray-400 dark:group-hover:fill-gray-300" width={24} height={24} />
+              <User width={24} height={24} />
               Edit profile
             </DropdownItem>
           </li>
           <li>
             <DropdownItem onItemClick={closeDropdown} tag="a" to="/profile" className="flex items-center gap-3 px-3 py-2 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-              <Settings className="fill-gray-500 group-hover:fill-gray-700 dark:fill-gray-400 dark:group-hover:fill-gray-300" width={24} height={24} />
+              <Settings width={24} height={24} />
               Account settings
             </DropdownItem>
           </li>
           <li>
             <DropdownItem onItemClick={closeDropdown} tag="a" to="/profile" className="flex items-center gap-3 px-3 py-2 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-              <CircleHelp className="fill-gray-500 group-hover:fill-gray-700 dark:fill-gray-400 dark:group-hover:fill-gray-300" width={24} height={24} />
+              <CircleHelp width={24} height={24} />
               Support
             </DropdownItem>
           </li>
         </ul>
         <Link to="/signin" className="flex items-center gap-3 px-3 py-2 mt-3 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-          <LogOut className="fill-gray-500 group-hover:fill-gray-700 dark:group-hover:fill-gray-300" width={24} height={24} />
+          <LogOut className="group-hover:fill-gray-700 dark:group-hover:fill-gray-300" width={24} height={24} />
           {dispatch && (
             <button
               onClick={() => dispatch(logout())}
