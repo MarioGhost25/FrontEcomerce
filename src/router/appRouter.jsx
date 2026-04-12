@@ -36,7 +36,7 @@ import InventoryForm from '../features/admin/forms/InventoryForm';
 // Páginas temporales/demo
 import FormDemo from '../pages/FormDemo';
 import CategoryForm from '../features/admin/forms/CategoryForm';
-import { CategoryPage } from '../features/category/CategoryPage';
+import { CategoryPage } from '../features/category/pages/CategoryPage';
 
 
 

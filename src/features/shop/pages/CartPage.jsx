@@ -172,7 +172,7 @@ const Cart = () => {
               {products.map((item, index) => (
                 <div key={getCartItemKey(item, index)} className="bg-white rounded-xl border border-gray-200 p-6 flex gap-6">
                   <div className="w-24 h-24 rounded-lg overflow-hidden bg-gray-100 shrink-0">
-                    <img src={item.product?.images} alt={item.product?.name} className="w-full h-full object-cover" />
+                    <img loading='lazy' src={item.product?.images} alt={item.product?.name} className="w-full h-full object-cover" />
                   </div>
                   <div className="flex-1 flex flex-col justify-between ">
                     <div>

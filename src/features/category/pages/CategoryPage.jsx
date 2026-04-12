@@ -1,8 +1,8 @@
-import Navbar from '../../components/layout/Navbar'
-import { useGetAllCategoriesQuery } from '../../api/endpoints/categoryApi'
+import Navbar from '../../../components/layout/Navbar'
+import { useGetAllCategoriesQuery } from '../../../api/endpoints/categoryApi'
 import { Link } from 'react-router'
 import { ArrowRight } from 'lucide-react'
-import { CategorySkeletonList } from './components/CategorySkeletonList'
+import { CategorySkeletonList } from '../components/CategorySkeletonList'
 
 export const CategoryPage = () => {
     const { data: categories = [], isLoading, isError, error } = useGetAllCategoriesQuery()

@@ -41,7 +41,7 @@ const Products = () => {
   };
 
   const createCartOnce = async (product) => {
-  
+
     if (!creatingCartPromiseRef.current) {
       const productId = product?._id ?? product?.id;
 
@@ -70,7 +70,7 @@ const Products = () => {
             response?.cart?._id;
 
           if (cartId) {
-           dispatch(setIdcart({ cartId }));
+            dispatch(setIdcart({ cartId }));
           }
 
           return cartId ?? true;
@@ -328,6 +328,7 @@ const Products = () => {
                     </div>
                     <Link to={`/products/${product.id}`}>
                       <img
+                        loading='lazy'
                         alt={product.name}
                         className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                         src={product.images}

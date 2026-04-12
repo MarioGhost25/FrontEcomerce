@@ -1,18 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CircleCheck, Package, Star, TriangleAlert, X } from "lucide-react";
 import ProductForm from "../forms/ProductForm";
 import Button from "../../../components/ui/button/Button";
 import { useDeleteProductMutation, useGetProductQuery } from "../../../api/endpoints/productApi";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 export const ProductManagement = () => {
 
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
 
+
   const { data: products = [], isLoading, isError, error, refetch } = useGetProductQuery();
   const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
   let navigate = useNavigate();
+  
+  useEffect(() => {
+
+    refetch();
+
+  }, [products])
 
   const handleFormSubmit = (data) => {
     console.log("Product submitted:", data);
@@ -37,16 +45,20 @@ export const ProductManagement = () => {
     setShowForm(true);
   };
 
-  const handleDeleteProduct = async (id) => {
+  const handleDeleteProduct = async ({ id, category }) => {
+    const payload = {
+      productId: id,
+      category: category
+    };
+
     if (window.confirm('¿Estás seguro de que quieres eliminar este producto?')) {
       try {
-        const res = await deleteProduct(id).unwrap();
-        console.log('Producto eliminado:', res);
+        await deleteProduct(payload).unwrap();
+        toast.success('Producto eliminado exitosamente');
         refetch();
-        alert('Producto eliminado exitosamente');
       } catch (error) {
         console.error('Error al eliminar producto:', error);
-        alert('Error al eliminar el producto');
+        toast.error('Error al eliminar el producto');
       }
     }
   }
@@ -213,7 +225,7 @@ export const ProductManagement = () => {
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-10 w-10">
                           <div className="h-10 w-10 rounded-lg bg-gray-200 dark:bg-gray-600 flex items-center justify-center">
-                            <img src={product.images[0]} alt={product.name} className="h-full w-full object-cover" />
+                            <img loading="lazy" src={product.images[0]} alt={product.name} className="h-full w-full object-cover" />
                           </div>
                         </div>
                         <div className="ml-4">
@@ -234,8 +246,8 @@ export const ProductManagement = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${product.stockStatus === 'In Stock' ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' :
-                          product.stockStatus === 'Low Stock' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400' :
-                            'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
+                        product.stockStatus === 'Low Stock' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400' :
+                          'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
                         }`}>
                         {product.stockStatus === 'In Stock' ? 'In Stock' :
                           product.stockStatus === 'Low Stock' ? 'Low Stock' : 'Out of Stock'}
@@ -256,7 +268,7 @@ export const ProductManagement = () => {
                           Edit
                         </button>
                         <button
-                          onClick={() => handleDeleteProduct(product.id)}
+                          onClick={() => handleDeleteProduct(product)}
                           disabled={isDeleting}
                           className={`text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 ${isDeleting ? 'opacity-50 cursor-not-allowed' : ''
                             }`}

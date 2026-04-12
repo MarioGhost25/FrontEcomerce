@@ -12,11 +12,13 @@ export const categoryApi = apiSlice.injectEndpoints({
                 url: '/category',
                 method: 'POST',
                 body: categoryData
-            })
+            }),
+            invalidatesTags: ['Category']
         }),
 
         getAllCategories: builder.query({
             query: () => '/category',
+            providesTags: ['Category']
         }),
 
     })

@@ -56,7 +56,7 @@ export const Login = () => {
             console.log(res.user)
             const accessToken = res?.accessToken ?? res?.token;
             const user = res?.user;
-            
+
 
             user?.role === 'admin' ? navigate('/dashboard') : navigate('/');
 
@@ -178,6 +178,7 @@ export const Login = () => {
                                 type="button"
                             >
                                 <img
+                                    loading="lazy"
                                     alt="Google Logo"
                                     className="w-4 h-4 sm:w-5 sm:h-5"
                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFOu649zNTJ_l1WuXiVXg5GkbOHTljh6_hmjMIUrEr3WQggp_M_wOdel54EvxUwGk9XtdcUaEPe3F8saS-Wh0X8Y3wCkEItSPagSX7WxpauW_INdfiaMkPkP7AasNa3jOLEk03tzgKH5RN3mQ39CQmYA-syPFaRYy2ALT-1EBHFN9Er4GTRWTAMycVoi2lqSJFiAFPR61COv-_KyhMREWo1nM2GMlBMWnc75EbyNM-zdg5q3a0F9mTOpwZu6ZJkH_JoL4VfBTsY9CV"

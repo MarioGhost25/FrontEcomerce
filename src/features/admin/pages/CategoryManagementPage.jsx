@@ -5,49 +5,16 @@ import Button from "../../../components/ui/button/Button";
 import { useGetAllCategoriesQuery } from "../../../api/endpoints/categoryApi";
 import { Link } from "react-router";
 
-const initialCategories = [
-  {
-    id: 1,
-    name: "Electronics",
-    slug: "electronics",
-    description: "Devices, gadgets and accessories",
-    isActive: true,
-    productCount: 42,
-    images: ["/images/brand/brand-01.svg"],
-  },
-  {
-    id: 2,
-    name: "Clothing",
-    slug: "clothing",
-    description: "Men and women apparel",
-    isActive: true,
-    productCount: 31,
-    images: ["/images/brand/brand-02.svg"],
-  },
-  {
-    id: 3,
-    name: "Home & Garden",
-    slug: "home-garden",
-    description: "Furniture, decor and home tools",
-    isActive: false,
-    productCount: 19,
-    images: ["/images/brand/brand-03.svg"],
-  },
-];
-
-
-
 export const CategoryManagement = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
-  //const [categories, setCategories] = useState(initialCategories);
 
+  const { data: categories = [], refetch } = useGetAllCategoriesQuery();
 
-  const { data: categories = [] } = useGetAllCategoriesQuery();
+  useEffect(() => {
+    refetch();
+  }, [])
   
-  console.log("Fetched categories:", categories);
-
-
 
   const handleFormCancel = () => {
     setShowForm(false);
@@ -204,7 +171,7 @@ export const CategoryManagement = () => {
                         <div className="flex items-center">
                           <div className="flex-shrink-0 h-10 w-10">
                             <div className="h-10 w-10 rounded-lg bg-gray-200 dark:bg-gray-600 flex items-center justify-center overflow-hidden">
-                              <img src={category.image} alt={category.name} className="h-full w-full object-cover" />
+                              <img loading="lazy" src={category.image} alt={category.name} className="h-full w-full object-cover" />
                             </div>
                           </div>
                           <div className="ml-4">
@@ -221,7 +188,7 @@ export const CategoryManagement = () => {
                         {category.description}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                        {category.productCount || 0}
+                        {category.products.length || 0}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span

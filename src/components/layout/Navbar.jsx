@@ -2,10 +2,15 @@ import { Link } from 'react-router';
 import { Search, ShoppingCart, Store, User } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import { selectCartItems } from '../../features/shop/slices/cartSlice';
+import UserDropdown from '../../features/admin/components/header/UserDropdown';
+import { selectCurrentUserId, selectIsAuthenticated } from '../../features/auth/slices/authSlice';
 
 const Navbar = () => {
 
   const cartSelect = useSelector(selectCartItems)
+  const islogin = useSelector(selectIsAuthenticated);
+  const user = useSelector(selectCurrentUserId);
+
   return (
     <header className="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 bg-white/90 backdrop-blur-md px-4 sm:px-6 lg:px-10 py-4 shadow-sm">
       <div className="flex items-center gap-4 sm:gap-6 lg:gap-8">
@@ -38,27 +43,33 @@ const Navbar = () => {
             <div className="text-text-muted flex border-none bg-slate-50 items-center justify-center pl-3 rounded-l-lg">
               <Search className="size-5" strokeWidth={2.2} />
             </div>
-            <input 
-              className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg rounded-l-none border-none bg-slate-50 text-text-main focus:outline-0 focus:ring-0 placeholder:text-text-muted px-3 text-sm font-normal leading-normal" 
-              placeholder="Buscar productos..." 
+            <input
+              className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg rounded-l-none border-none bg-slate-50 text-text-main focus:outline-0 focus:ring-0 placeholder:text-text-muted px-3 text-sm font-normal leading-normal"
+              placeholder="Buscar productos..."
               type="search"
             />
           </div>
         </label>
-        <div className="flex gap-3">
-          <Link 
+        <div className="flex items-center gap-3">
+          <Link
             to="/cart"
             className="flex items-center justify-center rounded-full size-10 bg-slate-50 hover:bg-slate-100 text-text-main transition-colors relative"
           >
             <ShoppingCart className="size-5" strokeWidth={2.2} />
             <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">{cartSelect.length}</span>
           </Link>
-          <Link 
-            to="/user"
-            className="flex items-center justify-center rounded-full size-10 bg-slate-50 hover:bg-slate-100 text-text-main transition-colors"
-          >
-            <User className="size-5" strokeWidth={2.2} />
-          </Link>
+
+
+          {islogin ? (<UserDropdown name={user?.name} email={user?.email} image={user?.image} />)
+            : (
+              <Link
+                to="/user"
+                className="flex items-center justify-center rounded-full size-10 bg-slate-50 hover:bg-slate-100 text-text-main transition-colors"
+              >
+                <User className="size-5" strokeWidth={2.2} />
+              </Link>
+            )
+          }
         </div>
       </div>
     </header>
