@@ -33,8 +33,9 @@ const getHttpStatus = (error) => {
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
+  const isAuthenticated = Boolean(api.getState().auth?.isAuthenticated);
 
-  if (getHttpStatus(result?.error) === 401) {
+  if (getHttpStatus(result?.error) === 401 && isAuthenticated) {
     const refreshResult = await baseQuery(
       { url: 'auth/refresh', method: 'POST' },
       api,

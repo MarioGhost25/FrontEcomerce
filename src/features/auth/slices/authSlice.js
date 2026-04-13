@@ -91,6 +91,7 @@ const authSlice = createSlice({
             localStorage.removeItem('accessToken');
             localStorage.removeItem('userId');
             localStorage.removeItem('cartId');
+            localStorage.removeItem('cartItems');
         }
     }
 });

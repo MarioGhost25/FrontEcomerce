@@ -1,133 +1,16 @@
 import { Link } from 'react-router';
-import { useRef } from 'react';
-import { HeartIcon, SlidersHorizontal, Star } from 'lucide-react';
+import { SlidersHorizontal, Star } from 'lucide-react';
 import Navbar from '../../../components/layout/Navbar';
 import Footer from '../../../components/layout/Footer';
 import { FavoriteIcon, AddShoppingCartIcon, ChevronLeftIcon, CheckIcon, ChevronRightIcon, KeyArrowDownIcon, LocalShippingIcon } from '../../../icons';
-import { useGetProductQuery } from '../../../api/endpoints/productApi';
-import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../../shop/slices/cartSlice';
-import { useAddProductsMutation, useCreateShopingCartMutation } from '../../../api/endpoints/shoping-cart.api';
-import { selectCurrentCartId, selectCurrentUserId, setIdcart } from '../../auth/slices/authSlice';
 import { ProductSlekeletonList } from '../components/ProductSlekeletonList';
-import { useGetAllCategoriesQuery } from '../../../api/endpoints/categoryApi';
+import { useProducts } from '../hooks/useProducts';
 
 
 
 const Products = () => {
-  // Datos estáticos de productos
-  const { data: products = [], isLoading, isError, error } = useGetProductQuery();
-  const { data: categories = [] } = useGetAllCategoriesQuery();
 
-  const errorMessage =
-    typeof error?.data === 'string'
-      ? error.data
-      : error?.data?.message || error?.error || 'No se pudieron cargar los productos.'
-
-  const [CreateShopingCart] = useCreateShopingCartMutation();
-  const [AddProducts] = useAddProductsMutation();
-  const dispatch = useDispatch();
-  const userId = useSelector(selectCurrentUserId);
-  const cartIdFromState = useSelector(selectCurrentCartId);
-  const creatingCartPromiseRef = useRef(null);
-
-  const normalizeCartId = (value) => {
-    if (value === null || value === undefined) {
-      return null;
-    }
-
-    const normalizedValue = String(value).trim();
-    return !normalizedValue || normalizedValue === 'null' || normalizedValue === 'undefined'
-      ? null
-      : normalizedValue;
-  };
-
-  const createCartOnce = async (product) => {
-
-    if (!creatingCartPromiseRef.current) {
-      const productId = product?._id ?? product?.id;
-
-      if (!userId || !productId) {
-        return null;
-      }
-
-      const payload = {
-        user: userId,
-        products: [
-          {
-            product: productId,
-            quantity: 1,
-          },
-        ],
-      };
-
-      creatingCartPromiseRef.current = CreateShopingCart(payload)
-        .unwrap()
-        .then((response) => {
-          const cartId =
-            response?.id ??
-            response?._id ??
-            response?.cartId ??
-            response?.cart?.id ??
-            response?.cart?._id;
-
-          if (cartId) {
-            dispatch(setIdcart({ cartId }));
-          }
-
-          return cartId ?? true;
-        })
-        .finally(() => {
-          creatingCartPromiseRef.current = null;
-        });
-    }
-    return creatingCartPromiseRef.current;
-  };
-
-  const addProductsToCart = (product) => {
-    const productId = product?._id ?? product?.id;
-
-    if (!userId || !productId) {
-      return null;
-    }
-
-    const payload = {
-      user: userId,
-      products: [
-        {
-          product: productId,
-          quantity: 1,
-        },
-      ],
-    };
-
-    creatingCartPromiseRef.current = AddProducts(payload)
-      .unwrap()
-      .finally(() => {
-        creatingCartPromiseRef.current = null;
-      });
-
-    return creatingCartPromiseRef.current;
-
-  }
-
-  const handleShoppingCart = async (product) => {
-    try {
-      const cartId = normalizeCartId(cartIdFromState ?? localStorage.getItem('cartId'));
-      if (!cartId || cartId === 'null') {
-        await createCartOnce(product);
-        dispatch(addToCart({ product: product, quantity: 1 }));
-        return;
-      }
-
-      await addProductsToCart(product);
-      return dispatch(addToCart({ product: product, quantity: 1 }));
-
-    } catch (error) {
-      // Keep local cart UX responsive even if backend cart sync fails
-      console.log(error);
-    }
-  };
+  const { products, categories, isLoading, isError, errorMessage, handleShoppingCart } = useProducts();
 
   return (
     <div className="bg-white text-gray-900 font-display min-h-screen flex flex-col">

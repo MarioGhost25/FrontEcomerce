@@ -1,17 +1,12 @@
 import Navbar from '../../../components/layout/Navbar'
-import { useGetAllCategoriesQuery } from '../../../api/endpoints/categoryApi'
 import { Link } from 'react-router'
 import { ArrowRight } from 'lucide-react'
 import { CategorySkeletonList } from '../components/CategorySkeletonList'
+import { useCategories } from '../hooks/useCategories'
 
 export const CategoryPage = () => {
-    const { data: categories = [], isLoading, isError, error } = useGetAllCategoriesQuery()
-
-    const errorMessage =
-        typeof error?.data === 'string'
-            ? error.data
-            : error?.data?.message || error?.error || 'No se pudieron cargar las categorias.'
-
+    
+    const { categories, isLoading, isError, errorMessage} = useCategories();
 
     return (
         <div className='relative flex min-h-screen w-full flex-col overflow-x-hidden '>

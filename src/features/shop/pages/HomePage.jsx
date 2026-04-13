@@ -8,11 +8,11 @@ import { useGetProductQuery } from '../../../api/endpoints/productApi';
 import { useGetAllCategoriesQuery } from '../../../api/endpoints/categoryApi';
 import { CategorySkeletonList } from '../../category/components/CategorySkeletonList';
 import { ProductSlekeletonList } from '../../product/components/ProductSlekeletonList';
+import { useProducts } from '../../product/hooks/useProducts';
 
 const Home = () => {
-  // Datos estáticos para productos destacados
-  const { data: products = [], isLoading, isError } = useGetProductQuery();
-  const { data: categories = [] } = useGetAllCategoriesQuery();
+
+  const {products, categories, isLoading, handleShoppingCart} = useProducts();
 
   return (
     <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden">

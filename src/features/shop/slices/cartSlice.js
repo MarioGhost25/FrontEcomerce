@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { logout } from "../../auth/slices/authSlice";
 
 const getProductId = (item) => {
     return item?.id ?? item?._id ?? item?.product?.id ?? item?.product?._id ?? null;
@@ -71,6 +72,17 @@ export const cartSlice = createSlice({
         
 
         
+    },
+    extraReducers: (builder) => {
+        builder.addCase(logout, (state) => {
+            state.products = [];
+            state.quantity = 0;
+            state.totalPrice = 0;
+
+            if (typeof localStorage !== 'undefined') {
+                localStorage.removeItem('cartItems');
+            }
+        });
     }
 
 

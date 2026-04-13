@@ -1,13 +1,18 @@
 import { useState } from "react";
 import { DropdownItem } from "./DropdownItem";
 import { Dropdown } from "./Dropdown";
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 import { ChevronDown, CircleHelp, ImageIcon, ImagePlusIcon, LogOut, Settings, User } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { logout } from "../../../features/auth";
+import { apiSlice } from "../../../api/apiSlice";
+import { useLogoutUserMutation } from "../../../api/endpoints/userApi";
+import { toast } from "sonner";
 export default function UserDropdown({ name, email, image }) {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [logoutUser, { isLoading: isSigningOut }] = useLogoutUserMutation();
 
   const [isOpen, setIsOpen] = useState(false);
   function toggleDropdown() {
@@ -16,6 +21,21 @@ export default function UserDropdown({ name, email, image }) {
   function closeDropdown() {
     setIsOpen(false);
   }
+
+  const handleSignOut = async () => {
+    try {
+      await logoutUser().unwrap();
+      toast.success('¡Sesión cerrada exitosamente!');
+    } catch (error) {
+      console.warn('No se pudo cerrar sesion en backend, limpiando sesion local:', error);
+    } finally {
+      dispatch(logout());
+      dispatch(apiSlice.util.resetApiState());
+      closeDropdown();
+      navigate('/', { replace: true });
+    }
+  };
+
   return (
     <div className="relative">
       <button onClick={toggleDropdown} className="flex  text-gray-700 dropdown-toggle dark:text-gray-400">
@@ -57,17 +77,15 @@ export default function UserDropdown({ name, email, image }) {
             </DropdownItem>
           </li>
         </ul>
-        <Link to="/signin" className="flex items-center gap-3 px-3 py-2 mt-3 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
+        <button
+          type="button"
+          onClick={handleSignOut}
+          disabled={isSigningOut}
+          className="flex w-full items-center gap-3 px-3 py-2 mt-3 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 disabled:cursor-not-allowed disabled:opacity-50 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
+        >
           <LogOut className="group-hover:fill-gray-700 dark:group-hover:fill-gray-300" width={24} height={24} />
-          {dispatch && (
-            <button
-              onClick={() => dispatch(logout())}
-              className="flex items-center gap-3 px-3 py-2 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
-            >
-              Sign out
-            </button>
-          )}
-        </Link>
+          {isSigningOut ? 'Signing out...' : 'Sign out'}
+        </button>
       </Dropdown>
     </div>);
 }

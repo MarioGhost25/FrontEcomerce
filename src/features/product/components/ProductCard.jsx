@@ -13,7 +13,8 @@ const ProductCard = ({
   reviews = 0,
   badge,
   badgeColor = 'amber-100',
-  badgeTextColor = 'amber-800'
+  badgeTextColor = 'amber-800',
+  handleShoppingCart
 }) => {
   return (
     <div className="group flex flex-col gap-4">
@@ -31,11 +32,12 @@ const ProductCard = ({
             {badge}
           </div>
         )}
-          <button className="absolute top-3 right-3 size-8 !p-0 !border-0 bg-white/80 hover:bg-white rounded-full flex items-center justify-center text-slate-400 hover:text-red-500 transition-colors shadow-sm">
+        <button className="absolute top-3 right-3 size-8 !p-0 !border-0 bg-white/80 hover:bg-white rounded-full flex items-center justify-center text-slate-400 hover:text-red-500 transition-colors shadow-sm">
           <FavoriteIcon className="size-5" strokeWidth={2.2} />
         </button>
         <div className="absolute bottom-0 left-0 w-full p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-          <button className="w-full h-10 bg-primary text-white text-sm font-bold rounded-lg shadow-lg hover:bg-primary-dark transition-colors flex items-center justify-center gap-2">
+          <button
+            className="w-full h-10 bg-primary text-white text-sm font-bold rounded-lg shadow-lg hover:bg-primary-dark transition-colors flex items-center justify-center gap-2">
             <ShoppingCart className="size-5" strokeWidth={2.2} />
             Agregar
           </button>

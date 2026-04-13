@@ -1,140 +1,15 @@
 import { Link } from 'react-router';
 import { Minus, Plus, ShoppingCart, Trash2 } from 'lucide-react';
-import { useAddProductsMutation, useDecreaseQuantityMutation, useDeleteProductsMutation, useGetCartbyIdQuery } from '../../../api/endpoints/shoping-cart.api';
 import Navbar from '../../../components/layout/Navbar';
 import Footer from '../../../components/layout/Footer';
 import Button from '../../../components/ui/Button';
-import { useDispatch, useSelector } from 'react-redux';
-import { addToCart, selectCartItems, setCartFromServer } from '../slices/cartSlice';
+import { useCart } from '../hooks/useCart';
 import { useEffect } from 'react';
+
 
 const Cart = () => {
 
-  const dispatch = useDispatch();
-  const [addProductsToCart, { isLoading: isAddingProduct }] = useAddProductsMutation();
-  const [deleteProducts] = useDeleteProductsMutation();
-  const [decreaseQuantity] = useDecreaseQuantityMutation();
-  const { data, isLoading, refetch } = useGetCartbyIdQuery() //Mi unica fuente de la verdad
-  const products = useSelector(selectCartItems);
-
-  useEffect(() => {
-    if (data?.products) {
-      dispatch(setCartFromServer(data));
-    }
-  }, [data, dispatch]);
-
-
-
-  const handledQuantity = async (item) => {
-    const { product } = item;
-    const productId = product?._id || product?.product?._id || product?.product?._id;
-
-    if (!productId) return;
-
-    const payload = {
-      products: [
-        {
-          product: productId,
-          quantity: 1,
-        },
-      ]
-    };
-
-    // Optimistic UI: actualiza cantidad y total al instante.
-    dispatch(addToCart({ product: products, quantity: 1 }));
-
-    try {
-      await addProductsToCart(payload).unwrap();
-      const refreshed = await refetch();
-      const cartSnapshot = refreshed?.data;
-
-      if (Array.isArray(cartSnapshot?.products)) {
-        dispatch(setCartFromServer(cartSnapshot));
-      }
-
-    } catch (error) {
-      console.error('Error al aumentar la cantidad:', error);
-
-      // Rollback de estado optimista usando snapshot del backend.
-      const refreshed = await refetch();
-      const cartSnapshot = refreshed?.data;
-      if (Array.isArray(cartSnapshot?.products)) {
-        dispatch(setCartFromServer(cartSnapshot));
-      }
-
-    }
-
-  }
-  const handleDecreaseQuantity = async (item) => {
-    if(item.quantity === 1 ) return handleRemoveProduct(item);
-    const { product } = item;
-    const payload = {
-      products: [
-        {
-          _id: product?._id,
-          quantity: 1,
-        },
-      ]
-    };
-
-    try {
-
-      await decreaseQuantity(payload).unwrap();
-
-      const refreshed = await refetch();
-      const cartSnapshot = refreshed?.data;
-
-      if (Array.isArray(cartSnapshot?.products)) {
-        dispatch(setCartFromServer(cartSnapshot));
-      }
-    } catch (error) {
-      console.error('Error al disminuir la cantidad:', error);
-
-      // Rollback de estado optimista usando snapshot del backend.
-      const refreshed = await refetch();
-      const cartSnapshot = refreshed?.data;
-      if (Array.isArray(cartSnapshot?.products)) {
-        dispatch(setCartFromServer(cartSnapshot));
-      }
-
-    }
-
-
-  }
-
-  const handleRemoveProduct = async (item) => {
-    try {
-
-      const { product } = item;
-
-      const payload = {
-        products: [
-          {
-            _id: item?._id || product?._id,
-          },
-        ]
-      };
-
-      await deleteProducts(payload).unwrap();
-
-      const refreshed = await refetch();
-      const cartSnapshot = refreshed?.data;
-
-      if (Array.isArray(cartSnapshot?.products)) {
-        dispatch(setCartFromServer(cartSnapshot));
-      }
-
-    } catch (error) {
-      console.error('Error al eliminar producto del carrito:', error);
-    }
-  }
-
-
-
-  const getCartItemKey = (item, index) => {
-    return item?._id ?? item?.id ?? item?.product?._id ?? item?.product?.id ?? `cart-item-${index}`;
-  };
-
+  const { products, isLoading, isAddingProduct, handledQuantity, handleDecreaseQuantity, handleRemoveProduct, getCartItemKey } = useCart();
 
 
   const subtotal = products.reduce((sum, item) => {
@@ -166,11 +41,11 @@ const Cart = () => {
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 ">
             {/* Cart Items */}
-            <div className="lg:col-span-2 space-y-4">
+            <div className="lg:col-span-2 space-y-4 ">
               {products.map((item, index) => (
-                <div key={getCartItemKey(item, index)} className="bg-white rounded-xl border border-gray-200 p-6 flex gap-6">
+                <div key={getCartItemKey(item, index)} className="bg-white rounded-xl border border-gray-200 p-6 flex gap-6 transition-discrete">
                   <div className="w-24 h-24 rounded-lg overflow-hidden bg-gray-100 shrink-0">
                     <img loading='lazy' src={item.product?.images} alt={item.product?.name} className="w-full h-full object-cover" />
                   </div>
@@ -212,7 +87,7 @@ const Cart = () => {
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between text-[#637f88]">
                     <span>Subtotal</span>
-                    <span>${subtotal.toFixed(2)}</span>
+                    <span>${total.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-[#637f88]">
                     <span>Envío</span>

@@ -53,7 +53,7 @@ export const Login = ({ isMoved, setIsMoved }) => {
         try {
 
             const res = await loginUser(validation.data).unwrap()
-            console.log(res.user)
+            toast.success('¡Bienvenido de nuevo!');
             const accessToken = res?.accessToken ?? res?.token;
             const user = res?.user;
 
