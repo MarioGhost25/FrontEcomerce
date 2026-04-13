@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import { useRef } from 'react';
-import { SlidersHorizontal, Star } from 'lucide-react';
+import { HeartIcon, SlidersHorizontal, Star } from 'lucide-react';
 import Navbar from '../../../components/layout/Navbar';
 import Footer from '../../../components/layout/Footer';
 import { FavoriteIcon, AddShoppingCartIcon, ChevronLeftIcon, CheckIcon, ChevronRightIcon, KeyArrowDownIcon, LocalShippingIcon } from '../../../icons';
@@ -10,12 +10,14 @@ import { addToCart } from '../../shop/slices/cartSlice';
 import { useAddProductsMutation, useCreateShopingCartMutation } from '../../../api/endpoints/shoping-cart.api';
 import { selectCurrentCartId, selectCurrentUserId, setIdcart } from '../../auth/slices/authSlice';
 import { ProductSlekeletonList } from '../components/ProductSlekeletonList';
+import { useGetAllCategoriesQuery } from '../../../api/endpoints/categoryApi';
 
 
 
 const Products = () => {
   // Datos estáticos de productos
   const { data: products = [], isLoading, isError, error } = useGetProductQuery();
+  const { data: categories = [] } = useGetAllCategoriesQuery();
 
   const errorMessage =
     typeof error?.data === 'string'
@@ -184,40 +186,20 @@ const Products = () => {
               {/* Category Filter */}
               <div className="mb-8">
                 <h4 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wider">Categorías</h4>
-                <div className="space-y-2">
-                  <label className="flex items-center gap-3 cursor-pointer group">
-                    <div className="relative flex items-center">
-                      <input className="peer size-4 appearance-none rounded border border-gray-300 checked:bg-teal-700 checked:border-teal-700 focus:ring-1 focus:ring-teal-700 focus:ring-offset-1 transition-colors" type="checkbox" />
-                      <CheckIcon className="flex justify-center items-center absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none text-xs inset-0 m-auto" />
+                {categories.map((category) => {
+                  return (
+                    <div key={category.id} className="space-y-2">
+                      <label className="flex items-center gap-3 cursor-pointer group">
+                        <div className="relative flex items-center">
+                          <input className="peer size-4 appearance-none rounded border border-gray-300 checked:bg-teal-700 checked:border-teal-700 focus:ring-1 focus:ring-teal-700 focus:ring-offset-1 transition-colors" type="checkbox" />
+                          <CheckIcon className="flex justify-center items-center absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none text-xs inset-0 m-auto" />
+                        </div>
+                        <span className="text-sm text-gray-600 group-hover:text-teal-700 transition-colors">{category.name}</span>
+                        <span className="ml-auto text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{category.products.length}</span>
+                      </label>
                     </div>
-                    <span className="text-sm text-gray-600 group-hover:text-teal-700 transition-colors">Smartphones</span>
-                    <span className="ml-auto text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">120</span>
-                  </label>
-                  <label className="flex items-center gap-3 cursor-pointer group">
-                    <div className="relative flex items-center">
-                      <input defaultChecked className="peer size-4 appearance-none rounded border border-gray-300 checked:bg-teal-700 checked:border-teal-700 focus:ring-1 focus:ring-teal-700 focus:ring-offset-1 transition-colors" type="checkbox" />
-                      <CheckIcon className="flex justify-center items-center absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none text-xs inset-0 m-auto" />
-                    </div>
-                    <span className="text-sm text-gray-900 font-medium group-hover:text-teal-700 transition-colors">Laptops</span>
-                    <span className="ml-auto text-xs text-teal-700 bg-amber-100 px-2 py-0.5 rounded-full font-bold">45</span>
-                  </label>
-                  <label className="flex items-center gap-3 cursor-pointer group">
-                    <div className="relative flex items-center">
-                      <input className="peer size-4 appearance-none rounded border border-gray-300 checked:bg-teal-700 checked:border-teal-700 focus:ring-1 focus:ring-teal-700 focus:ring-offset-1 transition-colors" type="checkbox" />
-                      <CheckIcon className="flex justify-center items-center absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none text-xs inset-0 m-auto" />
-                    </div>
-                    <span className="text-sm text-gray-600 group-hover:text-teal-700 transition-colors">Accesorios</span>
-                    <span className="ml-auto text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">86</span>
-                  </label>
-                  <label className="flex items-center gap-3 cursor-pointer group">
-                    <div className="relative flex items-center">
-                      <input className="peer size-4 appearance-none rounded border border-gray-300 checked:bg-teal-700 checked:border-teal-700 focus:ring-1 focus:ring-teal-700 focus:ring-offset-1 transition-colors" type="checkbox" />
-                      <CheckIcon className="flex justify-center items-center absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none text-xs inset-0 m-auto" />
-                    </div>
-                    <span className="text-sm text-gray-600 group-hover:text-teal-700 transition-colors">Audio</span>
-                    <span className="ml-auto text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">32</span>
-                  </label>
-                </div>
+                  )
+                })}
               </div>
 
               {/* Price Filter */}
@@ -322,7 +304,7 @@ const Products = () => {
                     )
                     }
                     <div className="absolute top-3 right-3 z-10">
-                      <button className="size-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors shadow-sm">
+                      <button className="size-8 !p-0 !border-0 bg-white/80 hover:bg-white rounded-full flex items-center justify-center text-slate-400 hover:text-red-500 transition-colors shadow-sm">
                         <FavoriteIcon className="w-5 h-5" />
                       </button>
                     </div>

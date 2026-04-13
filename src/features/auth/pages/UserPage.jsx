@@ -1,25 +1,69 @@
 
 
-import { useState } from 'react'
-import { Star } from 'lucide-react';
-import { StoreIcon } from '../../../icons';
-import { Link } from 'react-router';
+import { useEffect, useRef, useState } from 'react'
+import { Star, StoreIcon } from 'lucide-react';
 import { Login } from '../components/LoginForm';
 import { Register } from '../components/RegisterForm';
-
-
-
-
-
-
+import Navbar from '../../../components/layout/Navbar';
+import { Link } from 'react-router';
 
 export const User = () => {
     const [isMoved, setIsMoved] = useState(false);
+    const [mobilePanelTop, setMobilePanelTop] = useState(0);
+    const [mobilePanelHeight, setMobilePanelHeight] = useState(420);
+
+    const stackContainerRef = useRef(null);
+    const loginBlockRef = useRef(null);
+    const registerBlockRef = useRef(null);
 
     const changeState = () => {
         setIsMoved(!isMoved);
 
     };
+
+    useEffect(() => {
+        const updateMobilePanelPosition = () => {
+            if (
+                !stackContainerRef.current ||
+                !loginBlockRef.current ||
+                !registerBlockRef.current ||
+                window.innerWidth >= 1024
+            ) {
+                return;
+            }
+
+            const targetElement = isMoved ? registerBlockRef.current : loginBlockRef.current;
+            const maxHeight = window.innerWidth >= 640 ? 520 : 420;
+            const panelHeight = Math.min(Math.max(targetElement.offsetHeight * 0.7, 320), maxHeight);
+            const desiredTop = targetElement.offsetTop + (targetElement.offsetHeight - panelHeight) / 2;
+            const maxTop = Math.max(0, stackContainerRef.current.scrollHeight - panelHeight);
+
+            setMobilePanelHeight(panelHeight);
+            setMobilePanelTop(Math.max(0, Math.min(desiredTop, maxTop)));
+        };
+
+        const frameId = requestAnimationFrame(updateMobilePanelPosition);
+        window.addEventListener('resize', updateMobilePanelPosition);
+
+        const resizeObserver = new ResizeObserver(updateMobilePanelPosition);
+        resizeObserver.observe(loginBlockRef.current);
+        resizeObserver.observe(registerBlockRef.current);
+
+        return () => {
+            cancelAnimationFrame(frameId);
+            window.removeEventListener('resize', updateMobilePanelPosition);
+            resizeObserver.disconnect();
+        };
+    }, [isMoved]);
+
+    useEffect(() => {
+        if (window.innerWidth >= 1024) {
+            return;
+        }
+
+        const targetElement = isMoved ? registerBlockRef.current : loginBlockRef.current;
+        targetElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, [isMoved]);
 
     return (
         <>
@@ -39,9 +83,10 @@ export const User = () => {
                     </Link>
                 </header>
 
-                <main className="flex-grow flex items-center justify-center gap-3 p-4 sm:p-6 pt-20 sm:pt-24 relative overflow-hidden">
+                <main className="flex-grow flex items-start lg:items-center justify-center gap-3 p-4 sm:p-6 pt-20 sm:pt-24 relative overflow-hidden">
                     <div
-                        className={`hidden lg:flex items-center bg-amber-100 bg-gradient-to-t from-teal-700 absolute z-50 rounded-2xl w-[600px] h-[750px] 
+
+                        className={`hidden lg:flex absolute z-50 items-center bg-amber-100 bg-gradient-to-t from-teal-700 absolute rounded-2xl w-[600px] h-[750px] 
                             shadow-xl transition-all duration-500 ease-in-out
                             ${isMoved ? 'translate-x-[-348px]' : 'translate-x-[248px]'}
                             `}
@@ -79,15 +124,56 @@ export const User = () => {
                                 Descubre las últimas tendencias con un 10% de descuento en tu primera compra al registrarte.
                             </p>
 
-                            
+
                         </div>
 
                     </div >
-                    
+
                     {/* Layout responsive: stack en móvil, lado a lado en desktop */}
-                    <div className="w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-6">
-                        <Login />
-                        <Register />
+                    <div
+                        ref={stackContainerRef}
+                        className="w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-6 relative"
+                    >
+                        <div
+                            aria-hidden="true"
+                            className="pointer-events-none absolute left-1/2 z-30 flex w-[92%] max-w-[560px] -translate-x-1/2 items-center rounded-2xl bg-amber-100 bg-gradient-to-t from-teal-700 shadow-xl transition-all duration-500 ease-in-out lg:hidden"
+                            style={{ top: `${mobilePanelTop}px`, height: `${mobilePanelHeight}px` }}
+                        >
+                            <div className="p-6 sm:p-8 text-white z-10">
+                                <div className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 mb-6 shadow-2xl">
+                                    <div className="flex items-center gap-2 text-amber-300 mb-2">
+                                        {[...Array(5)].map((_, i) => (
+                                            <Star key={i} className="h-4 w-4 icon-filled text-amber-300" fill="currentColor" />
+                                        ))}
+                                    </div>
+                                    <p className="text-sm sm:text-base font-medium leading-relaxed italic">
+                                        "La mejor experiencia de compra online que he tenido. La ropa es de excelente calidad y el envío fue rapidísimo."
+                                    </p>
+                                    <div className="mt-4 flex items-center gap-3">
+                                        <img
+                                            alt="Retrato de cliente feliz"
+                                            className="w-10 h-10 rounded-full object-cover border-2 border-white/30"
+                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjoqOZLsYYAum-OhCbq3i-pK7FqYswX6HPbL0tUH8XRVZE7ztgw6e-xCiuL6SjmYJKpljDXm19L1tsrZSKlU6DuwKgCHlEakmD0lrZQ5IjCLSkWV_7qGsbRwLJmxd7QviBnKQ1U955zXm-98Axi0A77Z47aSKfWOkN0T9gF0HlSDGDN_iw290uw0q__KoRoh3eRcHqvxiPXaFAgU5vhsGH33ALA6wLK3IMHM_mtcmp0lZG8buDK2OYTuLdnjUl5g2g19wN41dujXq-"
+                                        />
+                                        <div>
+                                            <p className="text-sm font-bold">Sofía Martínez</p>
+                                            <p className="text-xs text-cyan-100">Cliente Verificado</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h2 className="text-xl sm:text-2xl font-bold mb-2">Empieza tu estilo hoy</h2>
+                                <p className="text-cyan-100 text-sm sm:text-base">
+                                    Descubre las últimas tendencias con un 10% de descuento en tu primera compra al registrarte.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div ref={loginBlockRef} className="relative z-20 w-full flex justify-center">
+                            <Login isMoved={isMoved} setIsMoved={setIsMoved} />
+                        </div>
+                        <div ref={registerBlockRef} className="relative z-20 w-full flex justify-center">
+                            <Register />
+                        </div>
                     </div>
                 </main>
             </div>

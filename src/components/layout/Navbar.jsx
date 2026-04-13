@@ -5,7 +5,7 @@ import { selectCartItems } from '../../features/shop/slices/cartSlice';
 import UserDropdown from '../../components/ui/dropdown/UserDropdown';
 import { selectCurrentUserId, selectIsAuthenticated } from '../../features/auth/slices/authSlice';
 
-const Navbar = () => {
+ export const Navbar = () => {
 
   const cartSelect = useSelector(selectCartItems)
   const islogin = useSelector(selectIsAuthenticated);

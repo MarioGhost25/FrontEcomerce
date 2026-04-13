@@ -13,7 +13,7 @@ const loginSchema = z.object({
     password: z.string().trim().min(8, { message: 'La contraseña debe tener al menos 8 caracteres' }),
 });
 
-export const Login = () => {
+export const Login = ({ isMoved, setIsMoved }) => {
     const [fieldErrors, setFieldErrors] = useState({})
     const [showPassword, setShowPassword] = useState(false);
     const [loginUser, { isLoading }] = useLoginMutation();
@@ -200,9 +200,12 @@ export const Login = () => {
                 <div className="px-4 sm:px-8 py-4 sm:py-5 bg-gray-50 border-t border-gray-100 text-center">
                     <p className="text-sm text-gray-600">
                         ¿No tienes una cuenta?{' '}
-                        <Link to="/user" className="font-semibold text-teal-700 hover:text-teal-800 hover:underline transition-colors">
+                        <button
+                            className="font-semibold text-teal-700 hover:border-none hover:text-teal-800 hover:underline transition-colors"
+                            onClick={() => setIsMoved(!isMoved)}
+                        >
                             Regístrate aquí
-                        </Link>
+                        </button>
                     </p>
                 </div>
             </div>
