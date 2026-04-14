@@ -162,19 +162,15 @@ const Products = () => {
                 </div>
               </div>
             </div>
-
             {
               isLoading && <ProductSlekeletonList />
             }
-
             {isError && (
               <div className='rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-center text-sm text-red-700 dark:border-red-900/50 dark:bg-red-900/20 dark:text-red-300'>
                 {errorMessage}
               </div>
             )
             }
-
-
             {/* Products Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {products.map((product) => (
@@ -191,7 +187,7 @@ const Products = () => {
                         <FavoriteIcon className="w-5 h-5" />
                       </button>
                     </div>
-                    <Link to={`/products/${product.id}`}>
+                    <Link to={`/product-detail/${product.id ?? product._id}`} >
                       <img
                         loading='lazy'
                         alt={product.name}
@@ -206,7 +202,7 @@ const Products = () => {
                       <span className="text-xs font-bold text-gray-900">{product.rating}</span>
                       {/* <span className="text-xs text-gray-400">({product.reviews})</span> */}
                     </div>
-                    <Link to={`/products/${product.id}`}>
+                    <Link to={`/product-detail/${product.id ?? product._id}`}>
                       <h3 className="font-bold text-gray-900 leading-tight mb-1 group-hover:text-teal-700 transition-colors">
                         {product.name}
                       </h3>
@@ -221,7 +217,7 @@ const Products = () => {
                       </div>
                       <button
                         className="bg-teal-700 hover:bg-teal-800 text-white rounded-lg p-2 transition-colors flex items-center justify-center gap-2 shadow-sm"
-                        onClick={() => handleShoppingCart(product)} //Arreglar el bug cuando se da doubleclick
+                        onClick={() => handleShoppingCart(product)} 
                       >
                         <AddShoppingCartIcon className="w-5 h-5" />
                       </button>

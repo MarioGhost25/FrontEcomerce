@@ -64,7 +64,7 @@ export const appRouter = createBrowserRouter([
 
   },
   {
-    path: 'product-detail',
+    path: 'product-detail/:id',
     element: <ProductDetailPage />
   },
   {

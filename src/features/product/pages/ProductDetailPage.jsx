@@ -4,24 +4,99 @@ import Navbar from '../../../components/layout/Navbar';
 import Footer from '../../../components/layout/Footer';
 import Button from '../../../components/ui/Button';
 import { AddShoppingCartIcon, FavoriteIcon } from '../../../icons';
+import { useGetProductByIdQuery } from '../../../api/endpoints/productApi';
 
 const ProductDetail = () => {
+
   const { id } = useParams();
-  
-  // Datos estáticos del producto (en producción vendría de una API)
-  const product = {
-    id: id || 1,
-    name: 'Auriculares Premium Wireless Noise-Cancelling',
-    price: '299.00',
-    originalPrice: '349.99',
-    description: 'Sonido de alta fidelidad con cancelación de ruido activa. Batería de hasta 30 horas de duración. Diseño ergonómico y cómodo para uso prolongado.',
-    longDescription: 'Estos auriculares premium ofrecen una experiencia de audio excepcional con tecnología de cancelación de ruido de última generación. Perfectos para viajes, trabajo o entretenimiento en casa.',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBqtLVf4NdoF5q0OSM_VHLN2mZ9w5GtIz9pkN7eFqctXZwCxeRieWtaHJtSQ74bPL42_b4UfdOWgKn-EczEeq1ZvwM6v-l3NsV3eZW3vldO5xNgeYEtt1TLJ8zxzynD_say68uxU6H8PkNbumts3mWBwtcv22K73ZadHHXZDAoxmwo-N0B6a6ZX23XnyuPsilYvISzDELpQpdf_Sa4WvTK-0Fvylaoqot2IlmEZ5-05_Ee1rA1OGQ2VncEuV6uhtrWOe7fWpQ-pTvN8',
-    rating: 4.8,
-    reviews: 120,
-    inStock: true,
-    stock: 15,
-  };
+  const productId = id?.trim();
+  const { data, isLoading, isError, error } = useGetProductByIdQuery(productId, {
+    skip: !productId,
+  });
+  const product = data?.product ?? data?.data ?? data;
+
+  const errorMessage =
+    typeof error?.data === 'string'
+      ? error.data
+      : error?.data?.message || error?.error || 'No se pudo cargar el producto.';
+
+  if (!productId) {
+    return (
+      <div className="bg-white min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-1 max-w-7xl mx-auto px-4 lg:px-10 py-8">
+          <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700">
+            No se recibio un id de producto valido en la URL.
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="bg-white min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-1 max-w-7xl mx-auto px-4 lg:px-10 py-8">
+          <div className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-700">
+            Cargando producto...
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="bg-white min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-1 max-w-7xl mx-auto px-4 lg:px-10 py-8">
+          <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {errorMessage}
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="bg-white min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-1 max-w-7xl mx-auto px-4 lg:px-10 py-8">
+          <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700">
+            Producto no encontrado.
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  const productImage =
+    (Array.isArray(product.images) && product.images[0]) ||
+    product.image ||
+    product.images ||
+    '/images/error/image-not-found.png';
+ 
+    
+    // Datos estáticos del producto (en producción vendría de una API)
+    // const product = {
+    //   id: id || 1,
+    //   name: 'Auriculares Premium Wireless Noise-Cancelling',
+    //   price: '299.00',
+    //   originalPrice: '349.99',
+    //   description: 'Sonido de alta fidelidad con cancelación de ruido activa. Batería de hasta 30 horas de duración. Diseño ergonómico y cómodo para uso prolongado.',
+    //   longDescription: 'Estos auriculares premium ofrecen una experiencia de audio excepcional con tecnología de cancelación de ruido de última generación. Perfectos para viajes, trabajo o entretenimiento en casa.',
+    //   image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBqtLVf4NdoF5q0OSM_VHLN2mZ9w5GtIz9pkN7eFqctXZwCxeRieWtaHJtSQ74bPL42_b4UfdOWgKn-EczEeq1ZvwM6v-l3NsV3eZW3vldO5xNgeYEtt1TLJ8zxzynD_say68uxU6H8PkNbumts3mWBwtcv22K73ZadHHXZDAoxmwo-N0B6a6ZX23XnyuPsilYvISzDELpQpdf_Sa4WvTK-0Fvylaoqot2IlmEZ5-05_Ee1rA1OGQ2VncEuV6uhtrWOe7fWpQ-pTvN8',
+    //   rating: 4.8,
+    //   reviews: 120,
+    //   inStock: true,
+    //   stock: 15,
+    // };
 
   return (
     <div className="bg-white min-h-screen flex flex-col">
@@ -58,7 +133,7 @@ const ProductDetail = () => {
           <div className="relative">
             <div className="aspect-square rounded-xl overflow-hidden bg-gray-100">
               <img 
-                src={product.image} 
+                src={productImage}
                 alt={product.name}
                 className="w-full h-full object-cover"
               />
@@ -91,8 +166,8 @@ const ProductDetail = () => {
             <p className="text-gray-600 leading-relaxed">{product.longDescription}</p>
 
             <div className="flex items-center gap-2">
-              <span className={`text-sm font-bold ${product.inStock ? 'text-green-600' : 'text-red-600'}`}>
-                {product.inStock ? `En stock (${product.stock} disponibles)` : 'Agotado'}
+              <span className={`text-sm font-bold ${product.stock ? 'text-green-600' : 'text-red-600'}`}>
+                {product.stock ? `En stock (${product.stock} disponibles)` : 'Agotado'}
               </span>
             </div>
 
