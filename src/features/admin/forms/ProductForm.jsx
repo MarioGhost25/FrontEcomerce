@@ -34,7 +34,8 @@ const computeStockStatus = (stock, lowStockThreshold = 10) => {
 
 const ProductForm = ({ product = null, onCancel }) => {
 
-  const countText = useRef(0)
+  const countTextRef = useRef(0)
+  const [countText, setCountText] = useState(0)
 
   const [errors, setErrors] = useState({});
   const [createProduct, { isLoading }] = useCreateProductMutation();
@@ -95,7 +96,7 @@ const ProductForm = ({ product = null, onCancel }) => {
   const handleTextAreaChange = (e) => {
     const { name, value } = e.target;
     const count = value.length;
-    countText.current = count;
+    setCountText(count);
     onInputChange(e);
   }
 
@@ -244,7 +245,7 @@ const ProductForm = ({ product = null, onCancel }) => {
                 id="longDescription"
                 name="longDescription"
                 value={longDescription}
-                ref={countText}
+                ref={countTextRef}
                 onChange={handleTextAreaChange}
                 rows={4}
                 placeholder="Detailed product description"
@@ -252,7 +253,7 @@ const ProductForm = ({ product = null, onCancel }) => {
                 hint={errors.longDescription}
               />
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                {countText.current > 200 ? <span className="text-red-500">{countText.current}/200 characters</span> : <span className="text-gray-500">{countText.current}/200 characters</span>}
+                {countText > 200 ? <span className="text-red-500">{countText}/200 characters</span> : <span className="text-gray-500">{countText}/200 characters</span>}
               </p>
             </div>
 

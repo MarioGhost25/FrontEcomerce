@@ -19,7 +19,7 @@ const ProductCard = ({
   return (
     <div className="group flex flex-col gap-4">
       <div className="relative w-full aspect-square overflow-hidden rounded-xl bg-slate-100">
-        <Link to={`/products/${id}`}>
+        <Link to={`/product-detail/${id ??_id}`}>
           <div
             className="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 group-hover:scale-105"
             style={{ backgroundImage: `url(${images})` }}
@@ -51,10 +51,15 @@ const ProductCard = ({
             </p>
           </Link>
           <span className="font-bold text-primary">
-            {originalPrice && (
-              <span className="block text-xs text-gray-400 line-through">{originalPrice}</span>
+            {price ? (
+              <span className="text-xs text-gray-400 line-through">${originalPrice}</span>
+            ) : (
+              <span className="text-lg font-black text-teal-700">${originalPrice}</span>
             )}
-            ${price}
+
+            {price && (
+              <span className="text-lg font-black text-teal-700">${price}</span>
+            )}
           </span>
         </div>
         <p className="text-text-muted text-sm font-normal">{description}</p>

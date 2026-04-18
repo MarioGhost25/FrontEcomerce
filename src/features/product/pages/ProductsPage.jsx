@@ -210,7 +210,6 @@ const Products = () => {
                     <p className="text-xs text-gray-500 mb-3 line-clamp-1">{product.description}</p>
                     <div className="mt-auto pt-3 border-t border-gray-200 flex items-center justify-between">
                       <div>
-                       
                         {product.price ? (
                           <span className="text-xs text-gray-400 line-through">${product.originalPrice}</span>
                         ) : (
