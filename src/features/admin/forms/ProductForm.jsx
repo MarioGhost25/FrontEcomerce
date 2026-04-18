@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Form from "../../../components/form/Form";
 import Label from "../../../components/form/Label";
 import Input from "../../../components/form/input/InputField";
@@ -9,16 +9,18 @@ import CurrencyInput from "../../../components/form/CurrencyInput";
 import ImageUpload from "../../../components/form/ImageUpload";
 import InventoryInput from "../../../components/form/InventoryInput";
 import Button from "../../../components/ui/button/Button";
-import { useCreateProductMutation, useUploadProductImageMutation } from "../../../api/endpoints/productApi";
+import { useCreateProductMutation, useUpdateProductMutation, useUploadProductImageMutation } from "../../../api/endpoints/productApi";
 import { useForm } from "../../../hooks/useForm";
 import { useNavigate } from "react-router";
 import { toast } from 'sonner'
 import { useGetAllCategoriesQuery } from "../../../api/endpoints/categoryApi";
 import { z } from "zod";
+import { id } from "zod/v4/locales";
 
 const productSchema = z.object({
   name: z.string().trim().min(1, "Product name is required"),
   description: z.string().trim().min(1, "Description is required"),
+  originalPrice: z.coerce.number().positive("Price must be greater than 0"),
   price: z.coerce.number().positive("Price must be greater than 0"),
   category: z.string().trim().min(1, "Category is required"),
   stock: z.coerce.number().int().min(0, "Stock cannot be negative"),
@@ -32,22 +34,26 @@ const computeStockStatus = (stock, lowStockThreshold = 10) => {
 
 const ProductForm = ({ product = null, onCancel }) => {
 
+  const countText = useRef(0)
+
   const [errors, setErrors] = useState({});
   const [createProduct, { isLoading }] = useCreateProductMutation();
+  const [updateProduct] = useUpdateProductMutation();
   const [uploadProductImage] = useUploadProductImageMutation();
   const { data } = useGetAllCategoriesQuery();
   let navigate = useNavigate();
 
-  const { name, description, price, category, stock, isActive, images, onInputChange, onResetForm } = useForm({
+  const { name, description, longDescription, originalPrice, price, category, stock, isActive, images, onInputChange, onResetForm } = useForm({
     name: product?.name || "",
-    description: '',
-    //shortDescription: product?.shortDescription || "",
-    price: '',
+    longDescription: product?.longDescription || "",
+    description: product?.description || "",
+    originalPrice: Number(product?.originalPrice) || 0,  // ← Number() en lugar de solo || 0
+    price: Number(product?.price) || 0,
+    stock: Number(product?.stock) || 0,
     //comparePrice: product?.comparePrice || 0,
     //barcode: product?.barcode || "",
-    category: '',
+    category: product?.category || "",
     //tags: product?.tags || [],
-    stock: product?.stock || 0,
     stockStatus: product?.stockStatus || 'In Stock',
     //weight: product?.weight || 0,
     /*dimensions: {
@@ -86,37 +92,44 @@ const ProductForm = ({ product = null, onCancel }) => {
     onInputChange({ target: { name: 'isActive', value } });
   };
 
-  
+  const handleTextAreaChange = (e) => {
+    const { name, value } = e.target;
+    const count = value.length;
+    countText.current = count;
+    onInputChange(e);
+  }
+
+
 
   const uploadImageAndGetUrl = async (img) => {
-  // Si ya es URL (ej: edición)
-  console.log("Subiendo imagen:", img);
-  if (typeof img === 'string') {
-    return img;
-  }
+    // Si ya es URL (ej: edición)
+    console.log("Subiendo imagen:", img);
+    if (typeof img === 'string') {
+      return img;
+    }
 
-  const file = img?.file ?? img;
-  console.log(file)
+    const file = img?.file ?? img;
+    console.log(file)
 
-  if (!(file instanceof File)) {
-    return null;
-  }
+    if (!(file instanceof File)) {
+      return null;
+    }
 
-  const formData = new FormData();
-  formData.append("file", file);
+    const formData = new FormData();
+    formData.append("file", file);
 
-  const uploadResponse = await uploadProductImage(formData).unwrap();
-  console.log(uploadResponse)
-  const imageUrl = uploadResponse?.url;
-  console.log(imageUrl)
+    const uploadResponse = await uploadProductImage(formData).unwrap();
+    console.log(uploadResponse)
+    const imageUrl = uploadResponse?.url;
+    console.log(imageUrl)
 
-  if (!imageUrl) {
-    throw new Error('No se obtuvo URL de la imagen');
-  }
+    if (!imageUrl) {
+      throw new Error('No se obtuvo URL de la imagen');
+    }
 
-  return imageUrl;
-};
-  
+    return imageUrl;
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -124,9 +137,10 @@ const ProductForm = ({ product = null, onCancel }) => {
     const validation = productSchema.safeParse({
       name,
       description,
-      price,
       category,
       stock,
+      price: Number(price),           // ← agregar
+      originalPrice: Number(originalPrice),
     });
 
     if (!validation.success) {
@@ -150,9 +164,12 @@ const ProductForm = ({ product = null, onCancel }) => {
       ).filter(Boolean);
 
       const payload = {
+        id: product?.id.toString(),
         name: validation.data.name,
         description: validation.data.description,
-        price: validation.data.price,
+        longDescription: longDescription,
+        originalPrice: Number(originalPrice),   // ← forzar conversión aquí
+        price: Number(price),
         category: validation.data.category,
         stock: validation.data.stock,
         isActive,
@@ -160,9 +177,15 @@ const ProductForm = ({ product = null, onCancel }) => {
         stockStatus: computeStockStatus(validation.data.stock),
       };
 
-      const res = await createProduct(payload).unwrap();
+      if (!product) {
+        const res = await createProduct(payload).unwrap();
+        onResetForm();
+        navigate("/dashboard/product-management");
+      }
+      console.log("Payload para actualización:", payload);
+      await updateProduct(payload).unwrap();
       navigate("/dashboard/product-management");
-      onResetForm();
+      toast.success("Product updated successfully");
     } catch (error) {
       console.error("Error al crear producto:", error);
       toast.error(error?.data?.message || error?.message || "Error creating product");
@@ -202,31 +225,37 @@ const ProductForm = ({ product = null, onCancel }) => {
               />
             </div>
 
-            {/* <div className="md:col-span-2">
-              <Label htmlFor="shortDescription">Short Description</Label>
-              <Input
-                type="text"
-                id="shortDescription"
-                name="shortDescription"
-                value={formData.shortDescription}
-                onChange={(e) => handleInputChange("shortDescription", e.target.value)}
-                placeholder="Brief product description"
-              />
-            </div> */}
-
             <div className="md:col-span-2">
               <Label htmlFor="description">Description *</Label>
-              <TextArea
+              <Input
+                type="text"
                 id="description"
                 name="description"
                 value={description}
                 onChange={onInputChange}
-                rows={4}
-                placeholder="Detailed product description"
+                placeholder="Brief product description"
                 error={!!errors.description}
                 hint={errors.description}
               />
             </div>
+            <div className="md:col-span-2">
+              <Label htmlFor="longDescription">Long Description</Label>
+              <TextArea
+                id="longDescription"
+                name="longDescription"
+                value={longDescription}
+                ref={countText}
+                onChange={handleTextAreaChange}
+                rows={4}
+                placeholder="Detailed product description"
+                error={!!errors.longDescription}
+                hint={errors.longDescription}
+              />
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {countText.current > 200 ? <span className="text-red-500">{countText.current}/200 characters</span> : <span className="text-gray-500">{countText.current}/200 characters</span>}
+              </p>
+            </div>
+
           </div>
         </div>
 
@@ -238,16 +267,17 @@ const ProductForm = ({ product = null, onCancel }) => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <Label htmlFor="price">Price *</Label>
+              <Label htmlFor="originalPrice">Original Price *</Label>
               <CurrencyInput
-                id="price"
-                name="price"
-                value={price}
+                id="originalPrice"
+                name="originalPrice"
+                value={originalPrice}
                 onChange={onInputChange}
-                error={!!errors.price}
-                hint={errors.price}
+                error={!!errors.originalPrice}
+                hint={errors.originalPrice}
               />
             </div>
+
 
             {/* <div>
               <Label htmlFor="comparePrice">Compare at Price</Label>
@@ -282,6 +312,18 @@ const ProductForm = ({ product = null, onCancel }) => {
                 label="Stock Quantity"
                 hint={`Status: ${computeStockStatus(Number(stock) || 0)}`}
                 statusName="stockStatus"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="price">Price </Label>
+              <CurrencyInput
+                id="price"
+                name="price"
+                value={price}
+                onChange={onInputChange}
+                error={!!errors.price}
+                hint={errors.price}
               />
             </div>
 

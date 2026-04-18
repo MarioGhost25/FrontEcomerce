@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { CircleCheck, Package, Star, TriangleAlert, X } from "lucide-react";
 import ProductForm from "../forms/ProductForm";
 import Button from "../../../components/ui/button/Button";
-import { useDeleteProductMutation, useGetProductQuery } from "../../../api/endpoints/productApi";
+import { useDeleteProductMutation, useGetProductQuery, useUpdateProductMutation } from "../../../api/endpoints/productApi";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
@@ -11,8 +11,8 @@ export const ProductManagement = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
 
-
   const { data: products = [], isLoading, isError, error, refetch } = useGetProductQuery();
+  const [updateProduct ] = useUpdateProductMutation();
   const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
   let navigate = useNavigate();
   
@@ -23,10 +23,8 @@ export const ProductManagement = () => {
   }, [products])
 
   const handleFormSubmit = (data) => {
-    console.log("Product submitted:", data);
-    alert("Product saved successfully!");
-    setShowForm(false);
-    setEditingProduct(null);
+    console.log('Form submitted with data:', data);
+   
   };
 
   const handleFormCancel = () => {
@@ -35,9 +33,10 @@ export const ProductManagement = () => {
     navigate('/dashboard/product-management')
   };
 
-  const handleEditProduct = (product) => {
+  const handleEditProduct = async (product) => {
     setEditingProduct(product);
     setShowForm(true);
+    console.log('Editing product:', product);
   };
 
   const handleAddProduct = () => {
@@ -202,7 +201,7 @@ export const ProductManagement = () => {
                     SKU
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Price
+                    Original Price
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                     Stock
@@ -239,7 +238,7 @@ export const ProductManagement = () => {
                       {product.sku}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                      ${product.price}
+                      ${product.originalPrice}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                       {product.stock}

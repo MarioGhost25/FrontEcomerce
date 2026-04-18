@@ -156,14 +156,19 @@ const ProductDetail = () => {
             </div>
 
             <div className="flex items-baseline gap-4">
-              {product.originalPrice && (
+              {product.price ? (
                 <span className="text-2xl text-gray-400 line-through">${product.originalPrice}</span>
+              ) : (
+                <span className="text-4xl font-black text-teal-700">${product.originalPrice}</span>
               )}
-              <span className="text-4xl font-black text-teal-700">${product.price}</span>
+
+              {product.price && (
+                <span className="text-4xl font-black text-teal-700">${product.price}</span>
+              )}
             </div>
 
-            <p className="text-lg text-gray-600 leading-relaxed">{product.description}</p>
-            <p className="text-gray-600 leading-relaxed">{product.longDescription}</p>
+              <p className="text-lg text-gray-600 leading-relaxed">{product.description}</p>
+              <p className="text-gray-600 leading-relaxed">{product.longDescription}</p>
 
             <div className="flex items-center gap-2">
               <span className={`text-sm font-bold ${product.stock ? 'text-green-600' : 'text-red-600'}`}>

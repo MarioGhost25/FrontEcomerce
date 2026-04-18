@@ -1,5 +1,5 @@
 
-import { object } from "zod";
+import { url } from "zod";
 import { apiSlice } from "../apiSlice";
 
 
@@ -22,7 +22,14 @@ export const productApi = apiSlice.injectEndpoints({
                 body: productData
             }),
             invalidatesTags: ['Products']
+        }),
 
+        updateProduct: builder.mutation({
+            query: (productData) => ({
+                url: `/products/${productData.id}`,
+                method: 'PUT',
+                body: productData
+            })
         }),
 
         getProduct: builder.query({
@@ -52,6 +59,7 @@ export const productApi = apiSlice.injectEndpoints({
 export const {
     useUploadProductImageMutation,
     useCreateProductMutation,
+    useUpdateProductMutation,
     useGetProductQuery,
     useGetProductByIdQuery,
     useDeleteProductMutation

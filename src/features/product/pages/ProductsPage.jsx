@@ -210,14 +210,20 @@ const Products = () => {
                     <p className="text-xs text-gray-500 mb-3 line-clamp-1">{product.description}</p>
                     <div className="mt-auto pt-3 border-t border-gray-200 flex items-center justify-between">
                       <div>
-                        {product.originalPrice && (
-                          <span className="block text-xs text-gray-400 line-through">{product.originalPrice}</span>
+                       
+                        {product.price ? (
+                          <span className="text-xs text-gray-400 line-through">${product.originalPrice}</span>
+                        ) : (
+                          <span className="text-lg font-black text-teal-700">${product.originalPrice}</span>
                         )}
-                        <span className="block text-lg font-black text-teal-700">${product.price}</span>
+
+                        {product.price && (
+                          <span className="text-lg font-black text-teal-700">${product.price}</span>
+                        )}
                       </div>
                       <button
                         className="bg-teal-700 hover:bg-teal-800 text-white rounded-lg p-2 transition-colors flex items-center justify-center gap-2 shadow-sm"
-                        onClick={() => handleShoppingCart(product)} 
+                        onClick={() => handleShoppingCart(product)}
                       >
                         <AddShoppingCartIcon className="w-5 h-5" />
                       </button>

@@ -1,9 +1,14 @@
 import { useState, useEffect } from "react";
 
-const CurrencyInput = ({ 
-  value = 0, 
-  onChange, 
-  currency = "USD", 
+const normalizeValue = (val) => {
+  const num = parseFloat(val);
+  return isNaN(num) ? "" : num.toString();
+};
+
+const CurrencyInput = ({
+  value = 0,
+  onChange,
+  currency = "USD",
   placeholder = "0.00",
   className = "",
   disabled = false,
@@ -13,10 +18,10 @@ const CurrencyInput = ({
   id,
   name
 }) => {
-  const [displayValue, setDisplayValue] = useState(value.toString());
-  
+  const [displayValue, setDisplayValue] = useState(normalizeValue(value));
+
   useEffect(() => {
-    setDisplayValue(value.toString());
+    setDisplayValue(normalizeValue(value));
   }, [value]);
 
   const formatCurrency = (amount) => {
@@ -30,21 +35,22 @@ const CurrencyInput = ({
 
   const handleChange = (e) => {
     const inputValue = e.target.value.replace(/[^0-9.]/g, '');
-    const numericValue = parseFloat(inputValue) || 0;
-
     setDisplayValue(inputValue);
+
     if (onChange) {
-      onChange({ target: { name, value: numericValue } });
+      const numericValue = inputValue === '' ? 0 : parseFloat(inputValue);
+      if (!isNaN(numericValue)) {
+        onChange({ target: { name, value: numericValue } });
+      }
     }
   };
 
   const handleBlur = () => {
-    const numericValue = parseFloat(displayValue) || 0;
-    setDisplayValue(numericValue.toFixed(2));
+    const numericValue = parseFloat(displayValue);
+    setDisplayValue(isNaN(numericValue) ? "" : numericValue.toFixed(2));
   };
-
   let inputClasses = `h-11 w-full rounded-lg border appearance-none px-4 py-2.5 pr-12 text-sm shadow-theme-xs placeholder:text-gray-400 focus:outline-hidden focus:ring-3 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 ${className}`;
-  
+
   if (disabled) {
     inputClasses += ` text-gray-500 border-gray-300 opacity-40 bg-gray-100 cursor-not-allowed dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700`;
   } else if (error) {
@@ -68,7 +74,7 @@ const CurrencyInput = ({
         disabled={disabled}
         className={inputClasses}
       />
-      
+
       <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
         <span className="text-gray-500 dark:text-gray-400 text-sm">
           {currency}
@@ -76,11 +82,10 @@ const CurrencyInput = ({
       </div>
 
       {hint && (
-        <p className={`mt-1.5 text-xs ${
-          error ? "text-error-500" : 
-          success ? "text-success-500" : 
-          "text-gray-500"
-        }`}>
+        <p className={`mt-1.5 text-xs ${error ? "text-error-500" :
+            success ? "text-success-500" :
+              "text-gray-500"
+          }`}>
           {hint}
         </p>
       )}
