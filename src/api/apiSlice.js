@@ -31,11 +31,20 @@ const getHttpStatus = (error) => {
   return null;
 };
 
+const shouldSkipRefreshForArgs = (args) => {
+  const requestUrl = typeof args === 'string' ? args : args?.url;
+
+  if (!requestUrl || typeof requestUrl !== 'string') {
+    return false;
+  }
+
+  return requestUrl.includes('auth/login') || requestUrl.includes('auth/register') || requestUrl.includes('auth/refresh');
+};
+
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
-  const isAuthenticated = Boolean(api.getState().auth?.isAuthenticated);
 
-  if (getHttpStatus(result?.error) === 401 && isAuthenticated) {
+  if (getHttpStatus(result?.error) === 401 && !shouldSkipRefreshForArgs(args)) {
     const refreshResult = await baseQuery(
       { url: 'auth/refresh', method: 'POST' },
       api,

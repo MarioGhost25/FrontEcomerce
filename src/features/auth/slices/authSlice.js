@@ -17,28 +17,15 @@ const normalizeCartId = (value) => {
 // Función para obtener el estado inicial desde localStorage
 const loadInitialState = () => {
     try {
-        const serializedToken = localStorage.getItem('accessToken');
         const userId = localStorage.getItem('userId');
         const cartId = normalizeCartId(localStorage.getItem('cartId'));
-        if (serializedToken && userId) {
-            let parsedAccessToken = null;
 
-            try {
-                const parsedToken = JSON.parse(serializedToken);
-                parsedAccessToken = typeof parsedToken === 'string'
-                    ? parsedToken
-                    : parsedToken?.accessToken;
-            } catch {
-                parsedAccessToken = serializedToken;
-            }
-
-            return {
-                accessToken: parsedAccessToken,
-                userId: userId,
-                isAuthenticated: true,
-                cartId: cartId,
-            };
-        }
+        return {
+            userId: userId || null,
+            accessToken: null,
+            isAuthenticated: false,
+            cartId: cartId,
+        };
     } catch (err) {
         console.log('Error loading auth state:', err);
     }
@@ -60,12 +47,13 @@ const authSlice = createSlice({
             const { userId, accessToken, cartId } = payload || {};
             const normalizedCartId = normalizeCartId(cartId);
 
-            state.userId = userId;
-            state.accessToken = accessToken;
-            state.isAuthenticated = true;
+            state.userId = userId ?? state.userId;
+            state.accessToken = accessToken ?? null;
+            state.isAuthenticated = Boolean(accessToken);
             state.cartId = normalizedCartId;
-            localStorage.setItem('accessToken', JSON.stringify({ accessToken }));
-            localStorage.setItem('userId', userId);
+            if (state.userId) {
+                localStorage.setItem('userId', state.userId);
+            }
             if (normalizedCartId) {
                 localStorage.setItem('cartId', normalizedCartId);
             } else {
@@ -88,7 +76,6 @@ const authSlice = createSlice({
             state.accessToken = null;
             state.isAuthenticated = false;
             state.cartId = null;
-            localStorage.removeItem('accessToken');
             localStorage.removeItem('userId');
             localStorage.removeItem('cartId');
             localStorage.removeItem('cartItems');

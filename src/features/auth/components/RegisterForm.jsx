@@ -3,8 +3,10 @@ import { Link, useNavigate } from 'react-router';
 import { useRegisterMutation } from '../../../api/endpoints/userApi';
 import { useForm } from '../../../hooks/useForm';
 import { toast } from 'sonner';
+import { useDispatch } from 'react-redux';
 import * as z from 'zod';
 import { MailIcon, LockIcon, EyeIcon, EyeCloseIcon, ArrowRightIcon, UserIcon } from '../../../icons';
+import { setCredentials } from '../slices/authSlice';
 
 const registerSchema = z.object({
   name: z.string().trim().min(1, 'El nombre es requerido'),
@@ -19,6 +21,7 @@ export const Register = () => {
   const [fieldErrors, setFieldErrors] = useState({});
   const [createRegister, { isLoading, error }] = useRegisterMutation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { name, email, password, contactPhone, onInputChange } = useForm({
     name: '',
@@ -61,9 +64,15 @@ export const Register = () => {
     try {
       const res = await createRegister(validation.data).unwrap();
 
-      if (res.accessToken) {
-        localStorage.setItem('accessToken', JSON.stringify(res.accessToken));
+      const accessToken = res?.accessToken ?? res?.token;
+      const userId = res?.id ?? res?.userId ?? res?.user?.id ?? res?.user?._id;
+      const cartId = res?.cartId ?? res?.user?.cartId ?? res?.cart?.id ?? res?.cart?._id;
+
+      if (accessToken && userId) {
+        dispatch(setCredentials({ userId, accessToken, cartId }));
         navigate('/');
+      } else {
+        navigate('/user');
       }
 
       toast.success('Usuario creado exitosamente ✅');
