@@ -1,42 +1,50 @@
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter, Navigate } from 'react-router';
 import { PrivateRoute } from '../components/PrivateRoute';
+import RouteLoader from '../components/common/RouteLoader';
 
 // App principal
-import App from '../App';
-import { User } from '../features/auth/pages/UserPage';
+const App = lazy(() => import('../App'));
+const User = lazy(() => import('../features/auth/pages/UserPage').then((module) => ({ default: module.User })));
 
 // Feature: Auth
-import { ChangePassword } from '../features/auth';
+const ChangePassword = lazy(() => import('../features/auth').then((module) => ({ default: module.ChangePassword })));
 
 // Feature: Shop (Tienda pública)
-import HomePage from '../features/shop/pages/HomePage';
-import ProductsPage from '../features/product/pages/ProductsPage';
-import ProductDetailPage from '../features/product/pages/ProductDetailPage';
-import CartPage from '../features/shop/pages/CartPage';
+const HomePage = lazy(() => import('../features/shop/pages/HomePage'));
+const ProductsPage = lazy(() => import('../features/product/pages/ProductsPage'));
+const ProductDetailPage = lazy(() => import('../features/product/pages/ProductDetailPage'));
+const CartPage = lazy(() => import('../features/shop/pages/CartPage'));
 
 // Feature: Admin - Layout
-import AdminLayout from '../features/admin/components/layout/AdminLayout';
+const AdminLayout = lazy(() => import('../features/admin/components/layout/AdminLayout'));
 
 // Feature: Admin - Pages
-import DashboardPage from '../features/admin/pages/DashboardPage';
-import UserProfilesPage from '../features/admin/pages/UserProfilesPage';
-import CustomerManagementPage from '../features/admin/pages/CustomerManagementPage';
-import ProductManagementPage from '../features/admin/pages/ProductManagementPage';
-import CategoryManagementPage from '../features/admin/pages/CategoryManagementPage';
-import InventoryManagementPage from '../features/admin/pages/InventoryManagementPage';
-import FormElementsPage from '../features/admin/pages/FormElementsPage';
-import BasicTablesPage from '../features/admin/pages/BasicTablesPage';
-import NotFoundPage from '../features/admin/pages/NotFoundPage';
+const DashboardPage = lazy(() => import('../features/admin/pages/DashboardPage'));
+const UserProfilesPage = lazy(() => import('../features/admin/pages/UserProfilesPage'));
+const CustomerManagementPage = lazy(() => import('../features/admin/pages/CustomerManagementPage'));
+const ProductManagementPage = lazy(() => import('../features/admin/pages/ProductManagementPage'));
+const CategoryManagementPage = lazy(() => import('../features/admin/pages/CategoryManagementPage'));
+const InventoryManagementPage = lazy(() => import('../features/admin/pages/InventoryManagementPage'));
+const FormElementsPage = lazy(() => import('../features/admin/pages/FormElementsPage'));
+const BasicTablesPage = lazy(() => import('../features/admin/pages/BasicTablesPage'));
+const NotFoundPage = lazy(() => import('../features/admin/pages/NotFoundPage'));
 
 // Feature: Admin - Forms
-import CustomerForm from '../features/admin/forms/CustomerForm';
-import ProductForm from '../features/admin/forms/ProductForm';
-import InventoryForm from '../features/admin/forms/InventoryForm';
+const CustomerForm = lazy(() => import('../features/admin/forms/CustomerForm'));
+const ProductForm = lazy(() => import('../features/admin/forms/ProductForm'));
+const InventoryForm = lazy(() => import('../features/admin/forms/InventoryForm'));
 
 // Páginas temporales/demo
-import FormDemo from '../pages/FormDemo';
-import CategoryForm from '../features/admin/forms/CategoryForm';
-import { CategoryPage } from '../features/category/pages/CategoryPage';
+const FormDemo = lazy(() => import('../pages/FormDemo'));
+const CategoryForm = lazy(() => import('../features/admin/forms/CategoryForm'));
+const CategoryPage = lazy(() => import('../features/category/pages/CategoryPage').then((module) => ({ default: module.CategoryPage })));
+
+const withSuspense = (element) => (
+  <Suspense fallback={<RouteLoader />}>
+    {element}
+  </Suspense>
+);
 
 
 
@@ -44,106 +52,106 @@ export const appRouter = createBrowserRouter([
   // --- Rutas Principales de la Tienda/App ---
   {
     path: '/',
-    element: <App /> // Layout o página principal de tu tienda
+    element: withSuspense(<App />) // Layout o página principal de tu tienda
   },
   {
     path: 'user',
-    element: <User />
+    element: withSuspense(<User />)
   },
   {
     path: 'change-password',
-    element: <ChangePassword />
+    element: withSuspense(<ChangePassword />)
   },
   {
     path: 'products',
-    element: <ProductsPage />
+    element: withSuspense(<ProductsPage />)
   },
   {
     path: 'category',
-    element: <CategoryPage />
+    element: withSuspense(<CategoryPage />)
 
   },
   {
     path: 'product-detail/:id',
-    element: <ProductDetailPage />
+    element: withSuspense(<ProductDetailPage />)
   },
   {
     path: 'cart',
-    element: <CartPage />
+    element: withSuspense(<CartPage />)
   },
   
 
   // --- Sección del Dashboard (Admin) ---
   {
     path: 'dashboard',
-    element: <AdminLayout />,
+    element: withSuspense(<AdminLayout />),
     children: [
       {
         element: <PrivateRoute requireRole='admin' />,
         children: [
           {
             index: true,
-            element: <DashboardPage />
+            element: withSuspense(<DashboardPage />)
           },
           {
             path: 'profile',
-            element: <UserProfilesPage />
+            element: withSuspense(<UserProfilesPage />)
           },
           {
             path: 'basic-tables',
-            element: <BasicTablesPage />
+            element: withSuspense(<BasicTablesPage />)
           },
           {
             path: 'form-elements',
-            element: <FormElementsPage />
+            element: withSuspense(<FormElementsPage />)
           },
           {
             path: 'customer-form',
-            element: <CustomerForm/>
+            element: withSuspense(<CustomerForm/>)
           },
           {
             path: 'customer-management',
-            element: <CustomerManagementPage />
+            element: withSuspense(<CustomerManagementPage />)
           },
           {
             path: 'product-form',
-            element: <ProductForm />
+            element: withSuspense(<ProductForm />)
           },
           {
             path: 'category-form',
-            element: <CategoryForm />
+            element: withSuspense(<CategoryForm />)
           },
           {
             path: 'category-management',
-            element: <CategoryManagementPage />
+            element: withSuspense(<CategoryManagementPage />)
           },
           {
             path: 'product-management',
-            element: <ProductManagementPage />
+            element: withSuspense(<ProductManagementPage />)
           },
           {
             path: 'inven-management',
-            element: <InventoryManagementPage />
+            element: withSuspense(<InventoryManagementPage />)
           },
           {
             path: 'inven-form',
-            element: <InventoryForm />
+            element: withSuspense(<InventoryForm />)
           },
           {
             path: 'home-view',
-            element: <HomePage/>
+            element: withSuspense(<HomePage/>)
           },
           {
             path: 'product-view',
-            element: <ProductsPage/>
+            element: withSuspense(<ProductsPage/>)
           },
           {
             path: 'error-404',
-            element: <NotFoundPage />
+            element: withSuspense(<NotFoundPage />)
           },
           {
             path: 'form-demo',
-            element: <FormDemo />
+            element: withSuspense(<FormDemo />)
           },
         ]
       }
