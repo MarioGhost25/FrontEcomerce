@@ -4,7 +4,6 @@ import Navbar from '../../../components/layout/Navbar';
 import Footer from '../../../components/layout/Footer';
 import Button from '../../../components/ui/Button';
 import { useCart } from '../hooks/useCart';
-import { useEffect } from 'react';
 
 
 const Cart = () => {

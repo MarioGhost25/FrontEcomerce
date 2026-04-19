@@ -54,13 +54,10 @@ export const Login = ({ isMoved, setIsMoved }) => {
 
             const res = await loginUser(validation.data).unwrap()
             toast.success('¡Bienvenido de nuevo!');
-            const accessToken = res?.accessToken ?? res?.token;
             const user = res?.user;
 
 
             user?.role === 'admin' ? navigate('/dashboard') : navigate('/');
-
-            console.log('Token recibido:', accessToken);
 
         } catch (error) {
             toast.error(error?.data?.message || 'Error al iniciar sesión❌');

@@ -114,9 +114,9 @@ export const useProducts = () => {
       toast.success('Producto agregado al carrito');
       return dispatch(addToCart({ product: product, quantity: 1 }));
 
-    } catch (error) {
+    } catch {
       // Keep local cart UX responsive even if backend cart sync fails
-      console.log(error);
+      return null;
     }
   };
 

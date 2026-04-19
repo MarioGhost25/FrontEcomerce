@@ -68,7 +68,7 @@ export const Register = () => {
 
       toast.success('Usuario creado exitosamente ✅');
 
-    } catch (err) {
+    } catch {
       toast.error(error?.data?.message || 'Error al crear el usuario ❌');
     }
   };

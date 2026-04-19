@@ -4,22 +4,21 @@ import { FavoriteIcon } from '../../../icons';
 
 const ProductCard = ({
   id,
+  _id,
   name,
   price,
   originalPrice,
   description,
   images,
-  rating = 0,
-  reviews = 0,
   badge,
   badgeColor = 'amber-100',
-  badgeTextColor = 'amber-800',
-  handleShoppingCart
 }) => {
+  const productId = id ?? _id;
+
   return (
     <div className="group flex flex-col gap-4">
       <div className="relative w-full aspect-square overflow-hidden rounded-xl bg-slate-100">
-        <Link to={`/product-detail/${id ??_id}`}>
+        <Link to={`/product-detail/${productId}`}>
           <div
             className="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 group-hover:scale-105"
             style={{ backgroundImage: `url(${images})` }}
@@ -45,7 +44,7 @@ const ProductCard = ({
       </div>
       <div className="flex flex-col gap-1">
         <div className="flex justify-between items-start">
-          <Link to={`/products/${id}`}>
+          <Link to={`/product-detail/${productId}`}>
             <p className="text-text-main text-lg font-bold leading-tight group-hover:text-primary transition-colors">
               {name}
             </p>

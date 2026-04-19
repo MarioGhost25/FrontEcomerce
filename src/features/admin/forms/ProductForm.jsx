@@ -15,7 +15,6 @@ import { useNavigate } from "react-router";
 import { toast } from 'sonner'
 import { useGetAllCategoriesQuery } from "../../../api/endpoints/categoryApi";
 import { z } from "zod";
-import { id } from "zod/v4/locales";
 
 const productSchema = z.object({
   name: z.string().trim().min(1, "Product name is required"),
@@ -94,7 +93,7 @@ const ProductForm = ({ product = null, onCancel }) => {
   };
 
   const handleTextAreaChange = (e) => {
-    const { name, value } = e.target;
+    const { value } = e.target;
     const count = value.length;
     setCountText(count);
     onInputChange(e);
@@ -104,13 +103,11 @@ const ProductForm = ({ product = null, onCancel }) => {
 
   const uploadImageAndGetUrl = async (img) => {
     // Si ya es URL (ej: edición)
-    console.log("Subiendo imagen:", img);
     if (typeof img === 'string') {
       return img;
     }
 
     const file = img?.file ?? img;
-    console.log(file)
 
     if (!(file instanceof File)) {
       return null;
@@ -120,9 +117,7 @@ const ProductForm = ({ product = null, onCancel }) => {
     formData.append("file", file);
 
     const uploadResponse = await uploadProductImage(formData).unwrap();
-    console.log(uploadResponse)
     const imageUrl = uploadResponse?.url;
-    console.log(imageUrl)
 
     if (!imageUrl) {
       throw new Error('No se obtuvo URL de la imagen');
@@ -179,11 +174,13 @@ const ProductForm = ({ product = null, onCancel }) => {
       };
 
       if (!product) {
-        const res = await createProduct(payload).unwrap();
+        await createProduct(payload).unwrap();
         onResetForm();
+        toast.success("Product created successfully");
         navigate("/dashboard/product-management");
+        return;
       }
-      console.log("Payload para actualización:", payload);
+
       await updateProduct(payload).unwrap();
       navigate("/dashboard/product-management");
       toast.success("Product updated successfully");

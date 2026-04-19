@@ -24,15 +24,6 @@ const CurrencyInput = ({
     setDisplayValue(normalizeValue(value));
   }, [value]);
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency,
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(amount);
-  };
-
   const handleChange = (e) => {
     const inputValue = e.target.value.replace(/[^0-9.]/g, '');
     setDisplayValue(inputValue);

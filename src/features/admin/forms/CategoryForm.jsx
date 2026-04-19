@@ -19,7 +19,7 @@ const categorySchema = z.object({
   description: z.string().trim().min(1, "Description is required"),
 });
 
-const CategoryForm = ({ category = null, onCancel, onSubmit }) => {
+const CategoryForm = ({ category = null, onCancel }) => {
 
   const [createCategory] = useCreateCategoryMutation();
   const [uploadProductImage] = useUploadProductImageMutation();

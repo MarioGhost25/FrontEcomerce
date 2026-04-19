@@ -32,9 +32,8 @@ export const ChangePassword = () => {
             }
             else{
 
-                const res = await changePassword(newPassword).unwrap();
+                await changePassword(newPassword).unwrap();
                 toast.success('Contraseña cambiada con exito✅');
-                console.log(res);
 
             }
             

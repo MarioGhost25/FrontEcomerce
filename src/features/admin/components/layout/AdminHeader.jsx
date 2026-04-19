@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import { Menu, MoreHorizontal, Search, X } from "lucide-react";
-import { useSidebar } from "../../../../context/SidebarContext";
+import { useSidebar } from "../../../../context/useSidebar";
 import { ThemeToggleButton } from "../../../../components/common/ThemeToggleButton";
 import NotificationDropdown from "../header/NotificationDropdown";
 import UserDropdown from "../../../../components/ui/dropdown/UserDropdown";

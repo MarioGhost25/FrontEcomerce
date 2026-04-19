@@ -9,13 +9,13 @@ export const PrivateRoute = ({ requireRole, children }) => {
 
     const shouldFetchUser = Boolean(isAuthenticated && userId);
 
-    if (!isAuthenticated) {
-        return <Navigate to="/user" replace />;
-    }
-
     const { data: userData, isLoading, isError } = useGetUserQuery(userId, {
         skip: !shouldFetchUser,
     });
+
+    if (!isAuthenticated) {
+        return <Navigate to="/user" replace />;
+    }
 
     if (requireRole && !shouldFetchUser) {
         return <Navigate to="/user" replace />;

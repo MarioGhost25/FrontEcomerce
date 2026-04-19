@@ -4,15 +4,13 @@ import Footer from '../../../components/layout/Footer';
 import Button from '../../../components/ui/Button';
 import ProductGrid from '../../product/components/ProductGrid';
 import { ArrowRight, BadgeCheck, Headset, Truck } from 'lucide-react';
-import { useGetProductQuery } from '../../../api/endpoints/productApi';
-import { useGetAllCategoriesQuery } from '../../../api/endpoints/categoryApi';
 import { CategorySkeletonList } from '../../category/components/CategorySkeletonList';
 import { ProductSlekeletonList } from '../../product/components/ProductSlekeletonList';
 import { useProducts } from '../../product/hooks/useProducts';
 
 const Home = () => {
 
-  const {products, categories, isLoading, handleShoppingCart} = useProducts();
+  const {products, categories, isLoading} = useProducts();
 
   return (
     <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden">

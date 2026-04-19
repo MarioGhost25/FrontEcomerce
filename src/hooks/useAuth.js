@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
-import { selectIsAuthenticated, selectCurrentUserId } from '../store/slices/authSlice';
-import { useGetUserQuery } from '../store/apis/userApi';
+import { selectIsAuthenticated, selectCurrentUserId } from '../features/auth/slices/authSlice';
+import { useGetUserQuery } from '../api/endpoints/userApi';
 
 
 export const useAuth = () => {

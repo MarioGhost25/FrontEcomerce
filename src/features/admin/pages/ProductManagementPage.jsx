@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CircleCheck, Package, Star, TriangleAlert, X } from "lucide-react";
 import ProductForm from "../forms/ProductForm";
 import Button from "../../../components/ui/button/Button";
-import { useDeleteProductMutation, useGetProductQuery, useUpdateProductMutation } from "../../../api/endpoints/productApi";
+import { useDeleteProductMutation, useGetProductQuery } from "../../../api/endpoints/productApi";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
@@ -12,15 +12,8 @@ export const ProductManagement = () => {
   const [editingProduct, setEditingProduct] = useState(null);
 
   const { data: products = [], isLoading, isError, error, refetch } = useGetProductQuery();
-  const [updateProduct ] = useUpdateProductMutation();
   const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
   let navigate = useNavigate();
-  
-  useEffect(() => {
-
-    refetch();
-
-  }, [products])
 
   const handleFormSubmit = (data) => {
     console.log('Form submitted with data:', data);

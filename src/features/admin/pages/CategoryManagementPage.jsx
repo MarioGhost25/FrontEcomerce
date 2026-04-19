@@ -1,20 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Boxes, CircleCheck, List, X } from "lucide-react";
 import CategoryForm from "../forms/CategoryForm";
 import Button from "../../../components/ui/button/Button";
 import { useGetAllCategoriesQuery } from "../../../api/endpoints/categoryApi";
 import { Link } from "react-router";
+import { toast } from "sonner";
 
 export const CategoryManagement = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
 
   const { data: categories = [], refetch } = useGetAllCategoriesQuery();
-
-  useEffect(() => {
-    refetch();
-  }, [])
-  
 
   const handleFormCancel = () => {
     setShowForm(false);
@@ -31,9 +27,10 @@ export const CategoryManagement = () => {
     setShowForm(true);
   };
 
-  const handleDeleteCategory = (id) => {
+  const handleDeleteCategory = () => {
     if (window.confirm("Are you sure you want to delete this category?")) {
-      setCategories((prevCategories) => prevCategories.filter((category) => category.id !== id));
+      toast.info("Delete category is not implemented yet");
+      refetch();
     }
   };
 
@@ -209,7 +206,7 @@ export const CategoryManagement = () => {
                             Edit
                           </button>
                           <button
-                            onClick={() => handleDeleteCategory(category.id)}
+                            onClick={() => handleDeleteCategory()}
                             className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
                           >
                             Delete
