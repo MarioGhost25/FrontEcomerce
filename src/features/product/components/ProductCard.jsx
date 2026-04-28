@@ -53,11 +53,11 @@ const ProductCard = ({
             {price ? (
               <span className="text-xs text-gray-400 line-through">${originalPrice}</span>
             ) : (
-              <span className="text-lg font-black text-teal-700">${originalPrice}</span>
+              <span className="text-lg font-black text-amber-800">${originalPrice}</span>
             )}
 
             {price && (
-              <span className="text-lg font-black text-teal-700">${price}</span>
+              <span className="text-lg font-black text-amber-800">${price}</span>
             )}
           </span>
         </div>

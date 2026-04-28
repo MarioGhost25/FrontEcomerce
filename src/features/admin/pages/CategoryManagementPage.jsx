@@ -91,8 +91,8 @@ export const CategoryManagement = () => {
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <div className="w-8 h-8 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
-                  <CircleCheck className="w-5 h-5 text-green-600 dark:text-green-400" />
+                <div className="w-8 h-8 bg-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center">
+                  <CircleCheck className="w-5 h-5 text-amber-800 dark:text-amber-400" />
                 </div>
               </div>
               <div className="ml-4">
@@ -190,7 +190,7 @@ export const CategoryManagement = () => {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
                           className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${category.isActive
-                              ? "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400"
+                              ? "bg-amber-100 text-amber-800 dark:bg-amber-900/20 dark:text-amber-400"
                               : "bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400"
                             }`}
                         >

@@ -87,11 +87,11 @@ export const Login = ({ isMoved, setIsMoved }) => {
                                 Correo Electrónico
                             </label>
                             <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-teal-700 transition-colors">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-amber-800 transition-colors">
                                     <MailIcon className="w-5 h-5" />
                                 </div>
                                 <input
-                                    className="block w-full pl-10 pr-3 py-2.5 sm:py-3 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:bg-white focus:border-teal-700 focus:ring-1 focus:ring-teal-700 placeholder:text-gray-400 transition-all duration-200 text-gray-900"
+                                    className="block w-full pl-10 pr-3 py-2.5 sm:py-3 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:bg-white focus:border-amber-800 focus:ring-1 focus:ring-amber-800 placeholder:text-gray-400 transition-all duration-200 text-gray-900"
                                     id="email"
                                     name="email"
                                     placeholder="ejemplo@correo.com"
@@ -114,11 +114,11 @@ export const Login = ({ isMoved, setIsMoved }) => {
                                 </label>
                             </div>
                             <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-teal-700 transition-colors">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-amber-800 transition-colors">
                                     <LockIcon className="w-5 h-5" />
                                 </div>
                                 <input
-                                    className="block w-full pl-10 pr-10 py-2.5 sm:py-3 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:bg-white focus:border-teal-700 focus:ring-1 focus:ring-teal-700 placeholder:text-gray-400 transition-all duration-200 text-gray-900"
+                                    className="block w-full pl-10 pr-10 py-2.5 sm:py-3 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:bg-white focus:border-amber-800 focus:ring-1 focus:ring-amber-800 placeholder:text-gray-400 transition-all duration-200 text-gray-900"
                                     id="password"
                                     name="password"
                                     placeholder="••••••••"
@@ -128,7 +128,7 @@ export const Login = ({ isMoved, setIsMoved }) => {
                                     onChange={handleFieldChange}
                                 />
                                 <button
-                                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-teal-700 transition-colors focus:outline-none"
+                                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-amber-800 transition-colors focus:outline-none"
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
                                 >
@@ -143,7 +143,7 @@ export const Login = ({ isMoved, setIsMoved }) => {
                                 <p className="text-xs text-red-600">{fieldErrors.password[0]}</p>
                             )}
                             <div className="flex justify-end pt-1">
-                                <Link to="/change-password" className="text-xs font-medium text-teal-700 hover:text-teal-800 hover:underline transition-colors">
+                                <Link to="/change-password" className="text-xs font-medium text-amber-800 hover:text-amber-900 hover:underline transition-colors">
                                     ¿Olvidaste tu contraseña?
                                 </Link>
                             </div>
@@ -151,7 +151,7 @@ export const Login = ({ isMoved, setIsMoved }) => {
 
                         {/* Submit Button */}
                         <button
-                            className="w-full flex justify-center items-center py-2.5 sm:py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-teal-700 hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-700 transition-all duration-200 transform active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full flex justify-center items-center py-2.5 sm:py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-amber-800 hover:bg-amber-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-800 transition-all duration-200 transform active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                             type="submit"
                             disabled={isLoading}
                         >
@@ -198,7 +198,7 @@ export const Login = ({ isMoved, setIsMoved }) => {
                     <p className="text-sm text-gray-600">
                         ¿No tienes una cuenta?{' '}
                         <button
-                            className="font-semibold text-teal-700 hover:border-none hover:text-teal-800 hover:underline transition-colors"
+                            className="font-semibold text-amber-800 hover:border-none hover:text-amber-900 hover:underline transition-colors"
                             onClick={() => setIsMoved(!isMoved)}
                         >
                             Regístrate aquí
@@ -211,9 +211,9 @@ export const Login = ({ isMoved, setIsMoved }) => {
 
             {/* Trust Indicators / Footer Links */}
             <div className="hidden sm:flex absolute bottom-6 gap-4 sm:gap-6 text-xs text-gray-600/60">
-                <Link to="#" className="hover:text-teal-700 transition-colors">Términos de Servicio</Link>
-                <Link to="#" className="hover:text-teal-700 transition-colors">Política de Privacidad</Link>
-                <Link to="#" className="hover:text-teal-700 transition-colors">Ayuda</Link>
+                <Link to="#" className="hover:text-amber-800 transition-colors">Términos de Servicio</Link>
+                <Link to="#" className="hover:text-amber-800 transition-colors">Política de Privacidad</Link>
+                <Link to="#" className="hover:text-amber-800 transition-colors">Ayuda</Link>
             </div>
 
         </>

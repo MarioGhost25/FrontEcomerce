@@ -55,7 +55,7 @@ const OrderManagement = () => {
             </div>
             <Button
               text="Create New Order"
-              className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              className="px-6 py-2 bg-amber-800 text-white rounded-lg hover:bg-amber-900 transition-colors"
               onClick={handleAddOrder}
             />
           </div>
@@ -94,8 +94,8 @@ const OrderManagement = () => {
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <div className="w-8 h-8 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
-                  <CircleCheck className="w-5 h-5 text-green-600 dark:text-green-400" />
+                <div className="w-8 h-8 bg-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center">
+                  <CircleCheck className="w-5 h-5 text-amber-800 dark:text-amber-400" />
                 </div>
               </div>
               <div className="ml-4">
@@ -180,7 +180,7 @@ const OrderManagement = () => {
                         order.status === 'pending' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400' :
                         order.status === 'processing' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400' :
                         order.status === 'shipped' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400' :
-                        order.status === 'delivered' ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' :
+                        order.status === 'delivered' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/20 dark:text-amber-400' :
                         'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
                       }`}>
                         {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
@@ -188,7 +188,7 @@ const OrderManagement = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        order.payment === 'paid' ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' :
+                        order.payment === 'paid' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/20 dark:text-amber-400' :
                         order.payment === 'pending' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400' :
                         'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
                       }`}>
@@ -203,7 +203,7 @@ const OrderManagement = () => {
                         >
                           Edit
                         </button>
-                        <button className="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300">
+                        <button className="text-amber-800 hover:text-amber-900 dark:text-amber-400 dark:hover:text-amber-300">
                           View
                         </button>
                       </div>

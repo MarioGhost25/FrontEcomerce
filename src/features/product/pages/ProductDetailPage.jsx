@@ -107,7 +107,7 @@ const ProductDetail = () => {
         <nav aria-label="Breadcrumb" className="flex mb-6 text-sm">
           <ol className="inline-flex items-center space-x-2">
             <li>
-              <Link className="text-gray-600 hover:text-teal-700 font-medium" to="/">
+              <Link className="text-gray-600 hover:text-amber-800 font-medium" to="/">
                 Inicio
               </Link>
             </li>
@@ -115,7 +115,7 @@ const ProductDetail = () => {
               <ChevronRight className="text-gray-600 text-sm mx-1" />
             </li>
             <li>
-              <Link className="text-gray-600 hover:text-teal-700 font-medium" to="/products">
+              <Link className="text-gray-600 hover:text-amber-800 font-medium" to="/products">
                 Productos
               </Link>
             </li>
@@ -159,11 +159,11 @@ const ProductDetail = () => {
               {product.price ? (
                 <span className="text-2xl text-gray-400 line-through">${product.originalPrice}</span>
               ) : (
-                <span className="text-4xl font-black text-teal-700">${product.originalPrice}</span>
+                <span className="text-4xl font-black text-amber-800">${product.originalPrice}</span>
               )}
 
               {product.price && (
-                <span className="text-4xl font-black text-teal-700">${product.price}</span>
+                <span className="text-4xl font-black text-amber-800">${product.price}</span>
               )}
             </div>
 
@@ -171,7 +171,7 @@ const ProductDetail = () => {
               <p className="text-gray-600 leading-relaxed">{product.longDescription}</p>
 
             <div className="flex items-center gap-2">
-              <span className={`text-sm font-bold ${product.stock ? 'text-green-600' : 'text-red-600'}`}>
+              <span className={`text-sm font-bold ${product.stock ? 'text-amber-700' : 'text-red-600'}`}>
                 {product.stock ? `En stock (${product.stock} disponibles)` : 'Agotado'}
               </span>
             </div>
@@ -190,19 +190,19 @@ const ProductDetail = () => {
               <h3 className="font-bold text-lg mb-4">Características</h3>
               <ul className="space-y-2 text-gray-600">
                 <li className="flex items-center gap-2">
-                  <CircleCheck className="text-teal-700 text-sm" />
+                  <CircleCheck className="text-amber-800 text-sm" />
                   Cancelación de ruido activa
                 </li>
                 <li className="flex items-center gap-2">
-                  <CircleCheck className="text-teal-700 text-sm" />
+                  <CircleCheck className="text-amber-800 text-sm" />
                   Batería de 30 horas
                 </li>
                 <li className="flex items-center gap-2">
-                  <CircleCheck className="text-teal-700 text-sm" />
+                  <CircleCheck className="text-amber-800 text-sm" />
                   Carga rápida USB-C
                 </li>
                 <li className="flex items-center gap-2">
-                  <CircleCheck className="text-teal-700 text-sm" />
+                  <CircleCheck className="text-amber-800 text-sm" />
                   Compatible con Bluetooth 5.0
                 </li>
               </ul>

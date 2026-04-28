@@ -48,8 +48,8 @@ export const User = () => {
         </div>
     );
 
-    const desktopPanelBaseClass = 'hidden lg:flex absolute z-30 items-center rounded-2xl w-[600px] h-[750px] bg-gradient-to-t from-teal-700 to-amber-100 shadow-xl transition-all duration-500 ease-in-out';
-    const mobilePanelClass = 'absolute left-1/2 z-30 flex w-[600px] h-[750px] -translate-x-1/2 items-center rounded-2xl bg-gradient-to-t from-teal-700 to-amber-100 shadow-xl transition-all duration-500 ease-in-out lg:hidden';
+    const desktopPanelBaseClass = 'hidden lg:flex absolute z-30 items-center rounded-2xl w-[600px] h-[750px] bg-gradient-to-t from-amber-800 to-amber-100 shadow-xl transition-all duration-500 ease-in-out';
+    const mobilePanelClass = 'absolute left-1/2 z-30 flex w-[600px] h-[750px] -translate-x-1/2 items-center rounded-2xl bg-gradient-to-t from-amber-800 to-amber-100 shadow-xl transition-all duration-500 ease-in-out lg:hidden';
 
 
 
@@ -58,14 +58,14 @@ export const User = () => {
             {/* Navbar (Simplified for Login Context) */}
             <header className="fixed top-0 z-10 flex w-full items-center justify-between border-b border-gray-100 bg-white/80 px-8 py-4 backdrop-blur-sm">
                 <div className="flex items-center gap-3">
-                    <div className="size-8 text-teal-700">
+                    <div className="size-8 text-amber-800">
                         <StoreIcon className="w-8 h-8" />
                     </div>
                     <Link to="/">
-                        <h2 className="text-xl font-black leading-tight tracking-[-0.015em] text-teal-700">E-Store</h2>
+                        <h2 className="text-xl font-black leading-tight tracking-[-0.015em] text-amber-800">E-Store</h2>
                     </Link>
                 </div>
-                <Link to="/" className="text-sm font-medium text-gray-600 transition-colors hover:text-teal-700">
+                <Link to="/" className="text-sm font-medium text-gray-600 transition-colors hover:text-amber-800">
                     Volver a la tienda
                 </Link>
             </header>

@@ -111,7 +111,7 @@ export const Register = () => {
                   <UserIcon className="w-5 h-5" />
                 </div>
                 <input
-                  className="w-full h-11 sm:h-12 pl-11 pr-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 focus:border-teal-700 focus:ring-2 focus:ring-teal-700/20 transition-all outline-none"
+                  className="w-full h-11 sm:h-12 pl-11 pr-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 focus:border-amber-800 focus:ring-2 focus:ring-amber-800/20 transition-all outline-none"
                   id="name"
                   name="name"
                   placeholder="Juan Pérez"
@@ -136,7 +136,7 @@ export const Register = () => {
                   <MailIcon className="w-5 h-5" />
                 </div>
                 <input
-                  className="w-full h-11 sm:h-12 pl-11 pr-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 focus:border-teal-700 focus:ring-2 focus:ring-teal-700/20 transition-all outline-none"
+                  className="w-full h-11 sm:h-12 pl-11 pr-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 focus:border-amber-800 focus:ring-2 focus:ring-amber-800/20 transition-all outline-none"
                   id="email"
                   name="email"
                   placeholder="ejemplo@correo.com"
@@ -156,12 +156,12 @@ export const Register = () => {
               <label className="block text-sm font-semibold text-slate-700" htmlFor="password">
                 Contraseña
               </label>
-              <div className="relative group">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-teal-700 transition-colors">
+                <div className="relative group">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-amber-800 transition-colors">
                   <LockIcon className="w-5 h-5" />
                 </div>
                 <input
-                  className="w-full h-11 sm:h-12 pl-11 pr-12 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 focus:border-teal-700 focus:ring-2 focus:ring-teal-700/20 transition-all outline-none"
+                  className="w-full h-11 sm:h-12 pl-11 pr-12 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 focus:border-amber-800 focus:ring-2 focus:ring-amber-800/20 transition-all outline-none"
                   id="password"
                   name="password"
                   placeholder="Mínimo 8 caracteres"
@@ -184,11 +184,11 @@ export const Register = () => {
                 </button>
               </div>
               {/* Password Strength Indicator (Simulated) */}
-              <div className="flex gap-1 pt-1 h-1">
-                <div className={`h-1 flex-1 rounded-full ${password.length >= 2 ? 'bg-green-500' : 'bg-slate-200'}`}></div>
-                <div className={`h-1 flex-1 rounded-full ${password.length >= 4 ? 'bg-green-500' : 'bg-slate-200'}`}></div>
-                <div className={`h-1 flex-1 rounded-full ${password.length >= 6 ? 'bg-green-500' : 'bg-slate-200'}`}></div>
-                <div className={`h-1 flex-1 rounded-full ${password.length >= 8 ? 'bg-green-500' : 'bg-slate-200'}`}></div>
+                <div className="flex gap-1 pt-1 h-1">
+                <div className={`h-1 flex-1 rounded-full ${password.length >= 2 ? 'bg-amber-600' : 'bg-slate-200'}`}></div>
+                <div className={`h-1 flex-1 rounded-full ${password.length >= 4 ? 'bg-amber-700' : 'bg-slate-200'}`}></div>
+                <div className={`h-1 flex-1 rounded-full ${password.length >= 6 ? 'bg-amber-800' : 'bg-slate-200'}`}></div>
+                <div className={`h-1 flex-1 rounded-full ${password.length >= 8 ? 'bg-amber-900' : 'bg-slate-200'}`}></div>
               </div>
               <p className="text-xs text-slate-500 mt-1">
                 Nivel de seguridad: {password.length < 4 ? 'Bajo' : password.length < 8 ? 'Medio' : 'Alto'}
@@ -204,7 +204,7 @@ export const Register = () => {
                 Teléfono de contacto
               </label>
               <input
-                className="w-full h-11 sm:h-12 px-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 focus:border-teal-700 focus:ring-2 focus:ring-teal-700/20 transition-all outline-none"
+                className="w-full h-11 sm:h-12 px-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 focus:border-amber-800 focus:ring-2 focus:ring-amber-800/20 transition-all outline-none"
                 id="contactPhone"
                 name="contactPhone"
                 placeholder="+1234567890"
@@ -222,7 +222,7 @@ export const Register = () => {
             <div className="flex items-start gap-3 pt-2">
               <div className="flex items-center h-5">
                 <input
-                  className="w-5 h-5 border-slate-300 rounded text-teal-700 focus:ring-teal-700/50 bg-slate-50"
+                  className="w-5 h-5 border-slate-300 rounded text-amber-800 focus:ring-amber-800/50 bg-slate-50"
                   id="terms"
                   type="checkbox"
                   checked={acceptedTerms}
@@ -231,11 +231,11 @@ export const Register = () => {
               </div>
               <label className="text-sm text-slate-600 select-none" htmlFor="terms">
                 He leído y acepto los{' '}
-                <a className="font-medium text-teal-700 hover:underline" href="#">
+                <a className="font-medium text-amber-800 hover:underline" href="#">
                   Términos del Servicio
                 </a>{' '}
                 y la{' '}
-                <a className="font-medium text-teal-700 hover:underline" href="#">
+                <a className="font-medium text-amber-800 hover:underline" href="#">
                   Política de Privacidad
                 </a>
                 .
@@ -244,7 +244,7 @@ export const Register = () => {
 
             {/* Submit Button */}
             <button
-              className="w-full h-11 sm:h-12 mt-4 bg-teal-700 hover:bg-teal-800 active:scale-[0.98] text-white font-bold rounded-xl shadow-lg shadow-cyan-900/20 transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full h-11 sm:h-12 mt-4 bg-amber-800 hover:bg-amber-900 active:scale-[0.98] text-white font-bold rounded-xl shadow-lg shadow-amber-900/20 transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
               type="submit"
               disabled={isLoading || !acceptedTerms}
             >
@@ -291,7 +291,7 @@ export const Register = () => {
 
       <div className="sm:hidden mt-8 text-center pb-8">
         <span className="text-sm text-slate-600">¿Ya tienes cuenta?</span>
-        <Link to="/user" className="text-sm font-bold text-teal-700 ml-1">
+        <Link to="/user" className="text-sm font-bold text-amber-800 ml-1">
           Iniciar Sesión
         </Link>
       </div>

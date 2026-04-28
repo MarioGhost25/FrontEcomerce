@@ -80,8 +80,8 @@ export const CustomerManagement = () => {
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <div className="w-8 h-8 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
-                  <CircleCheck className="w-5 h-5 text-green-600 dark:text-green-400" />
+                <div className="w-8 h-8 bg-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center">
+                  <CircleCheck className="w-5 h-5 text-amber-800 dark:text-amber-400" />
                 </div>
               </div>
               <div className="ml-4">
@@ -197,7 +197,7 @@ export const CustomerManagement = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        customer.status === 'active' ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' :
+                        customer.status === 'active' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/20 dark:text-amber-400' :
                         customer.status === 'inactive' ? 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400' :
                         customer.status === 'pending' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400' :
                         'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
@@ -216,7 +216,7 @@ export const CustomerManagement = () => {
                         >
                           Edit
                         </button>
-                        <button className="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300">
+                        <button className="text-amber-800 hover:text-amber-900 dark:text-amber-400 dark:hover:text-amber-300">
                           View
                         </button>
                         <button className="text-purple-600 hover:text-purple-900 dark:text-purple-400 dark:hover:text-purple-300">

@@ -117,7 +117,7 @@ export const InventoryForm = ({ inventory = null, onSubmit, onCancel }) => {
     if (formData.currentStock === 0) return { status: "Out of Stock", color: "text-red-500", bg: "bg-red-50 dark:bg-red-900/20" };
     if (formData.currentStock <= formData.reorderPoint) return { status: "Low Stock", color: "text-yellow-500", bg: "bg-yellow-50 dark:bg-yellow-900/20" };
     if (formData.currentStock >= formData.maxStockLevel) return { status: "Overstocked", color: "text-blue-500", bg: "bg-blue-50 dark:bg-blue-900/20" };
-    return { status: "In Stock", color: "text-green-500", bg: "bg-green-50 dark:bg-green-900/20" };
+    return { status: "In Stock", color: "text-amber-700", bg: "bg-amber-50 dark:bg-amber-900/20" };
   };
 
   const stockStatus = getStockStatus();

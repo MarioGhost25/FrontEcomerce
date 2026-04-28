@@ -21,14 +21,14 @@ const Products = () => {
         <nav aria-label="Breadcrumb" className="flex mb-6 text-sm">
           <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
             <li className="inline-flex items-center">
-              <Link className="inline-flex items-center text-gray-600 hover:text-teal-700 font-medium" to="/">
+              <Link className="inline-flex items-center text-gray-600 hover:text-amber-800 font-medium" to="/">
                 Inicio
               </Link>
             </li>
             <li>
               <div className="flex items-center">
                 <ChevronRightIcon className="text-gray-600 text-sm mx-1" />
-                <Link className="text-gray-600 hover:text-teal-700 font-medium" to="/products">
+                <Link className="text-gray-600 hover:text-amber-800 font-medium" to="/products">
                   Catálogo
                 </Link>
               </div>
@@ -63,7 +63,7 @@ const Products = () => {
             <div className="hidden lg:block bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="font-bold text-lg text-gray-900">Filtros</h3>
-                <button className="text-xs text-teal-700 font-medium hover:underline">Limpiar todo</button>
+                <button className="text-xs text-amber-800 font-medium hover:underline">Limpiar todo</button>
               </div>
 
               {/* Category Filter */}
@@ -74,10 +74,10 @@ const Products = () => {
                     <div key={category.id} className="space-y-2">
                       <label className="flex items-center gap-3 cursor-pointer group">
                         <div className="relative flex items-center">
-                          <input className="peer size-4 appearance-none rounded border border-gray-300 checked:bg-teal-700 checked:border-teal-700 focus:ring-1 focus:ring-teal-700 focus:ring-offset-1 transition-colors" type="checkbox" />
+                          <input className="peer size-4 appearance-none rounded border border-gray-300 checked:bg-amber-800 checked:border-amber-800 focus:ring-1 focus:ring-amber-800 focus:ring-offset-1 transition-colors" type="checkbox" />
                           <CheckIcon className="flex justify-center items-center absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none text-xs inset-0 m-auto" />
                         </div>
-                        <span className="text-sm text-gray-600 group-hover:text-teal-700 transition-colors">{category.name}</span>
+                        <span className="text-sm text-gray-600 group-hover:text-amber-800 transition-colors">{category.name}</span>
                         <span className="ml-auto text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{category.products.length}</span>
                       </label>
                     </div>
@@ -91,15 +91,15 @@ const Products = () => {
                 <div className="flex items-center gap-2 mb-4">
                   <div className="relative w-full">
                     <span className="absolute left-2 top-2 text-gray-400 text-xs">$</span>
-                    <input className="w-full pl-5 pr-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-teal-700 focus:border-teal-700 bg-gray-50" type="number" defaultValue="100" />
+                    <input className="w-full pl-5 pr-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-amber-800 focus:border-amber-800 bg-gray-50" type="number" defaultValue="100" />
                   </div>
                   <span className="text-gray-400">-</span>
                   <div className="relative w-full">
                     <span className="absolute left-2 top-2 text-gray-400 text-xs">$</span>
-                    <input className="w-full pl-5 pr-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-teal-700 focus:border-teal-700 bg-gray-50" type="number" defaultValue="5000" />
+                    <input className="w-full pl-5 pr-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-amber-800 focus:border-amber-800 bg-gray-50" type="number" defaultValue="5000" />
                   </div>
                 </div>
-                <input className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-teal-700" type="range" />
+                <input className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-amber-800" type="range" />
               </div>
 
               {/* Popularity/Rating Filter */}
@@ -107,7 +107,7 @@ const Products = () => {
                 <h4 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wider">Popularidad</h4>
                 <div className="space-y-2">
                   <label className="flex items-center gap-3 cursor-pointer group">
-                    <input className="size-4 text-teal-700 focus:ring-teal-700 border-gray-300" name="rating" type="radio" />
+                    <input className="size-4 text-amber-800 focus:ring-amber-800 border-gray-300" name="rating" type="radio" />
                     <div className="flex text-amber-400">
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} className="h-[18px] w-[18px] icon-filled text-amber-400" fill="currentColor" />
@@ -116,7 +116,7 @@ const Products = () => {
                     <span className="text-xs text-gray-500">& más</span>
                   </label>
                   <label className="flex items-center gap-3 cursor-pointer group">
-                    <input className="size-4 text-teal-700 focus:ring-teal-700 border-gray-300" name="rating" type="radio" />
+                    <input className="size-4 text-amber-800 focus:ring-amber-800 border-gray-300" name="rating" type="radio" />
                     <div className="flex text-amber-400">
                       {[...Array(4)].map((_, i) => (
                         <Star key={i} className="h-[18px] w-[18px] icon-filled text-amber-400" fill="currentColor" />
@@ -136,7 +136,7 @@ const Products = () => {
               </div>
               <h5 className="font-bold text-gray-900 mb-1">Envío Gratis</h5>
               <p className="text-xs text-gray-600 mb-3">En pedidos superiores a $999</p>
-              <Link className="text-xs font-bold text-teal-700 hover:underline" to="#">Ver detalles</Link>
+              <Link className="text-xs font-bold text-amber-800 hover:underline" to="#">Ver detalles</Link>
             </div>
           </aside>
 
@@ -150,7 +150,7 @@ const Products = () => {
               <div className="flex items-center gap-2">
                 <span className="text-sm text-gray-600">Ordenar por:</span>
                 <div className="relative">
-                  <select className="appearance-none bg-white border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-teal-700 focus:border-teal-700 block p-2 pr-8 cursor-pointer shadow-sm">
+                  <select className="appearance-none bg-white border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-amber-800 focus:border-amber-800 block p-2 pr-8 cursor-pointer shadow-sm">
                     <option>Relevancia</option>
                     <option>Precio: Menor a Mayor</option>
                     <option>Precio: Mayor a Menor</option>
@@ -174,7 +174,7 @@ const Products = () => {
             {/* Products Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {products.map((product) => (
-                <div key={product.id} className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg hover:border-teal-700/30 transition-all duration-300 flex flex-col">
+                <div key={product.id} className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg hover:border-amber-800/30 transition-all duration-300 flex flex-col">
                   <div className="relative h-56 w-full bg-gray-100 overflow-hidden">
                     {product.badge && (
                       <div className={`absolute top-3 left-3 z-10 ${product.badgeColor === 'red-50' ? 'bg-red-50 text-red-600' : 'bg-amber-100 text-amber-800'} text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide`}>
@@ -203,7 +203,7 @@ const Products = () => {
                       {/* <span className="text-xs text-gray-400">({product.reviews})</span> */}
                     </div>
                     <Link to={`/product-detail/${product.id ?? product._id}`}>
-                      <h3 className="font-bold text-gray-900 leading-tight mb-1 group-hover:text-teal-700 transition-colors">
+                      <h3 className="font-bold text-gray-900 leading-tight mb-1 group-hover:text-amber-800 transition-colors">
                         {product.name}
                       </h3>
                     </Link>
@@ -213,15 +213,15 @@ const Products = () => {
                         {product.price ? (
                           <span className="text-xs text-gray-400 line-through">${product.originalPrice}</span>
                         ) : (
-                          <span className="text-lg font-black text-teal-700">${product.originalPrice}</span>
+                          <span className="text-lg font-black text-amber-800">${product.originalPrice}</span>
                         )}
 
                         {product.price && (
-                          <span className="text-lg font-black text-teal-700">${product.price}</span>
+                          <span className="text-lg font-black text-amber-800">${product.price}</span>
                         )}
                       </div>
                       <button
-                        className="bg-teal-700 hover:bg-teal-800 text-white rounded-lg p-2 transition-colors flex items-center justify-center gap-2 shadow-sm"
+                        className="bg-amber-800 hover:bg-amber-900 text-white rounded-lg p-2 transition-colors flex items-center justify-center gap-2 shadow-sm"
                         onClick={() => handleShoppingCart(product)}
                       >
                         <AddShoppingCartIcon className="w-5 h-5" />
@@ -238,11 +238,11 @@ const Products = () => {
                 <a className="flex size-9 items-center justify-center rounded-full text-gray-900 hover:bg-gray-100 transition-colors" href="#">
                   <ChevronLeftIcon className="w-5 h-5" />
                 </a>
-                <a className="flex size-9 items-center justify-center rounded-full bg-teal-700 text-white font-bold text-sm shadow-md" href="#">1</a>
-                <a className="flex size-9 items-center justify-center rounded-full text-gray-900 hover:bg-amber-100 hover:text-teal-700 font-medium text-sm transition-colors" href="#">2</a>
-                <a className="flex size-9 items-center justify-center rounded-full text-gray-900 hover:bg-amber-100 hover:text-teal-700 font-medium text-sm transition-colors" href="#">3</a>
+                <a className="flex size-9 items-center justify-center rounded-full bg-amber-800 text-white font-bold text-sm shadow-md" href="#">1</a>
+                <a className="flex size-9 items-center justify-center rounded-full text-gray-900 hover:bg-amber-100 hover:text-amber-800 font-medium text-sm transition-colors" href="#">2</a>
+                <a className="flex size-9 items-center justify-center rounded-full text-gray-900 hover:bg-amber-100 hover:text-amber-800 font-medium text-sm transition-colors" href="#">3</a>
                 <span className="flex size-9 items-center justify-center rounded-full text-gray-400 font-medium text-sm">...</span>
-                <a className="flex size-9 items-center justify-center rounded-full text-gray-900 hover:bg-amber-100 hover:text-teal-700 font-medium text-sm transition-colors" href="#">12</a>
+                <a className="flex size-9 items-center justify-center rounded-full text-gray-900 hover:bg-amber-100 hover:text-amber-800 font-medium text-sm transition-colors" href="#">12</a>
                 <a className="flex size-9 items-center justify-center rounded-full text-gray-900 hover:bg-gray-100 transition-colors" href="#">
                   <ChevronRightIcon className='w-5 h-5  ' />
                 </a>

@@ -103,8 +103,8 @@ export const FormDemo = () => {
           {/* Order Form */}
           <div className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow">
             <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FileText className="w-8 h-8 text-green-600 dark:text-green-400" />
+              <div className="w-16 h-16 bg-amber-100 dark:bg-amber-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FileText className="w-8 h-8 text-amber-800 dark:text-amber-400" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 Order Management
@@ -121,7 +121,7 @@ export const FormDemo = () => {
               </ul>
               <Button
                 text="Try Order Form"
-                className="w-full px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                className="w-full px-6 py-3 bg-amber-800 text-white rounded-lg hover:bg-amber-900 transition-colors"
                 onClick={() => setActiveForm("order")}
               />
             </div>
@@ -200,8 +200,8 @@ export const FormDemo = () => {
               </p>
             </div>
             <div className="text-center">
-              <div className="w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Heart className="w-6 h-6 text-green-600 dark:text-green-400" />
+              <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <Heart className="w-6 h-6 text-amber-800 dark:text-amber-400" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                 Dark Mode Support
